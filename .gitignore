@@ -1,0 +1,7 @@
+minishell
+*.o
+obj/
+*.d
+*.a
+compile_flags.txt
+compile_commands.json
