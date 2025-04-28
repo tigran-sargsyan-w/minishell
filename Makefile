@@ -12,7 +12,7 @@ LIBFT_DIR = libft/
 
 # Files
 
-SRCS = minishell.c
+SRCS = minishell.c tests.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
