@@ -6,11 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/28 18:05:23 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:17:05 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "libft.h"
@@ -26,12 +27,19 @@ int	main(int argc, char **argv, char **envp)
   while (1)
   {
     input_str = readline("minishell > ");
+    if (input_str == NULL)
+      break ;
     if (input_str[0] != '\0')
     {
       if (ft_strncmp(input_str, "exit", 5) == 0)
+      {
+      free(input_str);
         break ;
+      }
       add_history(input_str);
+      // TODO: Parse and execute
     }
+    free(input_str);
   }
   (void) argc;
   (void) argv;
