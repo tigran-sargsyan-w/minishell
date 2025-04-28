@@ -6,35 +6,54 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/28 20:50:50 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/04/28 23:39:09 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	read_word(t_token **tokens, char *input, int *i)
+void	skip_quotes(char *input, char *buffer, int *i, int *j)
 {
-	int		start;
 	char	quote;
-	char	*word;
 
-	start = *i;
+	quote = input[(*i)++];
+	while (input[*i] && input[*i] != quote)
+	{
+		buffer[(*j)++] = input[(*i)++];
+	}
+	if (input[*i] == quote)
+		(*i)++;
+}
+
+void	read_word(t_token **tokens, char *input, int *i)
+{
+	char	*word;
+	char	*buffer;
+	int		j;
+
+	j = 0;
+	buffer = malloc(sizeof(char) * (strlen(input) + 1));
+	if (!buffer)
+		return ;
+	j = 0;
 	while (input[*i] && !is_special(input[*i]) && !is_space(input[*i]))
 	{
-		if (input[*i] == '\'' || input[*i] == '"')
+		if (input[*i] == '\\' && input[*i + 1])
 		{
-			quote = input[(*i)++];
-			while (input[*i] && input[*i] != quote)
-				(*i)++;
-			if (input[*i] == quote)
-				(*i)++;
-		}
-		else
 			(*i)++;
+			buffer[j++] = input[*i];
+			(*i)++;
+		}
+		else if (input[*i] == '\'' || input[*i] == '"')
+			skip_quotes(input, buffer, i, &j);
+		else
+			buffer[j++] = input[(*i)++];
 	}
-	word = ft_substr(input, start, *i - start);
+	buffer[j] = '\0';
+	word = ft_strdup(buffer);
 	add_token(tokens, WORD, word);
 	free(word);
+	free(buffer);
 }
 
 static void	handle_pipe(t_token **tokens, int *i)
