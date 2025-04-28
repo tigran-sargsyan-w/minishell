@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/28 23:39:09 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/04/29 00:37:56 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	skip_quotes(char *input, char *buffer, int *i, int *j)
 	}
 	if (input[*i] == quote)
 		(*i)++;
+	else
+	{
+		printf("Error: Unclosed quote\n");
+		// TODO: Handle error unclosed quote
+	}
 }
 
 void	read_word(t_token **tokens, char *input, int *i)
