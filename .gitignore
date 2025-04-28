@@ -5,3 +5,4 @@ obj/
 *.a
 compile_flags.txt
 compile_commands.json
+.vscode/

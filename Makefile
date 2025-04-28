@@ -26,7 +26,7 @@ libs:
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) | libs
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	mkdir -p $(OBJ_DIR)
