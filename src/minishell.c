@@ -6,24 +6,26 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/28 17:30:28 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:53:17 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "tests.h"
-
+//#include "tests.h"
 
 int	main(int argc, char **argv, char **envp)
 {
   char  *input_str;
-	test_gnl();
-	test_printf();
-	test_libft();
-	printf("\nWelcome to the shell!\n");
-  input_str = readline("minishell > ");
+	/*test_gnl();*/
+	/*test_printf();*/
+	/*test_libft();*/
+  while (1)
+  {
+    input_str = readline("minishell > ");
+    add_history(input_str);
+  }
   (void) argc;
   (void) argv;
   (void) envp;
