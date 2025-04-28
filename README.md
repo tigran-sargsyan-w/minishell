@@ -27,7 +27,7 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 | 7 | Single quotes | `echo 'single quoted text'` | `[WORD(echo), WORD(single quoted text)]` | ✅ |
 | 8 | Nested quotes inside double quotes | `echo "text with 'nested quotes'"` | `[WORD(echo), WORD(text with 'nested quotes')]` | ✅ |
 | 9 | Escaped space | `echo hello\ world` | `[WORD(echo), WORD(hello world)]` | ✅ |
-| 10 | Escaped pipe character | `echo this\|is\|one\|word` | `[WORD(echo), WORD(this\|is\|one\|word)]` | ❌ |
+| 10 | Escaped pipe character | `echo this\|is\|one\|word` | `[WORD(echo), WORD(this), PIPE(\|), WORD(is), PIPE(\|), WORD(one), PIPE(\|), WORD(word)]` | ✅ |
 | 11 | Redirection with quoted filenames | `echo "hello" > "file with space.txt"` | `[WORD(echo), WORD(hello), REDIRECT_OUT(>), WORD(file with space.txt)]` | ✅ |
 | 12 | Empty line | `` | `[]` | ✅ |
 | 13 | Line with only spaces | `    ` | `[]` | ✅ |
