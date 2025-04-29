@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
 /*   Updated: 2025/04/28 20:51:07 by tsargsya         ###   ########.fr       */
@@ -51,5 +51,8 @@ void						add_token(t_token **tokens, t_token_type type,
 								char *value);
 void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
+
+// readline_loop.c
+void    readline_loop(char **input);
 
 #endif

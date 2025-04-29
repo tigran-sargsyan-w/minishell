@@ -15,7 +15,8 @@ LIBFT_DIR = libft/
 
 SRCS = minishell.c \
 		lexer.c \
-		lexer_utils.c 
+		lexer_utils.c \
+    readline_loop.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
