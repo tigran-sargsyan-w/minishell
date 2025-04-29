@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/28 20:51:07 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:25:43 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "get_next_line.h"
 # include "libft.h"
 # include <fcntl.h>
+# include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -53,6 +54,6 @@ void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
 
 // readline_loop.c
-void    readline_loop(char **input);
+void						readline_loop(char **input);
 
 #endif
