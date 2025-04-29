@@ -1,7 +1,8 @@
 # Compiler and flags
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
+LD_FLAGS = -lreadline
 
 # Directories
 
@@ -12,7 +13,10 @@ LIBFT_DIR = libft/
 
 # Files
 
-SRCS = minishell.c readline_loop.c
+SRCS = minishell.c \
+		lexer.c \
+		lexer_utils.c \
+    readline_loop.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
@@ -26,7 +30,7 @@ libs:
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) | libs
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LD_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	mkdir -p $(OBJ_DIR)
