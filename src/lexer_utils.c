@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:25:20 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/28 20:49:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:39:20 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
+#include "libft.h"
+#include <stdio.h>
 
 int	is_space(char c)
 {
