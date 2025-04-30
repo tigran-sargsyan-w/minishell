@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/29 00:37:56 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:41:06 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void	skip_quotes(char *input, char *buffer, int *i, int *j)
 {
@@ -37,7 +40,7 @@ void	read_word(t_token **tokens, char *input, int *i)
 	int		j;
 
 	j = 0;
-	buffer = malloc(sizeof(char) * (strlen(input) + 1));
+	buffer = malloc(sizeof(char) * (ft_strlen(input) + 1));
 	if (!buffer)
 		return ;
 	j = 0;
