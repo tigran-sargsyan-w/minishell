@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/30 22:25:07 by dsemenov         ###   ########.fr       */
+/*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/04/30 22:16:59 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "minishell.h"
-#include <stddef.h>
-#include <stdio.h>
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-int	main(int argc, char **argv, char **envp)
+typedef struct s_env_list
 {
-	char		*input_str;
-	t_env_list	*env_variables;
+	char				*key;
+	char				*value;
+	struct s_env_list	*next;
 
-	(void)argc;
-	(void)argv;
+}						t_env_list;
 
-	input_str = NULL;
-	env_variables = lst_init(envp);
-	readline_loop(&input_str);
-	lst_clear(&env_variables);
-	return (0);
-}
+t_env_list				*lst_create_node(char *key, char *value);
+void					lst_add_end(t_env_list **list, t_env_list *new_node);
+t_env_list				*lst_init(char **envp);
+void					lst_clear(t_env_list **list);
+#endif

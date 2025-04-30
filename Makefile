@@ -16,7 +16,9 @@ LIBFT_DIR = libft/
 SRCS = minishell.c \
 		lexer.c \
 		lexer_utils.c \
-    readline_loop.c
+    readline_loop.c \
+	builtin/builtin_list.c
+
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
@@ -33,7 +35,7 @@ $(NAME): $(OBJS) | libs
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LD_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	mkdir -p $(OBJ_DIR)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
 
 clean:
