@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/01 13:31:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:56:48 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-#define INITIAL_ARG_CAP 8
+# define INITIAL_ARG_CAP 8
 
 typedef struct s_cmd	t_cmd;
 
@@ -39,7 +39,7 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 }						t_cmd;
 
-
 // parser.c
-t_cmd	*parser(t_token *tokens);
+t_cmd					*parse_tokens(t_token *tokens);
+void					print_cmds(t_cmd *cmd);
 #endif
