@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/02 12:05:43 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:12:56 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,33 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+void	free_cmd_list(t_cmd *cmd)
+{
+	t_cmd	*next;
+	int		i;
+
+	while (cmd)
+	{
+		next = cmd->next;
+		if (cmd->args)
+		{
+			i = 0;
+			while (cmd->args[i])
+			{
+				free(cmd->args[i]);
+				i++;
+			}
+			free(cmd->args);
+		}
+		if (cmd->infile)
+			free(cmd->infile);
+		if (cmd->outfile)
+			free(cmd->outfile);
+		free(cmd);
+		cmd = next;
+	}
+}
+
 t_cmd	*parse_tokens(t_token *tokens)
 {
 	t_cmd	*cmd;
@@ -103,7 +130,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 			if (!tokens->next || tokens->next->type != WORD)
 			{
 				printf("minishell: syntax error near `%s'\n", tokens->value);
-				// TODO: free_cmd_list(cmd);
+				free_cmd_list(cmd);
 				return (NULL);
 			}
 			redirect_type = tokens->type;
@@ -132,13 +159,13 @@ t_cmd	*parse_tokens(t_token *tokens)
 					printf("`newline'\n");
 				else
 					printf("`%s'\n", tokens->next->value);
-				// TODO: free_cmd_list(cmd);
+				free_cmd_list(cmd);
 				return (NULL);
 			}
 			new_cmd = init_cmd();
 			if (!new_cmd)
 			{
-				// TODO: free_cmd_list(cmd);
+				free_cmd_list(cmd);
 				return (NULL);
 			}
 			current_cmd->next = new_cmd;
@@ -148,7 +175,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 		{
 			printf("minishell: syntax error near unexpected token `%s'\n",
 				tokens->value);
-			// TODO: free_cmd_list(cmd);
+			free_cmd_list(cmd);
 			return (NULL);
 		}
 		tokens = tokens->next;
