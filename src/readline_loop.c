@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/04/30 12:40:33 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:56:56 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+#include "parser.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
@@ -19,6 +20,7 @@
 void	readline_loop(char **input)
 {
 	t_token	*tokens;
+	t_cmd	*cmd;
 
 	while (1)
 	{
@@ -36,6 +38,10 @@ void	readline_loop(char **input)
 			// TODO: Parse and execute
 			tokens = lexer(*input);
 			print_tokens(tokens);
+			cmd = parse_tokens(tokens);
+			print_cmds(cmd);
+			// TODO: Free cmd
+			// TODO: Execute command
 			free_tokens(tokens);
 		}
 		free(*input);

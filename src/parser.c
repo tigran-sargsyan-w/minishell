@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/01 16:44:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:05:43 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,10 @@ int	append_arg(t_cmd *cmd, char *value)
 	return (0);
 }
 
-t_cmd	*parse_tokens(t_token *tokens)
+t_cmd	*init_cmd(void)
 {
 	t_cmd	*cmd;
-	t_cmd	*current_cmd;
 	int		i;
-	int		redirect_type;
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
@@ -83,6 +81,17 @@ t_cmd	*parse_tokens(t_token *tokens)
 	cmd->append = 0;
 	cmd->heredoc = 0;
 	cmd->next = NULL;
+	return (cmd);
+}
+
+t_cmd	*parse_tokens(t_token *tokens)
+{
+	t_cmd	*cmd;
+	t_cmd	*current_cmd;
+	t_cmd	*new_cmd;
+	int		redirect_type;
+
+	cmd = init_cmd();
 	current_cmd = cmd;
 	while (tokens)
 	{
@@ -116,8 +125,24 @@ t_cmd	*parse_tokens(t_token *tokens)
 		}
 		else if (tokens->type == PIPE)
 		{
-			// TODO: logic for creating a new command
-			// TODO: handle pipe
+			if (!tokens->next || tokens->next->type != WORD)
+			{
+				printf("minishell: syntax error near unexpected token ");
+				if (!tokens->next)
+					printf("`newline'\n");
+				else
+					printf("`%s'\n", tokens->next->value);
+				// TODO: free_cmd_list(cmd);
+				return (NULL);
+			}
+			new_cmd = init_cmd();
+			if (!new_cmd)
+			{
+				// TODO: free_cmd_list(cmd);
+				return (NULL);
+			}
+			current_cmd->next = new_cmd;
+			current_cmd = new_cmd;
 		}
 		else
 		{
@@ -129,4 +154,31 @@ t_cmd	*parse_tokens(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (cmd);
+}
+
+void	print_cmds(t_cmd *cmd)
+{
+	int	i;
+	int	cmd_num;
+
+	cmd_num = 1;
+	while (cmd)
+	{
+		printf("Command %d:\n", cmd_num++);
+		i = 0;
+		while (cmd->args && cmd->args[i])
+		{
+			printf("  arg[%d]: %s\n", i, cmd->args[i]);
+			i++;
+		}
+		if (cmd->infile)
+			printf("  infile: %s\n", cmd->infile);
+		if (cmd->outfile)
+			printf("  outfile: %s\n", cmd->outfile);
+		if (cmd->append)
+			printf("  append: true\n");
+		if (cmd->heredoc)
+			printf("  heredoc: true\n");
+		cmd = cmd->next;
+	}
 }
