@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/04/30 22:24:07 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/04/30 23:36:57 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ t_env_list	*lst_init(char **envp)
 		key = ft_substr(*envp, 0, key_len);
 		value = ft_strdup(++equality_sign);
 		new_node = lst_create_node(key, value);
+		if (key == NULL || value == NULL || new_node == NULL)
+			return (NULL);
 		lst_add_end(&list, new_node);
 		envp++;
 	}
