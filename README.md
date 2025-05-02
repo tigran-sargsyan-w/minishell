@@ -63,7 +63,7 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 | 8 | Command with both redirections | `echo test > out.txt < in.txt` | `cmd1: args = [echo, test], infile = in.txt, outfile = out.txt` | ✅ |
 | 9 | Missing file after `>` | `echo hello >` | `Error: syntax error near '>'` | ✅ |
 | 10 | Missing file after `<` | `cat <` | `Error: syntax error near '<'` | ✅ |
-| 11 | Pipe at start | `\| ls` | `Error: syntax error near '\|'` | ❌ |
+| 11 | Pipe at start | `\| ls` | `Error: syntax error near '\|'` | ✅ |
 | 12 | Pipe at end | `echo hi \|` | `Error: syntax error near 'newline'` | ✅ |
 | 13 | Double pipe (invalid) | `ls \|\| wc` | `Error: syntax error near '\|'` | ✅ |
 | 14 | Redirection only | `>` | `Error: syntax error near '>'` | ✅ |

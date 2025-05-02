@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/02 12:12:56 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/02 13:03:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,12 @@ t_cmd	*parse_tokens(t_token *tokens)
 		}
 		else if (tokens->type == PIPE)
 		{
+			if (!current_cmd || (current_cmd->args[0] == NULL))
+			{
+				printf("minishell: syntax error near unexpected token `|'\n");
+				free_cmd_list(cmd);
+				return (NULL);
+			}
 			if (!tokens->next || tokens->next->type != WORD)
 			{
 				printf("minishell: syntax error near unexpected token ");
