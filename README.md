@@ -32,7 +32,7 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 | 12 | Empty line | `` | `[]` | ✅ |
 | 13 | Line with only spaces | `    ` | `[]` | ✅ |
 | 14 | Multiple spaces between words | `ls        -l       /tmp` | `[WORD(ls), WORD(-l), WORD(/tmp)]` | ✅ |
-| 15 | Unclosed quote error | `echo "unclosed quote` | `Error: Unclosed quote` | ❌ |
+| 15 | Unclosed quote error (Handling with parser) | `echo "unclosed quote` | `Error: Unclosed quote` | ✅ |
 | 16 | Redirection without a target file (Handling in parser) | `cat file.txt >` | `Error: Missing file after redirection '>'` | ✅ |
 | 17 | Pipe at the beginning of the line (Handling in parser) | `\| grep something` | `Error: Pipe at start of input` | ✅ |
 
