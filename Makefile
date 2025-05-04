@@ -16,7 +16,8 @@ LIBFT_DIR = libft/
 SRCS = minishell.c \
 		lexer.c \
 		lexer_utils.c \
-    readline_loop.c \
+    	readline_loop.c \
+		parser.c
 	builtin/envp_list.c \
 	builtin/builtin_echo.c \
 	builtin/builtin_cd.c \

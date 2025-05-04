@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/30 12:41:06 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:04:04 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	skip_quotes(char *input, char *buffer, int *i, int *j)
+int	skip_quotes(char *input, char *buffer, int *i, int *j)
 {
 	char	quote;
 
@@ -25,15 +25,18 @@ void	skip_quotes(char *input, char *buffer, int *i, int *j)
 		buffer[(*j)++] = input[(*i)++];
 	}
 	if (input[*i] == quote)
+	{
 		(*i)++;
+		return (0);
+	}
 	else
 	{
 		printf("Error: Unclosed quote\n");
-		// TODO: Handle error unclosed quote
+		return (1);
 	}
 }
 
-void	read_word(t_token **tokens, char *input, int *i)
+int	read_word(t_token **tokens, char *input, int *i)
 {
 	char	*word;
 	char	*buffer;
@@ -42,7 +45,7 @@ void	read_word(t_token **tokens, char *input, int *i)
 	j = 0;
 	buffer = malloc(sizeof(char) * (ft_strlen(input) + 1));
 	if (!buffer)
-		return ;
+		return (1);
 	j = 0;
 	while (input[*i] && !is_special(input[*i]) && !is_space(input[*i]))
 	{
@@ -53,7 +56,13 @@ void	read_word(t_token **tokens, char *input, int *i)
 			(*i)++;
 		}
 		else if (input[*i] == '\'' || input[*i] == '"')
-			skip_quotes(input, buffer, i, &j);
+		{
+			if (skip_quotes(input, buffer, i, &j) == 1)
+			{
+				free(buffer);
+				return (1);
+			}
+		}
 		else
 			buffer[j++] = input[(*i)++];
 	}
@@ -62,6 +71,7 @@ void	read_word(t_token **tokens, char *input, int *i)
 	add_token(tokens, WORD, word);
 	free(word);
 	free(buffer);
+	return (0);
 }
 
 static void	handle_pipe(t_token **tokens, int *i)
@@ -115,8 +125,11 @@ t_token	*lexer(char *input)
 			handle_less(&tokens, input, &i);
 		else if (input[i] == '>')
 			handle_greater(&tokens, input, &i);
-		else
-			read_word(&tokens, input, &i);
+		else if (read_word(&tokens, input, &i))
+		{
+			free_tokens(tokens);
+			return (NULL);
+		}
 	}
 	return (tokens);
 }
