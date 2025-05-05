@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/04/30 23:36:57 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:49:40 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ t_env_list	*lst_create_node(char *key, char *value)
 
 void	lst_add_end(t_env_list **list, t_env_list *new_node)
 {
-    t_env_list  *tmp;
-    
+	t_env_list	*tmp;
+
 	if (list == NULL)
 		return ;
 	if (*list == NULL)
@@ -38,9 +38,9 @@ void	lst_add_end(t_env_list **list, t_env_list *new_node)
 		*list = new_node;
 		return ;
 	}
-    tmp = *list;
+	tmp = *list;
 	while (tmp->next != NULL)
-    tmp = tmp->next;
+		tmp = tmp->next;
 	tmp->next = new_node;
 }
 
@@ -53,15 +53,15 @@ t_env_list	*lst_init(char **envp)
 	char		*value;
 	int			key_len;
 
-    list = NULL;
+	list = NULL;
 	while (*envp != NULL)
 	{
 		equality_sign = ft_strchr(*envp, '=');
-        if (equality_sign == NULL)
-        {
-            envp++;
-            continue;
-        }
+		if (equality_sign == NULL)
+		{
+			envp++;
+			continue ;
+		}
 		key_len = equality_sign - (*envp);
 		key = ft_substr(*envp, 0, key_len);
 		value = ft_strdup(++equality_sign);
@@ -76,7 +76,7 @@ t_env_list	*lst_init(char **envp)
 
 void	lst_clear(t_env_list **list)
 {
-	t_env_list *tmp;
+	t_env_list	*tmp;
 
 	while (*list != NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/05 17:36:52 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:50:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	print_env(char *var, t_env_list *env)
 
 int	builtin_echo(t_cmd *cmd, t_env_list *env)
 {
-	char **argv;
-	int has_n_arg;
+	char	**argv;
+	int		has_n_arg;
 
 	argv = cmd->args + 1;
 	has_n_arg = 0;
