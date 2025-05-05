@@ -1,37 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/05 13:21:27 by dsemenov         ###   ########.fr       */
+/*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/05/05 17:53:04 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "minishell.h"
-#include <errno.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 
-int	main(int argc, char **argv, char **envp)
+int	builtin_cd(t_cmd *cmd, t_env_list *env)
 {
-	char		*input_str;
-	t_env_list	*env_variables;
-
-	(void)argc;
-	(void)argv;
-	input_str = NULL;
-	env_variables = lst_init(envp);
-	if ((env_variables) == NULL)
-	{
-		fprintf(stderr, "Error: %s\n", strerror(errno));
-		return (1);
-	}
-	readline_loop(&input_str, envp);
-	lst_clear(&env_variables);
+	(void)cmd;
+	(void)env;
 	return (0);
 }

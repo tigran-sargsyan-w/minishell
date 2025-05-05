@@ -17,7 +17,17 @@ SRCS = minishell.c \
 		lexer.c \
 		lexer_utils.c \
     	readline_loop.c \
-		parser.c
+		parser.c \
+		builtin/builtin_array.c \
+		builtin/envp_list.c \
+		builtin/builtin_echo.c \
+		builtin/builtin_cd.c \
+		builtin/builtin_pwd.c \
+		builtin/builtin_export.c \
+		builtin/builtin_unset.c \
+		builtin/builtin_env.c \
+		builtin/builtin_exit.c
+
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
@@ -34,7 +44,7 @@ $(NAME): $(OBJS) | libs
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LD_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	mkdir -p $(OBJ_DIR)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
 
 clean:

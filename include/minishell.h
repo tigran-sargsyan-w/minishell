@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/30 12:40:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:29:58 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
 
 // readline_loop.c
-void						readline_loop(char **input);
+void						readline_loop(char **input, char **envp);
 
 #endif
