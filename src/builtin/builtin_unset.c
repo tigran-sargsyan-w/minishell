@@ -1,6 +1,8 @@
 #include "builtins.h"
 
-int builtin_unset(int argc, char **argv, t_env_list *env)
+int	builtin_unset(t_cmd *cmd, t_env_list *env)
 {
-    return (0);
+	(void)cmd;
+	(void)env;
+	return (0);
 }

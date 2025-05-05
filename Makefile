@@ -17,15 +17,16 @@ SRCS = minishell.c \
 		lexer.c \
 		lexer_utils.c \
     	readline_loop.c \
-		parser.c
-	builtin/envp_list.c \
-	builtin/builtin_echo.c \
-	builtin/builtin_cd.c \
-	builtin/builtin_pwd.c \
-	builtin/builtin_export.c \
-	builtin/builtin_unset.c \
-	builtin/builtin_env.c \
-	builtin/builtin_exit.c
+		parser.c \
+		builtin/builtin_array.c \
+		builtin/envp_list.c \
+		builtin/builtin_echo.c \
+		builtin/builtin_cd.c \
+		builtin/builtin_pwd.c \
+		builtin/builtin_export.c \
+		builtin/builtin_unset.c \
+		builtin/builtin_env.c \
+		builtin/builtin_exit.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
