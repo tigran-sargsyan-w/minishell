@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_array.c                                    :+:      :+:    :+:   */
+/*   run_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/05 17:53:43 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:26:49 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	run_builtin(t_cmd *cmd, t_env_list *env)
 				(ft_strlen(cmd->args[0])) + 1) == 0)
 		{
 			builtins_arr[i].handler(cmd, env);
-			break ;
+			return (0);
 		}
 		i++;
 	}
