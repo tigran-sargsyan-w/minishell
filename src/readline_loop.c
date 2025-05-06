@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/05 17:48:53 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:47:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "executor.h"
 #include "libft.h"
 #include "minishell.h"
 #include "parser.h"
@@ -20,8 +21,8 @@
 
 void	readline_loop(char **input, char **envp)
 {
-	t_token *tokens;
-	t_cmd *cmd;
+	t_token	*tokens;
+	t_cmd	*cmd;
 
 	while (1)
 	{
@@ -43,9 +44,12 @@ void	readline_loop(char **input, char **envp)
 				cmd = parse_tokens(tokens);
 				// print_cmds(cmd);
 			}
-			run_builtin(cmd, lst_init(envp));
-			free_cmd_list(cmd);
-			// TODO: Execute command
+			if (cmd)
+			{
+				run_builtin(cmd, lst_init(envp));
+				execute_cmd(cmd, envp);
+				free_cmd_list(cmd);
+			}
 			free_tokens(tokens);
 		}
 		free(*input);

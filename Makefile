@@ -26,7 +26,9 @@ SRCS = minishell.c \
 		builtin/builtin_export.c \
 		builtin/builtin_unset.c \
 		builtin/builtin_env.c \
-		builtin/builtin_exit.c
+		builtin/builtin_exit.c \
+		executor.c \
+		executor_utils.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
