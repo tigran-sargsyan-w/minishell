@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/06 21:37:48 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/06 21:53:17 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_env_list
 
 }						t_env_list;
 
-t_env_list				*lst_init(char **envp);
+t_env_list				*lst_init(char *const *envp);
 void					lst_clear(t_env_list **list);
 
 // Built-ins
