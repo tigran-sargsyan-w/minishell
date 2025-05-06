@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/06 21:18:51 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/06 22:39:54 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stddef.h>
 
-int	run_builtin(t_cmd *cmd, t_env_list *env)
+int	run_builtin(t_cmd *cmd, t_env_list **env)
 {
 	int								i;
 	int								ret;

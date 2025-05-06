@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/06 21:40:09 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/06 22:39:12 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	lst_add_end(t_env_list **list, t_env_list *new_node)
 	tmp->next = new_node;
 }
 
-t_env_list	*lst_init(char *const *envp)
+t_env_list	**lst_init(char *const *envp)
 {
 	t_env_list	*list;
 	t_env_list	*new_node;

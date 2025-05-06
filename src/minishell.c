@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/05 13:21:27 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/06 22:41:20 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input_str;
-	t_env_list	*env_variables;
+	t_env_list	**env_variables;
 
 	(void)argc;
 	(void)argv;
@@ -32,6 +32,6 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	readline_loop(&input_str, envp);
-	lst_clear(&env_variables);
+	lst_clear(env_variables);
 	return (0);
 }
