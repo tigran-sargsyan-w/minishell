@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 17:13:57 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:42:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "parser.h"
 
-static t_env_list	*lst_create_node(char *key, char *value)
+t_env_list	*lst_create_node(char *key, char *value)
 {
 	t_env_list	*node;
 
@@ -28,7 +28,7 @@ static t_env_list	*lst_create_node(char *key, char *value)
 	return (node);
 }
 
-static void	lst_add_end(t_env_list **list, t_env_list *new_node)
+void	lst_add_end(t_env_list **list, t_env_list *new_node)
 {
 	t_env_list	*tmp;
 
