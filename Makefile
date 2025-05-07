@@ -18,7 +18,7 @@ SRCS = minishell.c \
 		parser/lexer.c \
 		parser/lexer_utils.c \
 		parser/parser.c \
-		builtin/builtin_array.c \
+		builtin/run_builtin.c \
 		builtin/envp_list.c \
 		builtin/builtin_echo.c \
 		builtin/builtin_cd.c \
