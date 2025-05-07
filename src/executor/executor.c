@@ -6,25 +6,24 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/07 12:51:46 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:55:08 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "libft.h" // ft_strncmp, ft_strlcpy, ft_strlcat, ft_strdup
 #include "parser.h"
+#include <fcntl.h>     // open, O_RDONLY, O_WRONLY, O_CREAT, O_TRUNC, O_APPEND
 #include <stdio.h>     // perror
 #include <stdlib.h>    // exit
 #include <sys/types.h> // pid_t
 #include <sys/wait.h>  // waitpid
 #include <unistd.h>    // fork, execve
-#include <fcntl.h>     // open, O_RDONLY, O_WRONLY, O_CREAT, O_TRUNC, O_APPEND
 
-void	handle_redirections(t_cmd *cmd)
+void	handle_input_redirection(t_cmd *cmd)
 {
 	int	fd;
 
-	// Input redirection: <
 	if (cmd->infile)
 	{
 		fd = open(cmd->infile, O_RDONLY);
@@ -36,7 +35,12 @@ void	handle_redirections(t_cmd *cmd)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
-	// Output redirection: > or >>
+}
+
+void	handle_output_redirection(t_cmd *cmd)
+{
+	int	fd;
+
 	if (cmd->outfile)
 	{
 		if (cmd->append)
@@ -69,7 +73,8 @@ void	execute_cmd(t_cmd *cmd, char **envp)
 	}
 	if (pid == 0)
 	{
-		handle_redirections(cmd);
+		handle_input_redirection(cmd);
+		handle_output_redirection(cmd);
 		full_cmd = find_command(cmd->args[0], envp);
 		if (!full_cmd)
 		{
