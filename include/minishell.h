@@ -6,14 +6,12 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/07 14:39:09 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:20:04 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-# include "builtins.h"
 
 typedef struct s_token		t_token;
 typedef enum e_token_type	t_token_type;
@@ -47,6 +45,7 @@ void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
 
 // readline_loop.c
+typedef struct s_env_list 	t_env_list;
 void						readline_loop(char **envp, 
 								t_env_list **env_variables);
 
