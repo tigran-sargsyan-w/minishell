@@ -6,12 +6,14 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/05 17:29:58 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:10:28 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# include "builtins.h"
 
 typedef struct s_token		t_token;
 typedef enum e_token_type	t_token_type;

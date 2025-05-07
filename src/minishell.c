@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/06 22:41:20 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:10:55 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	input_str = NULL;
 	env_variables = lst_init(envp);
-	if ((env_variables) == NULL)
-	{
-		fprintf(stderr, "Error: %s\n", strerror(errno));
-		return (1);
-	}
+	// if ((env_variables) == NULL)
+	// {
+	// 	fprintf(stderr, "Error: %s\n", strerror(errno));
+	// 	return (1);
+	// }
 	readline_loop(&input_str, envp);
 	lst_clear(env_variables);
 	return (0);

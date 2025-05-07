@@ -6,14 +6,15 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/06 22:43:37 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:21:36 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# include "parser.h"
+typedef struct s_cmd	t_cmd;
+
 
 // Linked list for environment variables
 typedef struct s_env_list
@@ -41,7 +42,7 @@ int						builtin_echo(t_cmd *cmd, t_env_list **env);
 int						builtin_cd(t_cmd *cmd, t_env_list **env);
 int						builtin_pwd(t_cmd *cmd, t_env_list **env);
 int						builtin_env(t_cmd *cmd, t_env_list **env);
-int						builtin_export(t_cmd *cmd, t_env_list *env);
+int						builtin_export(t_cmd *cmd, t_env_list **env);
 int						builtin_unset(t_cmd *cmd, t_env_list **env);
 int						builtin_exit(t_cmd *cmd, t_env_list **env);
 int						run_builtin(t_cmd *cmd, t_env_list **env);

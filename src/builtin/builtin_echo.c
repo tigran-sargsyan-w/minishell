@@ -6,13 +6,14 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/05 17:50:53 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:28:42 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "libft.h"
 #include <stdio.h>
+#include "parser.h"
 
 static void	print_env(char *var, t_env_list *env)
 {
@@ -32,7 +33,7 @@ static void	print_env(char *var, t_env_list *env)
 	}
 }
 
-int	builtin_echo(t_cmd *cmd, t_env_list *env)
+int	builtin_echo(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
 	int		has_n_arg;
@@ -53,7 +54,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list *env)
 	while (*argv != NULL)
 	{
 		if ((*argv)[0] == '$')
-			print_env(*argv + 1, env);
+			print_env(*argv + 1, *env);
 		else
 			printf("%s", *argv);
 		if (*(argv + 1) != NULL)
