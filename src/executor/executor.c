@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/07 12:55:08 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:01:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,72 @@ void	handle_output_redirection(t_cmd *cmd)
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
+}
+
+void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
+{
+	t_pipe	pipefd;
+	int		in_fd;
+	pid_t	pid;
+	// int		fds[2];
+
+	(void)env_vars;
+	in_fd = 0;
+	while (cmd)
+	{
+		// Если есть следующая команда — создаём новый pipe
+		if (cmd->next)
+		{
+			if (pipe((int*)&pipefd) < 0)
+			{
+				perror("pipe");
+				exit(1);
+			}
+			// pipefd.read = fds[0];
+			// pipefd.write = fds[1];
+		}
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("fork");
+			exit(1);
+		}
+		if (pid == 0)
+		{
+			// stdin ← предыдущий pipe (или стандартный, если первого)
+			if (in_fd != 0)
+			{
+				dup2(in_fd, STDIN_FILENO);
+				close(in_fd);
+			}
+			// stdout → в текущий pipe (если есть следующая команда)
+			if (cmd->next)
+			{
+				close(pipefd.read);
+				dup2(pipefd.write, STDOUT_FILENO);
+				close(pipefd.write);
+			}
+			// редиректы < и >
+			handle_input_redirection(cmd);
+			handle_output_redirection(cmd);
+			// выполнить одну команду (без fork внутри)
+			execute_cmd(cmd, envp);
+			// на всякий случай, если execve не сработал:
+			exit(0);
+		}
+		// в родителе закрываем лишние дескрипторы
+		if (in_fd != 0)
+			close(in_fd);
+		if (cmd->next)
+		{
+			close(pipefd.write);
+			in_fd = pipefd.read;
+		}
+		cmd = cmd->next;
+	}
+	// ждём всех дочерних процессов
+	while (wait(NULL) > 0)
+		;
 }
 
 void	execute_cmd(t_cmd *cmd, char **envp)
