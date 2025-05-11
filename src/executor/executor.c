@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 17:35:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:47:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	handle_input_redirection(t_cmd *cmd)
 	{
 		fd = open(cmd->infile, O_RDONLY);
 		if (fd < 0)
-			error_exit("open infile:");
+			error_exit("open infile");
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
@@ -64,11 +64,11 @@ void	execute_pipeline(t_cmd *cmd, char **envp)
 		if (cmd->next)
 		{
 			if (pipe(pipefd.fds) < 0)
-				error_exit("pipe:");
+				error_exit("pipe");
 		}
 		pid = fork();
 		if (pid < 0)
-			error_exit("fork:");
+			error_exit("fork");
 		if (pid == 0)
 		{
 			// stdin ← предыдущий pipe (или стандартный, если первого)
@@ -89,7 +89,7 @@ void	execute_pipeline(t_cmd *cmd, char **envp)
 			// выполнить одну команду (без fork внутри)
 			execute_cmd(cmd, envp);
 			// на всякий случай, если execve не сработал:
-			exit(0);
+			exit(127);
 		}
 		// в родителе закрываем лишние дескрипторы
 		if (prev_pipe_read_fd != 0)
@@ -116,7 +116,7 @@ void	execute_cmd(t_cmd *cmd, char **envp)
 		return ;
 	pid = fork();
 	if (pid < 0)
-		error_exit("fork:");
+		error_exit("fork");
 	if (pid == 0)
 	{
 		handle_input_redirection(cmd);
