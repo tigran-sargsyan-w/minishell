@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/11 17:35:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:57:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ void	readline_loop(char **envp, t_env_list **env_variables)
 				{
 					// Single command
 					if (run_builtin(cmd, env_variables) == -1)
-						execute_cmd(cmd, envp);
+						execute_single_cmd(cmd, envp);
 				}
 				else
 				{
 					// Multiple commands (pipeline)
-					execute_pipeline(cmd, envp);
+					execute_multiple_cmd(cmd, envp);
 				}
 				free_cmd_list(cmd);
 			}

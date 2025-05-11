@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 17:47:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:58:07 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,27 @@ void	handle_output_redirection(t_cmd *cmd)
 	}
 }
 
-void	execute_pipeline(t_cmd *cmd, char **envp)
+void	execute_child(t_cmd *cmd, char **envp)
+{
+	char	*full_cmd;
+
+	handle_input_redirection(cmd);
+	handle_output_redirection(cmd);
+	full_cmd = find_command(cmd->args[0], envp);
+	if (!full_cmd)
+	{
+		write(2, "minishell: ", 11);
+		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
+		write(2, ": command not found\n", 21);
+		exit(127);
+	}
+	execve(full_cmd, cmd->args, envp);
+	perror("execve");
+	free(full_cmd);
+	exit(127);
+}
+
+void	execute_multiple_cmd(t_cmd *cmd, char **envp)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
@@ -84,11 +104,7 @@ void	execute_pipeline(t_cmd *cmd, char **envp)
 				dup2(pipefd.write, STDOUT_FILENO);
 				close(pipefd.write);
 			}
-			handle_input_redirection(cmd);
-			handle_output_redirection(cmd);
-			// выполнить одну команду (без fork внутри)
-			execute_cmd(cmd, envp);
-			// на всякий случай, если execve не сработал:
+			execute_child(cmd, envp);
 			exit(127);
 		}
 		// в родителе закрываем лишние дескрипторы
@@ -106,11 +122,10 @@ void	execute_pipeline(t_cmd *cmd, char **envp)
 		;
 }
 
-void	execute_cmd(t_cmd *cmd, char **envp)
+void	execute_single_cmd(t_cmd *cmd, char **envp)
 {
 	pid_t	pid;
 	int		status;
-	char	*full_cmd;
 
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return ;
@@ -119,19 +134,7 @@ void	execute_cmd(t_cmd *cmd, char **envp)
 		error_exit("fork");
 	if (pid == 0)
 	{
-		handle_input_redirection(cmd);
-		handle_output_redirection(cmd);
-		full_cmd = find_command(cmd->args[0], envp);
-		if (!full_cmd)
-		{
-			write(2, "minishell: ", 11);
-			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
-			write(2, ": command not found\n", 21);
-			exit(127);
-		}
-		execve(full_cmd, cmd->args, envp);
-		perror("execve");
-		free(full_cmd);
+		execute_child(cmd, envp);
 		exit(127);
 	}
 	else
