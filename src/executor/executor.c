@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 18:18:51 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:27:14 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,8 @@ void	execute_multiple_cmd(t_cmd *cmd, char **envp)
 		}
 		cmd = cmd->next;
 	}
-	// ждём всех дочерних процессов
 	while (wait(NULL) > 0)
-		;
+		continue ;
 }
 
 void	execute_single_cmd(t_cmd *cmd, char **envp)
