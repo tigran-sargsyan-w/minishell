@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 12:21:59 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 16:35:39 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ void	handle_input_redirection(t_cmd *cmd)
 	{
 		fd = open(cmd->infile, O_RDONLY);
 		if (fd < 0)
-		{
-			perror("minishell: open infile");
-			exit(1);
-		}
+			error_exit("open infile:");
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
@@ -48,10 +45,7 @@ void	handle_output_redirection(t_cmd *cmd)
 		else
 			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
-		{
-			perror("minishell: open outfile");
-			exit(1);
-		}
+			error_exit("open outfile:");
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
@@ -71,17 +65,11 @@ void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
 		if (cmd->next)
 		{
 			if (pipe(pipefd.fds) < 0)
-			{
-				perror("pipe");
-				exit(1);
-			}
+				error_exit("pipe:");
 		}
 		pid = fork();
 		if (pid < 0)
-		{
-			perror("fork");
-			exit(1);
-		}
+			error_exit("fork:");
 		if (pid == 0)
 		{
 			// stdin ← предыдущий pipe (или стандартный, если первого)
@@ -129,10 +117,7 @@ void	execute_cmd(t_cmd *cmd, char **envp)
 		return ;
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		return ;
-	}
+		error_exit("fork:");
 	if (pid == 0)
 	{
 		handle_input_redirection(cmd);

@@ -15,6 +15,7 @@ LIBFT_DIR = libft/
 
 SRCS = minishell.c \
     	readline_loop.c \
+		exit_utils.c \
 		parser/lexer.c \
 		parser/lexer_utils.c \
 		parser/parser.c \

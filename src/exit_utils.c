@@ -1,46 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
+/*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
+/*   Created: 2025/05/11 14:45:05 by tsargsya          #+#    #+#             */
 /*   Updated: 2025/05/11 16:32:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
+#include "executor.h"
+#include <stdio.h>     // perror
+#include <stdlib.h>    // exit
 
-# include "parser.h"
-# define SUCCESS 0
-# define FAILURE 1
-
-typedef struct s_pipe	t_pipe;
-
-typedef struct s_pipe
+void	error_exit(char *msg)
 {
-	union
-	{
-		int				fds[2];
-		struct
-		{
-			int			read;
-			int			write;
-		};
-	};
-}						t_pipe;
-
-//executor_utils.c
-char					*find_command(char *cmd, char **envp);
-void					free_array(char **array);
-
-//executor.c
-void					execute_cmd(t_cmd *cmd, char **envp);
-void					execute_pipeline(t_cmd *cmd, char **envp,
-							t_env_list **env_vars);
-
-//exit_utils.c
-void					error_exit(char *msg);
-#endif
+	perror(msg);
+	exit(EXIT_FAILURE);
+}
