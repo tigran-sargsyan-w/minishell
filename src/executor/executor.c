@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/09 18:01:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 12:21:59 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,21 @@ void	handle_output_redirection(t_cmd *cmd)
 void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
 {
 	t_pipe	pipefd;
-	int		in_fd;
+	int		prev_pipe_read_fd;
 	pid_t	pid;
-	// int		fds[2];
 
 	(void)env_vars;
-	in_fd = 0;
+	prev_pipe_read_fd = 0;
 	while (cmd)
 	{
-		// Если есть следующая команда — создаём новый pipe
+		// Create a pipe for the next command
 		if (cmd->next)
 		{
-			if (pipe((int*)&pipefd) < 0)
+			if (pipe(pipefd.fds) < 0)
 			{
 				perror("pipe");
 				exit(1);
 			}
-			// pipefd.read = fds[0];
-			// pipefd.write = fds[1];
 		}
 		pid = fork();
 		if (pid < 0)
@@ -88,10 +85,10 @@ void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
 		if (pid == 0)
 		{
 			// stdin ← предыдущий pipe (или стандартный, если первого)
-			if (in_fd != 0)
+			if (prev_pipe_read_fd != 0)
 			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
+				dup2(prev_pipe_read_fd, STDIN_FILENO);
+				close(prev_pipe_read_fd);
 			}
 			// stdout → в текущий pipe (если есть следующая команда)
 			if (cmd->next)
@@ -100,7 +97,6 @@ void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
 				dup2(pipefd.write, STDOUT_FILENO);
 				close(pipefd.write);
 			}
-			// редиректы < и >
 			handle_input_redirection(cmd);
 			handle_output_redirection(cmd);
 			// выполнить одну команду (без fork внутри)
@@ -109,12 +105,12 @@ void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
 			exit(0);
 		}
 		// в родителе закрываем лишние дескрипторы
-		if (in_fd != 0)
-			close(in_fd);
+		if (prev_pipe_read_fd != 0)
+			close(prev_pipe_read_fd);
 		if (cmd->next)
 		{
 			close(pipefd.write);
-			in_fd = pipefd.read;
+			prev_pipe_read_fd = pipefd.read;
 		}
 		cmd = cmd->next;
 	}
