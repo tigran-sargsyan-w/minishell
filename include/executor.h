@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 17:57:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:19:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "parser.h"
 # define SUCCESS 0
 # define FAILURE 1
+# define CMD_NOT_FOUND 127
 
 typedef struct s_pipe	t_pipe;
 
