@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 17:58:07 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:05:48 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handle_output_redirection(t_cmd *cmd)
 		else
 			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
-			error_exit("open outfile:");
+			error_exit("open outfile");
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
