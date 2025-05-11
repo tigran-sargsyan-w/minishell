@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 16:32:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:35:15 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void					free_array(char **array);
 
 //executor.c
 void					execute_cmd(t_cmd *cmd, char **envp);
-void					execute_pipeline(t_cmd *cmd, char **envp,
-							t_env_list **env_vars);
+void					execute_pipeline(t_cmd *cmd, char **envp);
 
 //exit_utils.c
 void					error_exit(char *msg);

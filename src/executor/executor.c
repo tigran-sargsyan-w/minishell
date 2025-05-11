@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 16:35:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:35:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ void	handle_output_redirection(t_cmd *cmd)
 	}
 }
 
-void	execute_pipeline(t_cmd *cmd, char **envp, t_env_list **env_vars)
+void	execute_pipeline(t_cmd *cmd, char **envp)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
 	pid_t	pid;
 
-	(void)env_vars;
 	prev_pipe_read_fd = 0;
 	while (cmd)
 	{
