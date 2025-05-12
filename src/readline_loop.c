@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 14:38:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:57:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,17 @@ void	readline_loop(char **envp, t_env_list **env_variables)
 			}
 			if (cmd)
 			{
-				if (run_builtin(cmd, env_variables) == -1)
-					execute_cmd(cmd, envp);
+				if (cmd->next == NULL)
+				{
+					// Single command
+					if (run_builtin(cmd, env_variables) == -1)
+						execute_single_cmd(cmd, envp);
+				}
+				else
+				{
+					// Multiple commands (pipeline)
+					execute_multiple_cmd(cmd, envp);
+				}
 				free_cmd_list(cmd);
 			}
 			free_tokens(tokens);

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/06 14:28:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:23:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,38 @@
 # define EXECUTOR_H
 
 # include "parser.h"
+# define SUCCESS 0
+# define FAILURE 1
+# define CMD_NOT_FOUND 127
 
-//executor_utils.c
-char	*find_command(char *cmd, char **envp);
-void	free_array(char **array);
+typedef struct s_pipe	t_pipe;
+
+typedef struct s_pipe
+{
+	union
+	{
+		int				fds[2];
+		struct
+		{
+			int			read;
+			int			write;
+		};
+	};
+}						t_pipe;
+
+//find_command.c
+char					*find_command(char *cmd, char **envp);
+void					free_array(char **array);
 
 //executor.c
-void	execute_cmd(t_cmd *cmd, char **envp);
+void					execute_single_cmd(t_cmd *cmd, char **envp);
+void					execute_multiple_cmd(t_cmd *cmd, char **envp);
 
+//executor_utils.c
+void					fork_and_execute_cmd(t_cmd *cmd, char **envp,
+							int prev_fd, t_pipe pd);
+void					execute_child(t_cmd *cmd, char **envp);
+
+//exit_utils.c
+void					error_exit(char *msg);
 #endif

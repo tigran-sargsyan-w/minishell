@@ -15,6 +15,7 @@ LIBFT_DIR = libft/
 
 SRCS = minishell.c \
     	readline_loop.c \
+		exit_utils.c \
 		parser/lexer.c \
 		parser/lexer_utils.c \
 		parser/parser.c \
@@ -28,6 +29,7 @@ SRCS = minishell.c \
 		builtin/builtin_env.c \
 		builtin/builtin_exit.c \
 		executor/executor.c \
+		executor/executor_utils.c \
 		executor/find_command.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
