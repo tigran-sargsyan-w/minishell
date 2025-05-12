@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 14:29:09 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/12 21:53:28 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	run_builtin(t_cmd *cmd, t_env_list **env)
 		return (-1);
 	while (builtins_arr[i].builtin_name != NULL)
 	{
-		if (ft_strncmp(cmd->args[0], builtins_arr[i].builtin_name,
-				(ft_strlen(cmd->args[0])) + 1) == 0)
+		if (ft_strcmp(cmd->args[0], builtins_arr[i].builtin_name) == 0)
 		{
 			ret = builtins_arr[i].handler(cmd, env);
 			return (ret);
