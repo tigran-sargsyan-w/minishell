@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/12 10:31:01 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:46:59 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	execute_child(t_cmd *cmd, char **envp)
 	full_cmd = find_command(cmd->args[0], envp);
 	if (!full_cmd)
 	{
-		write(2, "minishell: ", 11);
 		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
 		write(2, ": command not found\n", 21);
 		exit(CMD_NOT_FOUND);
