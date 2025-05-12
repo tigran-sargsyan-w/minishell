@@ -29,6 +29,7 @@ SRCS = minishell.c \
 		builtin/builtin_env.c \
 		builtin/builtin_exit.c \
 		executor/executor.c \
+		executor/executor_utils.c \
 		executor/find_command.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)

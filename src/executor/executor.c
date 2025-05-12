@@ -6,100 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/12 10:12:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:30:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "libft.h" // ft_strncmp, ft_strlcpy, ft_strlcat, ft_strdup
-#include "parser.h"
-#include <fcntl.h>     // open, O_RDONLY, O_WRONLY, O_CREAT, O_TRUNC, O_APPEND
-#include <stdio.h>     // perror
-#include <stdlib.h>    // exit
-#include <sys/types.h> // pid_t
-#include <sys/wait.h>  // waitpid
-#include <unistd.h>    // fork, execve
-
-void	handle_input_redirection(t_cmd *cmd)
-{
-	int	fd;
-
-	if (cmd->infile)
-	{
-		fd = open(cmd->infile, O_RDONLY);
-		if (fd < 0)
-			error_exit("open infile");
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-}
-
-void	handle_output_redirection(t_cmd *cmd)
-{
-	int	fd;
-
-	if (cmd->outfile)
-	{
-		if (cmd->append)
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-			error_exit("open outfile");
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-}
-
-void	execute_child(t_cmd *cmd, char **envp)
-{
-	char	*full_cmd;
-
-	handle_input_redirection(cmd);
-	handle_output_redirection(cmd);
-	full_cmd = find_command(cmd->args[0], envp);
-	if (!full_cmd)
-	{
-		write(2, "minishell: ", 11);
-		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
-		write(2, ": command not found\n", 21);
-		exit(CMD_NOT_FOUND);
-	}
-	execve(full_cmd, cmd->args, envp);
-	perror("execve");
-	free(full_cmd);
-	exit(FAILURE);
-}
-
-void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
-{
-	if (prev_fd)
-	{
-		dup2(prev_fd, STDIN_FILENO);
-		close(prev_fd);
-	}
-	if (cmd->next)
-	{
-		close(pd.read);
-		dup2(pd.write, STDOUT_FILENO);
-		close(pd.write);
-	}
-}
-
-void	fork_and_exec_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-		error_exit("fork");
-	if (pid == 0)
-	{
-		setup_child_fds(prev_fd, pd, cmd);
-		execute_child(cmd, envp);
-		exit(EXIT_FAILURE);
-	}
-}
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 void	execute_multiple_cmd(t_cmd *cmd, char **envp)
 {
@@ -109,14 +23,12 @@ void	execute_multiple_cmd(t_cmd *cmd, char **envp)
 	prev_pipe_read_fd = 0;
 	while (cmd)
 	{
-		// Create a pipe for the next command
 		if (cmd->next)
 		{
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		fork_and_exec_cmd(cmd, envp, prev_pipe_read_fd, pipefd);
-		// в родителе закрываем лишние дескрипторы
+		fork_and_execute_cmd(cmd, envp, prev_pipe_read_fd, pipefd);
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
 		if (cmd->next)
@@ -143,7 +55,7 @@ void	execute_single_cmd(t_cmd *cmd, char **envp)
 	if (pid == 0)
 	{
 		execute_child(cmd, envp);
-		exit(FAILURE);
+		error_exit("execve");
 	}
 	else
 		waitpid(pid, &status, 0);
