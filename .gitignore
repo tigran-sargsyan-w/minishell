@@ -6,4 +6,4 @@ obj/
 compile_flags.txt
 compile_commands.json
 .vscode/
-out.txt
+*.txt
