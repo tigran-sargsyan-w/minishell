@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/11 19:27:14 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:12:23 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,40 @@ void	execute_child(t_cmd *cmd, char **envp)
 	exit(FAILURE);
 }
 
+void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
+{
+	if (prev_fd)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	if (cmd->next)
+	{
+		close(pd.read);
+		dup2(pd.write, STDOUT_FILENO);
+		close(pd.write);
+	}
+}
+
+void	fork_and_exec_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		error_exit("fork");
+	if (pid == 0)
+	{
+		setup_child_fds(prev_fd, pd, cmd);
+		execute_child(cmd, envp);
+		exit(EXIT_FAILURE);
+	}
+}
+
 void	execute_multiple_cmd(t_cmd *cmd, char **envp)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
-	pid_t	pid;
 
 	prev_pipe_read_fd = 0;
 	while (cmd)
@@ -86,27 +115,7 @@ void	execute_multiple_cmd(t_cmd *cmd, char **envp)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		pid = fork();
-		if (pid < 0)
-			error_exit("fork");
-		if (pid == 0)
-		{
-			// stdin ← предыдущий pipe (или стандартный, если первого)
-			if (prev_pipe_read_fd != 0)
-			{
-				dup2(prev_pipe_read_fd, STDIN_FILENO);
-				close(prev_pipe_read_fd);
-			}
-			// stdout → в текущий pipe (если есть следующая команда)
-			if (cmd->next)
-			{
-				close(pipefd.read);
-				dup2(pipefd.write, STDOUT_FILENO);
-				close(pipefd.write);
-			}
-			execute_child(cmd, envp);
-			exit(FAILURE);
-		}
+		fork_and_exec_cmd(cmd, envp, prev_pipe_read_fd, pipefd);
 		// в родителе закрываем лишние дескрипторы
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
