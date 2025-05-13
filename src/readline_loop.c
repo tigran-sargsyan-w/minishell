@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/11 17:57:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:59:00 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,44 @@
 #include "libft.h"
 #include "minishell.h"
 #include "parser.h"
+#include <fcntl.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+void	executor(t_cmd *cmd, char **envp, t_env_list **env_variables)
+{
+	int	saved_stdin;
+	int	saved_stdout;
+
+	if (cmd->next == NULL)
+	{
+		// Single command with possible redirection
+		saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
+		handle_input_redirection(cmd);
+		handle_output_redirection(cmd);
+		// Run builtin (or fall back to external)
+		if (run_builtin(cmd, env_variables) == -1)
+			execute_cmds(cmd, envp, env_variables);
+		// Restore original fds
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
+	}
+	else
+		execute_cmds(cmd, envp, env_variables);
+	free_cmd_list(cmd);
+}
 
 void	readline_loop(char **envp, t_env_list **env_variables)
 {
 	t_token	*tokens;
 	t_cmd	*cmd;
-	char *input;
-	
+	char	*input;
+
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -46,20 +74,7 @@ void	readline_loop(char **envp, t_env_list **env_variables)
 				// print_cmds(cmd);
 			}
 			if (cmd)
-			{
-				if (cmd->next == NULL)
-				{
-					// Single command
-					if (run_builtin(cmd, env_variables) == -1)
-						execute_single_cmd(cmd, envp);
-				}
-				else
-				{
-					// Multiple commands (pipeline)
-					execute_multiple_cmd(cmd, envp);
-				}
-				free_cmd_list(cmd);
-			}
+				executor(cmd, envp, env_variables);
 			free_tokens(tokens);
 		}
 		free(input);

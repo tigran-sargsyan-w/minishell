@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/12 10:23:45 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:58:17 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,23 @@ typedef struct s_pipe
 	};
 }						t_pipe;
 
-//find_command.c
+// find_command.c
 char					*find_command(char *cmd, char **envp);
 void					free_array(char **array);
 
-//executor.c
-void					execute_single_cmd(t_cmd *cmd, char **envp);
-void					execute_multiple_cmd(t_cmd *cmd, char **envp);
+// executor.c
+void					execute_cmds(t_cmd *cmd, char **envp,
+							t_env_list **env_variables);
 
-//executor_utils.c
+// executor_utils.c
 void					fork_and_execute_cmd(t_cmd *cmd, char **envp,
-							int prev_fd, t_pipe pd);
-void					execute_child(t_cmd *cmd, char **envp);
+							int prev_fd, t_pipe pd, t_env_list **env_variables);
+void					execute_child(t_cmd *cmd, char **envp,
+							t_env_list **env_variables);
+void					handle_input_redirection(t_cmd *cmd);
+void					handle_output_redirection(t_cmd *cmd);
 
-//exit_utils.c
+// exit_utils.c
 void					error_exit(char *msg);
+
 #endif
