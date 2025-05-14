@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/12 12:46:59 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:26:49 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+#include "builtins.h"
 #include "libft.h"
 #include <fcntl.h>
 #include <stdlib.h>
@@ -48,22 +49,26 @@ void	handle_output_redirection(t_cmd *cmd)
 	}
 }
 
-void	execute_child(t_cmd *cmd, char **envp)
+void	execute_child(t_cmd *cmd, char **envp, t_env_list **env_variables)
 {
 	char	*full_cmd;
 
 	handle_input_redirection(cmd);
 	handle_output_redirection(cmd);
-	full_cmd = find_command(cmd->args[0], envp);
-	if (!full_cmd)
+
+	if (run_builtin(cmd, env_variables) == -1)
 	{
-		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
-		write(2, ": command not found\n", 21);
-		exit(CMD_NOT_FOUND);
+		full_cmd = find_command(cmd->args[0], envp);
+		if (!full_cmd)
+		{
+			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
+			write(2, ": command not found\n", 21);
+			exit(CMD_NOT_FOUND);
+		}
+		execve(full_cmd, cmd->args, envp);
+		free(full_cmd);
+		error_exit("execve");
 	}
-	execve(full_cmd, cmd->args, envp);
-	free(full_cmd);
-	error_exit("execve");
 }
 
 void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
@@ -81,7 +86,7 @@ void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd)
+void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_env_list **env_variables)
 {
 	pid_t	pid;
 
@@ -91,7 +96,7 @@ void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd)
 	if (pid == 0)
 	{
 		setup_child_fds(prev_fd, pd, cmd);
-		execute_child(cmd, envp);
-		exit(EXIT_FAILURE);
+		execute_child(cmd, envp, env_variables);
+		exit(0);
 	}
 }
