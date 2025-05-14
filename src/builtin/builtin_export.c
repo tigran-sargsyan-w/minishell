@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/14 18:25:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:56:33 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,29 @@ static int	export_without_args(t_env_list **env)
 	return (EXIT_SUCCESS);
 }
 
+static char *find_equal_sign(const char *arg)
+{
+	char		*equality_sign;
+
+	equality_sign = ft_strchr(arg, '=');
+	if (equality_sign == NULL)
+		return (NULL);
+	return (equality_sign);
+}
+
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
 	t_env_list	*new_node;
-	char		*equality_sign;
+	char 		*equality_sign;
 	char		*key;
 	char		*value;
-	int			key_len;
 	int			ret;
 
 	if (cmd->args[1] == NULL)
-	{
-		export_without_args(env);
+		return (export_without_args(env));
+	if ((equality_sign = find_equal_sign(cmd->args[1])) == NULL)
 		return (0);
-	}
-	equality_sign = ft_strchr(cmd->args[1], '=');
-	if (equality_sign == NULL)
-	{
-		ft_putendl_fd("export: not enough arguments", 2);
-		return (1);
-	}
-	key_len = equality_sign - (cmd->args[1]);
-	key = ft_substr(cmd->args[1], 0, key_len);
+	key = ft_substr(cmd->args[1], 0, equality_sign - cmd->args[1]);
 	value = ft_strdup(++equality_sign);
 	if (key == NULL || value == NULL)
 	{
@@ -98,8 +99,7 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 		free(value);
 		return (0);
 	}
-	new_node = lst_create_node(key, value);
-	if (new_node == NULL)
+	if ((new_node = lst_create_node(key, value)) == NULL)
 	{
 		perror("malloc");
 		free(key);
