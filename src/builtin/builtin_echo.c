@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/14 17:30:03 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:40:41 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,20 @@ static int	is_arg_n(const char *arg)
 	return (1);
 }
 
+static void	print_args(char **argv, t_env_list **env)
+{
+	while (*argv != NULL)
+	{
+		if ((*argv)[0] == '$')
+			print_env(*argv + 1, *env);
+		else
+			printf("%s", *argv);
+		if (*(argv + 1) != NULL)
+			printf(" ");
+		argv++;
+	}
+}
+
 int	builtin_echo(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
@@ -64,16 +78,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 			printf("\n");
 		return (0);
 	}
-	while (*argv != NULL)
-	{
-		if ((*argv)[0] == '$')
-			print_env(*argv + 1, *env);
-		else
-			printf("%s", *argv);
-		if (*(argv + 1) != NULL)
-			printf(" ");
-		argv++;
-	}
+	print_args(argv, env);
 	if (has_n_arg == 0)
 		printf("\n");
 	return (0);
