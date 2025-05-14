@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 19:03:02 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:25:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,21 @@ static int	is_in_envlist(t_env_list **env, char *name, char *value)
 	return (0);
 }
 
+static int	export_without_args(t_env_list **env)
+{
+	t_env_list	*tmp;
+
+	if (env == NULL || *env == NULL)
+		return (1);
+	tmp = *env;
+	while (tmp)
+	{
+		printf("declare -x %s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
 	t_env_list	*new_node;
@@ -51,8 +66,8 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 
 	if (cmd->args[1] == NULL)
 	{
-		ft_putendl_fd("export: not enough arguments", 2);
-		return (1);
+		export_without_args(env);
+		return (0);
 	}
 	equality_sign = ft_strchr(cmd->args[1], '=');
 	if (equality_sign == NULL)
