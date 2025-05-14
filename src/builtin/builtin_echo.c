@@ -6,14 +6,14 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 14:28:42 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:30:03 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "libft.h"
-#include <stdio.h>
 #include "parser.h"
+#include <stdio.h>
 
 static void	print_env(char *var, t_env_list *env)
 {
@@ -33,6 +33,19 @@ static void	print_env(char *var, t_env_list *env)
 	}
 }
 
+static int	is_arg_n(const char *arg)
+{
+	if (arg[0] == '-')
+		arg++;
+	while (*arg)
+	{
+		if (*arg != 'n')
+			return (0);
+		arg++;
+	}
+	return (1);
+}
+
 int	builtin_echo(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
@@ -40,7 +53,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 
 	argv = cmd->args + 1;
 	has_n_arg = 0;
-	while (*argv && (ft_strncmp(argv[0], "-n", 3) == 0))
+	while (*argv && is_arg_n(argv[0]) == 1)
 	{
 		has_n_arg = 1;
 		argv++;
