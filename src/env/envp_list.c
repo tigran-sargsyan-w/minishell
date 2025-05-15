@@ -6,15 +6,16 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:31:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:36:07 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "env.h"
 #include "libft.h"
-#include <stdlib.h>
 #include "parser.h"
+#include <stddef.h>
+#include <stdlib.h>
 
 t_env_list	*lst_create_node(char *key, char *value)
 {
@@ -98,8 +99,8 @@ void	lst_clear(t_env_list **list)
 }
 size_t	lst_size(t_env_list **list)
 {
-	size_t		size;
-	t_env_list	*tmp;
+	size_t size;
+	t_env_list *tmp;
 
 	tmp = *list;
 	size = 0;
