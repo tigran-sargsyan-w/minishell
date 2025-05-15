@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 17:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:15:21 by dsemenov         ###   ########.fr       */
+/*   Created: 2025/05/15 16:03:21 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/05/15 16:04:45 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "builtins.h"
-#include "parser.h"
+#ifndef ENV_H
+# define ENV_H
 
-int	builtin_exit(t_cmd *cmd, t_env_list **env)
+// Linked list for environment variables
+typedef struct s_env_list
 {
-	(void)cmd;
-	(void)env;
-	return (0);
-}
+	char				*key;
+	char				*value;
+	struct s_env_list	*next;
+
+}						t_env_list;
+
+t_env_list				*lst_init(char *const *envp);
+void					lst_clear(t_env_list **list);
+t_env_list	*lst_create_node(char *key, char *value);
+void	lst_add_end(t_env_list **list, t_env_list *new_node);
+
+#endif

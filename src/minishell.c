@@ -6,11 +6,12 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/12 22:36:36 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:10:09 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "env.h"
 #include "minishell.h"
 #include <stddef.h>
 #include <stdio.h>

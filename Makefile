@@ -20,7 +20,6 @@ SRCS = minishell.c \
 		parser/lexer_utils.c \
 		parser/parser.c \
 		builtin/run_builtin.c \
-		builtin/envp_list.c \
 		builtin/builtin_echo.c \
 		builtin/builtin_cd.c \
 		builtin/builtin_pwd.c \
@@ -30,7 +29,9 @@ SRCS = minishell.c \
 		builtin/builtin_exit.c \
 		executor/executor.c \
 		executor/executor_utils.c \
-		executor/find_command.c
+		executor/find_command.c \
+		env/envp_list.c \
+		env/env_list_to_tab.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)

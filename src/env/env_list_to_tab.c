@@ -1,22 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   env_list_to_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 17:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:15:21 by dsemenov         ###   ########.fr       */
+/*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/05/15 16:02:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "builtins.h"
-#include "parser.h"
-
-int	builtin_exit(t_cmd *cmd, t_env_list **env)
-{
-	(void)cmd;
-	(void)env;
-	return (0);
-}
