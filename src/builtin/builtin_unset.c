@@ -6,10 +6,11 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 19:31:15 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:15:09 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "env.h"
 #include "builtins.h"
 #include "parser.h"
 #include "libft.h"

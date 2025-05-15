@@ -6,29 +6,17 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/07 17:43:00 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:05:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
+//#include "env.h"
+
 typedef struct s_cmd	t_cmd;
-
-
-// Linked list for environment variables
-typedef struct s_env_list
-{
-	char				*key;
-	char				*value;
-	struct s_env_list	*next;
-
-}						t_env_list;
-
-t_env_list				*lst_init(char *const *envp);
-void					lst_clear(t_env_list **list);
-t_env_list	*lst_create_node(char *key, char *value);
-void	lst_add_end(t_env_list **list, t_env_list *new_node);
+typedef struct s_env_list t_env_list;
 
 // Built-ins
 typedef int				(*t_builtin_func)(t_cmd *cmd, t_env_list **env);
