@@ -6,12 +6,14 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:03:21 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:35:27 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:37:46 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
+
+# include <stddef.h>
 
 // Linked list for environment variables
 typedef struct s_env_list
