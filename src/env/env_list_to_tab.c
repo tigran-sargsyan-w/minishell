@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_to_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 17:23:10 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/16 00:29:52 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 	size_t	total_len;
 	char	*res;
 
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	res = malloc(total_len + 1);
 	if (!res)
@@ -31,29 +33,70 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 	return (res);
 }
 
-char	**env_list_to_tab(t_env_list **env_list)
+static void free_env_tab(char **env_tab)
 {
-	char **env_tab;
-	size_t size_of_list;
-	t_env_list *tmp;
-	size_t i;
+	char **tmp;
 
-	tmp = *env_list;
-	if ((size_of_list = lst_size(env_list)) == 0)
-		return (NULL);
-	env_tab = malloc(sizeof(char *) * (size_of_list + 1));
 	if (env_tab == NULL)
+		return ;
+	tmp = env_tab;
+	while (*tmp)
+	{
+		free(*tmp);
+		tmp++;
+	}
+	free(env_tab);
+}
+
+static char **return_empty_tab(void)
+{
+	char **tab;
+
+	tab = malloc(sizeof(char *));
+	if (tab == NULL)
 	{
 		perror("minishell:");
 		return (NULL);
 	}
+	*tab = NULL;
+	return (tab);
+}
+static char **fill_tab(t_env_list **list, char **tab, size_t len)
+{
+	t_env_list *tmp;
+	size_t i;
+
+	tmp = *list;
 	i = 0;
-	env_tab[size_of_list] = NULL;
-	while (tmp && i < size_of_list)
+	while (tmp && i < len)
 	{
-		env_tab[i] = ft_strjoin3(tmp->key, tmp->value);
+		tab[i] = ft_strjoin3(tmp->key, tmp->value);
+		if (tab[i] == NULL)
+		{
+			free_env_tab(tab);
+			perror("minishell");
+			return (NULL);
+		}
 		tmp = tmp->next;
 		i++;
 	}
+	return (tab);
+}
+
+char	**env_list_to_tab(t_env_list **env_list)
+{
+	char **env_tab;
+	size_t len;
+
+	if ((!env_list) || ((len = lst_size(env_list)) == 0))
+		return(return_empty_tab());
+	env_tab = malloc(sizeof(char *) * (len + 1));
+	if (env_tab == NULL)
+	{
+		perror("minishell");
+		return (NULL);
+	}
+	env_tab[len] = NULL;
+	env_tab = fill_tab(env_list, env_tab, len);
 	return (env_tab);
 }
