@@ -41,14 +41,14 @@ char	**env_list_to_tab(t_env_list **env_list)
 	tmp = *env_list;
 	if ((size_of_list = lst_size(env_list)) == 0)
 		return (NULL);
-	env_tab = malloc(sizeof(char *) * size_of_list + 1);
+	env_tab = malloc(sizeof(char *) * (size_of_list + 1));
 	if (env_tab == NULL)
 	{
 		perror("minishell:");
 		return (NULL);
 	}
 	i = 0;
-	env_tab[size_of_list + 1] = NULL;
+	env_tab[size_of_list] = NULL;
 	while (tmp && i < size_of_list)
 	{
 		env_tab[i] = ft_strjoin3(tmp->key, tmp->value);
