@@ -6,26 +6,28 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:59 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/14 19:51:00 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:27:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "libft.h"
 #include "parser.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int	builtin_env(t_cmd *cmd, t_env_list **env)
 {
-	(void)cmd;
 	t_env_list	*tmp;
-	
+
 	if (env == NULL || *env == NULL)
-		return (1);
+		return (2);
 	if (cmd->args[1])
 	{
-		//TODO: Print correct error message - env: ‘example_arg’: No such file or directory
-		return (127);
+		ft_putendl_fd("env: Env doesn't take any arguments or options",
+			STDERR_FILENO);
+		return (1);
 	}
 	tmp = *env;
 	while (tmp)
@@ -33,5 +35,5 @@ int	builtin_env(t_cmd *cmd, t_env_list **env)
 		printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
