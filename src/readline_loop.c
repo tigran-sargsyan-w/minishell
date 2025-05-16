@@ -6,11 +6,12 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/13 18:59:00 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:28:55 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "env.h"
 #include "executor.h"
 #include "libft.h"
 #include "minishell.h"
@@ -21,11 +22,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	executor(t_cmd *cmd, char **envp, t_env_list **env_variables)
+void	executor(t_cmd *cmd, t_env_list **env_variables)
 {
-	int	saved_stdin;
-	int	saved_stdout;
+	int		saved_stdin;
+	int		saved_stdout;
+	char	**envp;
 
+	envp = env_list_to_tab(env_variables);
 	if (cmd->next == NULL)
 	{
 		// Single command with possible redirection
@@ -47,7 +50,7 @@ void	executor(t_cmd *cmd, char **envp, t_env_list **env_variables)
 	free_cmd_list(cmd);
 }
 
-void	readline_loop(char **envp, t_env_list **env_variables)
+void	readline_loop(t_env_list **env_variables)
 {
 	t_token	*tokens;
 	t_cmd	*cmd;
@@ -74,7 +77,7 @@ void	readline_loop(char **envp, t_env_list **env_variables)
 				// print_cmds(cmd);
 			}
 			if (cmd)
-				executor(cmd, envp, env_variables);
+				executor(cmd, env_variables);
 			free_tokens(tokens);
 		}
 		free(input);
