@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/07 17:20:04 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:45:26 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
 
 // readline_loop.c
-typedef struct s_env_list 	t_env_list;
-void						readline_loop(char **envp, 
-								t_env_list **env_variables);
+typedef struct s_env_list	t_env_list;
+void						readline_loop(t_env_list **env_variables);
 
 #endif
