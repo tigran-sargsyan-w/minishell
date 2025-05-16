@@ -6,15 +6,22 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/16 14:45:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:28:21 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-typedef struct s_token		t_token;
-typedef enum e_token_type	t_token_type;
+typedef struct s_env_list	t_env_list;
+
+
+// Main structure
+typedef struct s_shell
+{
+	t_env_list				*env_list;
+	int						last_status;
+}							t_shell;
 
 typedef enum e_token_type
 {
