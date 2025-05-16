@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_to_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/16 00:29:52 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/16 17:22:06 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 	return (res);
 }
 
-static void free_env_tab(char **env_tab)
+void free_env_tab(char **env_tab)
 {
 	char **tmp;
 

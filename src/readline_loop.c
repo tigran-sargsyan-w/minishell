@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/16 15:28:55 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:25:30 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	executor(t_cmd *cmd, t_env_list **env_variables)
 	else
 		execute_cmds(cmd, envp, env_variables);
 	free_cmd_list(cmd);
+	free_env_tab(envp);
 }
 
 void	readline_loop(t_env_list **env_variables)
