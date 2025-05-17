@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/16 17:49:37 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 11:04:03 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void	execute_cmds(t_cmd *cmd, char **envp, t_env_list **env_variables)
+void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
@@ -30,7 +30,7 @@ void	execute_cmds(t_cmd *cmd, char **envp, t_env_list **env_variables)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		fork_and_execute_cmd(cmd, envp, prev_pipe_read_fd, pipefd,env_variables);
+		fork_and_execute_cmd(cmd, sh, prev_pipe_read_fd, pipefd);
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
 		if (cmd->next)
@@ -44,13 +44,14 @@ void	execute_cmds(t_cmd *cmd, char **envp, t_env_list **env_variables)
 		continue ;
 }
 
-void	executor(t_cmd *cmd, t_env_list **env_variables)
+void	executor(t_cmd *cmd, t_shell *sh)
 {
 	int		saved_stdin;
 	int		saved_stdout;
-	char	**envp;
 
-	envp = env_list_to_tab(env_variables);
+	sh->env_tab = env_list_to_tab(&sh->env_list);
+	// TODO: Handle NULL tab
+	//if (!sh->env_tab)
 	if (cmd->next == NULL)
 	{
 		// Single command with possible redirection
@@ -59,8 +60,8 @@ void	executor(t_cmd *cmd, t_env_list **env_variables)
 		handle_input_redirection(cmd);
 		handle_output_redirection(cmd);
 		// Run builtin (or fall back to external)
-		if (run_builtin(cmd, env_variables) == -1)
-			execute_cmds(cmd, envp, env_variables);
+		if (run_builtin(cmd, sh) == -1)
+			execute_cmds(cmd, sh);
 		// Restore original fds
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
@@ -68,7 +69,7 @@ void	executor(t_cmd *cmd, t_env_list **env_variables)
 		close(saved_stdout);
 	}
 	else
-		execute_cmds(cmd, envp, env_variables);
+		execute_cmds(cmd, sh);
 	free_cmd_list(cmd);
-	free_env_tab(envp);
+	free_env_tab(sh->env_tab);
 }

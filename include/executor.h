@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/16 17:49:18 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 11:05:36 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ char					*find_command(char *cmd, char **envp);
 void					free_array(char **array);
 
 // executor.c
-void					executor(t_cmd *cmd, t_env_list **env_variables);
-void					execute_cmds(t_cmd *cmd, char **envp,
-							t_env_list **env_variables);
+void					executor(t_cmd *cmd, t_shell *sh);
+void					execute_cmds(t_cmd *cmd,
+							t_shell *sh);
 
 // executor_utils.c
-void					fork_and_execute_cmd(t_cmd *cmd, char **envp,
-							int prev_fd, t_pipe pd, t_env_list **env_variables);
-void					execute_child(t_cmd *cmd, char **envp,
-							t_env_list **env_variables);
+void					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
+							int prev_fd, t_pipe pd);
+void					execute_child(t_cmd *cmd,
+							t_shell *sh);
 void					handle_input_redirection(t_cmd *cmd);
 void					handle_output_redirection(t_cmd *cmd);
 

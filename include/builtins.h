@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:54:25 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:13:19 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-//#include "env.h"
-
 typedef struct s_cmd		t_cmd;
 typedef struct s_env_list	t_env_list;
+typedef struct s_shell		t_shell;
 
 // Built-ins
 typedef int					(*t_builtin_func)(t_cmd *cmd, t_env_list **env);
@@ -35,6 +34,6 @@ int							builtin_env(t_cmd *cmd, t_env_list **env);
 int							builtin_export(t_cmd *cmd, t_env_list **env);
 int							builtin_unset(t_cmd *cmd, t_env_list **env);
 int							builtin_exit(t_cmd *cmd, t_env_list **env);
-int							run_builtin(t_cmd *cmd, t_env_list **env);
+int							run_builtin(t_cmd *cmd, t_shell *sh);
 
 #endif

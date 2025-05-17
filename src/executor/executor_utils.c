@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/13 17:26:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 11:05:23 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,23 @@ void	handle_output_redirection(t_cmd *cmd)
 	}
 }
 
-void	execute_child(t_cmd *cmd, char **envp, t_env_list **env_variables)
+void	execute_child(t_cmd *cmd, t_shell *sh)
 {
 	char	*full_cmd;
 
 	handle_input_redirection(cmd);
 	handle_output_redirection(cmd);
 
-	if (run_builtin(cmd, env_variables) == -1)
+	if (run_builtin(cmd, sh) == -1)
 	{
-		full_cmd = find_command(cmd->args[0], envp);
+		full_cmd = find_command(cmd->args[0], sh->env_tab);
 		if (!full_cmd)
 		{
 			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
 			write(2, ": command not found\n", 21);
 			exit(CMD_NOT_FOUND);
 		}
-		execve(full_cmd, cmd->args, envp);
+		execve(full_cmd, cmd->args, sh->env_tab);
 		free(full_cmd);
 		error_exit("execve");
 	}
@@ -86,7 +86,7 @@ void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_env_list **env_variables)
+void	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 {
 	pid_t	pid;
 
@@ -96,7 +96,7 @@ void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_env
 	if (pid == 0)
 	{
 		setup_child_fds(prev_fd, pd, cmd);
-		execute_child(cmd, envp, env_variables);
+		execute_child(cmd, sh);
 		exit(0);
 	}
 }
