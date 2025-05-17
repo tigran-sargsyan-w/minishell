@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 09:48:10 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:32:32 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_env_list	t_env_list;
 typedef struct s_shell
 {
 	t_env_list				*env_list;
+	char					**env_tab;
 	int						last_status;
 }							t_shell;
 
