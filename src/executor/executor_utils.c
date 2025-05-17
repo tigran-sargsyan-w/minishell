@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:08:14 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:09:50 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ void	handle_output_redirection(t_cmd *cmd)
 	}
 }
 
-void	execute_child(t_cmd *cmd, char **envp, t_env_list **env_variables)
+void	execute_child(t_cmd *cmd, char **envp, t_shell *sh)
 {
 	char	*full_cmd;
 
 	handle_input_redirection(cmd);
 	handle_output_redirection(cmd);
 
-	if (run_builtin(cmd, env_variables) == -1)
+	if (run_builtin(cmd, &sh->env_list) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], envp);
 		if (!full_cmd)
@@ -96,7 +96,7 @@ void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_she
 	if (pid == 0)
 	{
 		setup_child_fds(prev_fd, pd, cmd);
-		execute_child(cmd, envp, &sh->env_list);
+		execute_child(cmd, envp, sh);
 		exit(0);
 	}
 }

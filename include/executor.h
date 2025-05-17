@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:06:29 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:09:27 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void					execute_cmds(t_cmd *cmd, char **envp,
 void					fork_and_execute_cmd(t_cmd *cmd, char **envp,
 							int prev_fd, t_pipe pd, t_shell *sh);
 void					execute_child(t_cmd *cmd, char **envp,
-							t_env_list **env_variables);
+							t_shell *sh);
 void					handle_input_redirection(t_cmd *cmd);
 void					handle_output_redirection(t_cmd *cmd);
 
