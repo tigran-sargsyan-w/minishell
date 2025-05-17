@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:03:42 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:06:10 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execute_cmds(t_cmd *cmd, char **envp, t_shell *sh)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		fork_and_execute_cmd(cmd, envp, prev_pipe_read_fd, pipefd, &sh->env_list);
+		fork_and_execute_cmd(cmd, envp, prev_pipe_read_fd, pipefd, sh);
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
 		if (cmd->next)

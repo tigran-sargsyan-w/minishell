@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/13 17:26:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:08:14 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_env_list **env_variables)
+void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_shell *sh)
 {
 	pid_t	pid;
 
@@ -96,7 +96,7 @@ void	fork_and_execute_cmd(t_cmd *cmd, char **envp, int prev_fd, t_pipe pd, t_env
 	if (pid == 0)
 	{
 		setup_child_fds(prev_fd, pd, cmd);
-		execute_child(cmd, envp, env_variables);
+		execute_child(cmd, envp, &sh->env_list);
 		exit(0);
 	}
 }
