@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:14:52 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:58:54 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void	execute_cmds(t_cmd *cmd, char **envp, t_shell *sh)
+void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
@@ -30,7 +30,7 @@ void	execute_cmds(t_cmd *cmd, char **envp, t_shell *sh)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		fork_and_execute_cmd(cmd, envp, prev_pipe_read_fd, pipefd, sh);
+		fork_and_execute_cmd(cmd, sh->env_tab, prev_pipe_read_fd, pipefd, sh);
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
 		if (cmd->next)
@@ -48,9 +48,11 @@ void	executor(t_cmd *cmd, t_shell *sh)
 {
 	int		saved_stdin;
 	int		saved_stdout;
-	char	**envp;
 
-	envp = env_list_to_tab(&sh->env_list);
+	sh->env_tab = env_list_to_tab(&sh->env_list);
+	// TODO: Handle NULL tab
+	if (!sh->env_tab)
+		return (NULL);
 	if (cmd->next == NULL)
 	{
 		// Single command with possible redirection
@@ -60,7 +62,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		handle_output_redirection(cmd);
 		// Run builtin (or fall back to external)
 		if (run_builtin(cmd, sh) == -1)
-			execute_cmds(cmd, envp, sh);
+			execute_cmds(cmd, sh);
 		// Restore original fds
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
@@ -68,7 +70,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		close(saved_stdout);
 	}
 	else
-		execute_cmds(cmd, envp, sh);
+		execute_cmds(cmd, sh);
 	free_cmd_list(cmd);
-	free_env_tab(envp);
+	free_env_tab(sh->env_tab);
 }
