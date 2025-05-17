@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/16 17:49:18 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:55:31 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char					*find_command(char *cmd, char **envp);
 void					free_array(char **array);
 
 // executor.c
-void					executor(t_cmd *cmd, t_env_list **env_variables);
+void					executor(t_cmd *cmd, t_shell *sh);
 void					execute_cmds(t_cmd *cmd, char **envp,
 							t_env_list **env_variables);
 

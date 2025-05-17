@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/16 20:28:21 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:48:10 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ void						free_tokens(t_token *tokens);
 
 // readline_loop.c
 typedef struct s_env_list	t_env_list;
-void						readline_loop(t_env_list **env_variables);
+void						readline_loop(t_shell *sh);
 
 #endif
