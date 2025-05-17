@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:15:12 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:12:52 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stddef.h>
 #include "parser.h"
 
-int	run_builtin(t_cmd *cmd, t_env_list **env)
+int	run_builtin(t_cmd *cmd, t_shell *sh)
 {
 	int								i;
 	int								ret;
@@ -32,7 +32,7 @@ int	run_builtin(t_cmd *cmd, t_env_list **env)
 	{
 		if (ft_strcmp(cmd->args[0], builtins_arr[i].builtin_name) == 0)
 		{
-			ret = builtins_arr[i].handler(cmd, env);
+			ret = builtins_arr[i].handler(cmd, &sh->env_list);
 			return (ret);
 		}
 		i++;

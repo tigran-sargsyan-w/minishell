@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:09:50 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:13:47 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	execute_child(t_cmd *cmd, char **envp, t_shell *sh)
 	handle_input_redirection(cmd);
 	handle_output_redirection(cmd);
 
-	if (run_builtin(cmd, &sh->env_list) == -1)
+	if (run_builtin(cmd, sh) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], envp);
 		if (!full_cmd)

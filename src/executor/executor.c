@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:06:10 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 10:14:52 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		handle_input_redirection(cmd);
 		handle_output_redirection(cmd);
 		// Run builtin (or fall back to external)
-		if (run_builtin(cmd, &sh->env_list) == -1)
+		if (run_builtin(cmd, sh) == -1)
 			execute_cmds(cmd, envp, sh);
 		// Restore original fds
 		dup2(saved_stdin, STDIN_FILENO);
