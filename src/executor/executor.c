@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:58:54 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 11:04:03 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		fork_and_execute_cmd(cmd, sh->env_tab, prev_pipe_read_fd, pipefd, sh);
+		fork_and_execute_cmd(cmd, sh, prev_pipe_read_fd, pipefd);
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
 		if (cmd->next)
@@ -51,8 +51,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 
 	sh->env_tab = env_list_to_tab(&sh->env_list);
 	// TODO: Handle NULL tab
-	if (!sh->env_tab)
-		return (NULL);
+	//if (!sh->env_tab)
 	if (cmd->next == NULL)
 	{
 		// Single command with possible redirection

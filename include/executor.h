@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:53:50 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/17 11:05:36 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void					execute_cmds(t_cmd *cmd,
 							t_shell *sh);
 
 // executor_utils.c
-void					fork_and_execute_cmd(t_cmd *cmd, char **envp,
-							int prev_fd, t_pipe pd, t_shell *sh);
-void					execute_child(t_cmd *cmd, char **envp,
+void					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
+							int prev_fd, t_pipe pd);
+void					execute_child(t_cmd *cmd,
 							t_shell *sh);
 void					handle_input_redirection(t_cmd *cmd);
 void					handle_output_redirection(t_cmd *cmd);
