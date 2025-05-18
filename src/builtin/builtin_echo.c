@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:14:31 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:09:08 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	print_args(char **argv, t_env_list **env)
 			print_env(*argv + 1, *env);
 		else
 			printf("%s", *argv);
+		//TODO: check security
 		if (*(argv + 1) != NULL)
 			printf(" ");
 		argv++;
@@ -77,10 +78,13 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 	{
 		if (has_n_arg == 0)
 			printf("\n");
+		//TODO: check security
 		return (0);
 	}
 	print_args(argv, env);
 	if (has_n_arg == 0)
 		printf("\n");
+	//TODO: check security
+
 	return (0);
 }

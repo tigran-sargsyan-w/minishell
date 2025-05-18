@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 11:05:23 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/18 14:59:24 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	if (prev_fd)
 	{
 		dup2(prev_fd, STDIN_FILENO);
+		//TODO: security check for all dups and closes
 		close(prev_fd);
 	}
 	if (cmd->next)
@@ -93,6 +94,7 @@ void	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 	pid = fork();
 	if (pid < 0)
 		error_exit("fork");
+	// TODO: Change error exit (avoid exit call)
 	if (pid == 0)
 	{
 		setup_child_fds(prev_fd, pd, cmd);

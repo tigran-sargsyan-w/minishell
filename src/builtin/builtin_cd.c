@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:14:16 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:15:43 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_env_list	*set_value(t_env_list *node, char *value)
 		return (NULL);
 	return (node);
 }
-
+// READ MAN CD
 int	builtin_cd(t_cmd *cmd, t_env_list **env)
 {
 	t_env_list	*old_pwd;

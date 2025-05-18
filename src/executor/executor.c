@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 11:04:03 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/18 14:52:05 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 	{
 		// Single command with possible redirection
 		saved_stdin = dup(STDIN_FILENO);
+		// TODO: check -1 return for dup
 		saved_stdout = dup(STDOUT_FILENO);
 		handle_input_redirection(cmd);
 		handle_output_redirection(cmd);
@@ -66,6 +67,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdin);
+		// TODO: check if closed
 		close(saved_stdout);
 	}
 	else

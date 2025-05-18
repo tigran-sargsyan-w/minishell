@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:14:44 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:16:30 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char *find_equal_sign(const char *arg)
 		return (NULL);
 	return (equality_sign);
 }
-
+//Check multiple args
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
 	t_env_list	*new_node;

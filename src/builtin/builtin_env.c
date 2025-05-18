@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:59 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:14:40 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:07:23 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	builtin_env(t_cmd *cmd, t_env_list **env)
 	while (tmp)
 	{
 		printf("%s=%s\n", tmp->key, tmp->value);
+		//TODO: security check
 		tmp = tmp->next;
 	}
 	return (0);
