@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 11:05:36 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/22 17:06:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define SUCCESS 0
 # define FAILURE 1
 # define CMD_NOT_FOUND 127
+# define HEREDOC_TMPFILE "minishell_heredoc"
 
 typedef struct s_pipe	t_pipe;
 
@@ -39,14 +40,12 @@ void					free_array(char **array);
 
 // executor.c
 void					executor(t_cmd *cmd, t_shell *sh);
-void					execute_cmds(t_cmd *cmd,
-							t_shell *sh);
+void					execute_cmds(t_cmd *cmd, t_shell *sh);
 
 // executor_utils.c
 void					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
 							int prev_fd, t_pipe pd);
-void					execute_child(t_cmd *cmd,
-							t_shell *sh);
+void					execute_child(t_cmd *cmd, t_shell *sh);
 void					handle_input_redirection(t_cmd *cmd);
 void					handle_output_redirection(t_cmd *cmd);
 
