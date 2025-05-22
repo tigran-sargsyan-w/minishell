@@ -3,25 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/18 14:59:24 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:03:48 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
 #include "builtins.h"
+#include "executor.h"
 #include "libft.h"
 #include <fcntl.h>
+#include <readline/readline.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+void	handle_heredoc_file(t_cmd *cmd)
+{
+	int		fd;
+	char	*line;
+
+	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
+		error_exit("heredoc");
+	while (1)
+	{
+		line = readline("heredoc> ");
+		if (!line || ft_strcmp(line, cmd->infile) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	close(fd);
+	free(cmd->infile);
+	cmd->infile = ft_strdup(HEREDOC_TMPFILE);
+	cmd->heredoc = 0;
+}
 
 void	handle_input_redirection(t_cmd *cmd)
 {
 	int	fd;
 
+	if (cmd->heredoc && cmd->infile)
+		handle_heredoc_file(cmd);
 	if (cmd->infile)
 	{
 		fd = open(cmd->infile, O_RDONLY);
@@ -55,7 +84,6 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 
 	handle_input_redirection(cmd);
 	handle_output_redirection(cmd);
-
 	if (run_builtin(cmd, sh) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], sh->env_tab);

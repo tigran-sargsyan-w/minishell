@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/18 14:52:05 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:04:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	}
 	while (wait(NULL) > 0)
 		continue ;
+	unlink(HEREDOC_TMPFILE);
 }
 
 void	executor(t_cmd *cmd, t_shell *sh)
