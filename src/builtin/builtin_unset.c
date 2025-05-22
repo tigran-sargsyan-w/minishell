@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/18 15:16:14 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:49:15 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	builtin_unset(t_cmd *cmd, t_env_list **env)
 	prev = NULL;
 	while (cur && ft_strcmp(cur->key, cmd->args[1]) != 0)
 	{
-
 		prev = cur;
 		cur = cur->next;
 	}

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/18 15:16:30 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:49:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "builtins.h"
+#include "env.h"
 #include "libft.h"
 #include "parser.h"
 #include <stddef.h>
@@ -56,20 +56,21 @@ static int	export_without_args(t_env_list **env)
 	return (EXIT_SUCCESS);
 }
 
-static char *find_equal_sign(const char *arg)
+static char	*find_equal_sign(const char *arg)
 {
-	char		*equality_sign;
+	char	*equality_sign;
 
 	equality_sign = ft_strchr(arg, '=');
 	if (equality_sign == NULL)
 		return (NULL);
 	return (equality_sign);
 }
+
 //Check multiple args
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
 	t_env_list	*new_node;
-	char 		*equality_sign;
+	char		*equality_sign;
 	char		*key;
 	char		*value;
 	int			ret;
