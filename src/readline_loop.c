@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/18 18:28:50 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/23 22:37:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	readline_loop(t_shell *sh)
 	t_cmd	*cmd;
 	char	*input;
 
+	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
 		if (input[0] != '\0')
@@ -47,4 +48,6 @@ void	readline_loop(t_shell *sh)
 		}
 		free(input);
 	}
+	// imitate Ctrl-D
+	write(1, "exit\n", 5);
 }

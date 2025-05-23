@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 18:07:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 22:09:37 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ int						handle_redirections(t_cmd *cmd);
 
 // exit_utils.c
 void					error_exit(char *msg);
+
+//signals.c
+void					setup_signal_handlers(void);
 
 #endif
