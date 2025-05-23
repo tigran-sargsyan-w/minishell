@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 17:52:13 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:00:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,19 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+void	free_redirs(t_redir *redir)
+{
+	t_redir	*next;
+
+	while (redir)
+	{
+		next = redir->next;
+		free(redir->filename);
+		free(redir);
+		redir = next;
+	}
+}
+
 void	free_cmd_list(t_cmd *cmd)
 {
 	t_cmd	*next;
@@ -102,25 +115,11 @@ void	free_cmd_list(t_cmd *cmd)
 		}
 		if (cmd->in_redirs)
 		{
-			t_redir *redir = cmd->in_redirs;
-			while (redir)
-			{
-				t_redir *temp = redir;
-				redir = redir->next;
-				free(temp->filename);
-				free(temp);
-			}
+			free_redirs(cmd->in_redirs);
 		}
 		if (cmd->out_redirs)
 		{
-			t_redir *redir = cmd->out_redirs;
-			while (redir)
-			{
-				t_redir *temp = redir;
-				redir = redir->next;
-				free(temp->filename);
-				free(temp);
-			}
+			free_redirs(cmd->out_redirs);
 		}
 		free(cmd);
 		cmd = next;
@@ -209,8 +208,9 @@ t_cmd	*parse_tokens(t_token *tokens)
 
 void	print_cmds(t_cmd *cmd)
 {
-	int	i;
-	int	cmd_num;
+	int		i;
+	int		cmd_num;
+	t_redir	*redir;
 
 	cmd_num = 1;
 	while (cmd)
@@ -224,7 +224,7 @@ void	print_cmds(t_cmd *cmd)
 		}
 		if (cmd->in_redirs)
 		{
-			t_redir *redir = cmd->in_redirs;
+			redir = cmd->in_redirs;
 			while (redir)
 			{
 				printf("  in_redir: %s\n", redir->filename);
@@ -233,7 +233,7 @@ void	print_cmds(t_cmd *cmd)
 		}
 		if (cmd->out_redirs)
 		{
-			t_redir *redir = cmd->out_redirs;
+			redir = cmd->out_redirs;
 			while (redir)
 			{
 				printf("  out_redir: %s\n", redir->filename);
