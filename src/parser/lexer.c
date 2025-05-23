@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/02 14:04:04 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	read_word(t_token **tokens, char *input, int *i)
 	}
 	buffer[j] = '\0';
 	word = ft_strdup(buffer);
-	add_token(tokens, WORD, word);
+	add_token(tokens, TOK_WORD, word);
 	free(word);
 	free(buffer);
 	return (0);
@@ -76,7 +76,7 @@ int	read_word(t_token **tokens, char *input, int *i)
 
 static void	handle_pipe(t_token **tokens, int *i)
 {
-	add_token(tokens, PIPE, "|");
+	add_token(tokens, TOK_PIPE, "|");
 	(*i)++;
 }
 
@@ -84,12 +84,12 @@ static void	handle_less(t_token **tokens, char *input, int *i)
 {
 	if (input[*i + 1] == '<')
 	{
-		add_token(tokens, HEREDOC, "<<");
+		add_token(tokens, TOK_DLESS, "<<");
 		*i += 2;
 	}
 	else
 	{
-		add_token(tokens, REDIR_IN, "<");
+		add_token(tokens, TOK_LESS, "<");
 		(*i)++;
 	}
 }
@@ -98,12 +98,12 @@ static void	handle_greater(t_token **tokens, char *input, int *i)
 {
 	if (input[*i + 1] == '>')
 	{
-		add_token(tokens, APPEND, ">>");
+		add_token(tokens, TOK_DGREATER, ">>");
 		*i += 2;
 	}
 	else
 	{
-		add_token(tokens, REDIR_OUT, ">");
+		add_token(tokens, TOK_GREATER, ">");
 		(*i)++;
 	}
 }

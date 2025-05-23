@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/17 10:32:32 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ typedef struct s_shell
 
 typedef enum e_token_type
 {
-	WORD,
-	PIPE,
-	REDIR_IN,
-	REDIR_OUT,
-	HEREDOC,
-	APPEND
+	TOK_WORD,
+	TOK_PIPE,
+	TOK_LESS,
+	TOK_GREATER,
+	TOK_DLESS,
+	TOK_DGREATER
 }							t_token_type;
 
 typedef struct s_token

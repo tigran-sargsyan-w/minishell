@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/02 13:03:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,12 @@ t_cmd	*parse_tokens(t_token *tokens)
 	current_cmd = cmd;
 	while (tokens)
 	{
-		if (tokens->type == WORD)
+		if (tokens->type == TOK_WORD)
 			append_arg(current_cmd, tokens->value);
-		else if (tokens->type == REDIR_IN || tokens->type == REDIR_OUT
-			|| tokens->type == HEREDOC || tokens->type == APPEND)
+		else if (tokens->type == TOK_LESS || tokens->type == TOK_GREATER
+			|| tokens->type == TOK_DLESS || tokens->type == TOK_DGREATER)
 		{
-			if (!tokens->next || tokens->next->type != WORD)
+			if (!tokens->next || tokens->next->type != TOK_WORD)
 			{
 				printf("minishell: syntax error near `%s'\n", tokens->value);
 				free_cmd_list(cmd);
@@ -135,22 +135,22 @@ t_cmd	*parse_tokens(t_token *tokens)
 			}
 			redirect_type = tokens->type;
 			tokens = tokens->next;
-			if (redirect_type == REDIR_IN)
+			if (redirect_type == TOK_LESS)
 				current_cmd->infile = ft_strdup(tokens->value);
-			else if (redirect_type == REDIR_OUT)
+			else if (redirect_type == TOK_GREATER)
 				current_cmd->outfile = ft_strdup(tokens->value);
-			else if (redirect_type == HEREDOC)
+			else if (redirect_type == TOK_DLESS)
 			{
 				current_cmd->heredoc = 1;
 				current_cmd->infile = ft_strdup(tokens->value);
 			}
-			else if (redirect_type == APPEND)
+			else if (redirect_type == TOK_DGREATER)
 			{
 				current_cmd->append = 1;
 				current_cmd->outfile = ft_strdup(tokens->value);
 			}
 		}
-		else if (tokens->type == PIPE)
+		else if (tokens->type == TOK_PIPE)
 		{
 			if (!current_cmd || (current_cmd->args[0] == NULL))
 			{
@@ -158,7 +158,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 				free_cmd_list(cmd);
 				return (NULL);
 			}
-			if (!tokens->next || tokens->next->type != WORD)
+			if (!tokens->next || tokens->next->type != TOK_WORD)
 			{
 				printf("minishell: syntax error near unexpected token ");
 				if (!tokens->next)

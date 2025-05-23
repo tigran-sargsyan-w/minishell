@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:25:20 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/04/30 12:39:20 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,17 @@ void	print_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
-		if (tokens->type == WORD)
+		if (tokens->type == TOK_WORD)
 			printf("WORD: [%s]\n", tokens->value);
-		else if (tokens->type == PIPE)
+		else if (tokens->type == TOK_PIPE)
 			printf("PIPE: [%s]\n", tokens->value);
-		else if (tokens->type == REDIR_IN)
+		else if (tokens->type == TOK_LESS)
 			printf("REDIR_IN: [%s]\n", tokens->value);
-		else if (tokens->type == REDIR_OUT)
+		else if (tokens->type == TOK_GREATER)
 			printf("REDIR_OUT: [%s]\n", tokens->value);
-		else if (tokens->type == HEREDOC)
+		else if (tokens->type == TOK_DLESS)
 			printf("HEREDOC: [%s]\n", tokens->value);
-		else if (tokens->type == APPEND)
+		else if (tokens->type == TOK_DGREATER)
 			printf("APPEND: [%s]\n", tokens->value);
 		tokens = tokens->next;
 	}
