@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:40:23 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,8 @@ t_cmd	*init_cmd(void)
 	i = 0;
 	while (i < cmd->arg_cap)
 		cmd->args[i++] = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-	cmd->append = 0;
-	cmd->heredoc = 0;
+	cmd->in_redirs = NULL;
+	cmd->out_redirs = NULL;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -102,10 +100,30 @@ void	free_cmd_list(t_cmd *cmd)
 			}
 			free(cmd->args);
 		}
-		if (cmd->infile)
-			free(cmd->infile);
-		if (cmd->outfile)
-			free(cmd->outfile);
+		if (cmd->in_redirs)
+		{
+			t_redir *redir = cmd->in_redirs;
+			while (redir)
+			{
+				t_redir *temp = redir;
+				redir = redir->next;
+				free(temp->filename);
+				free(temp);
+			}
+		}
+		if (cmd->out_redirs)
+		{
+			t_redir *redir = cmd->out_redirs;
+			while (redir)
+			{
+				t_redir *temp = redir;
+				redir = redir->next;
+				free(temp->filename);
+				free(temp);
+			}
+		}
+		free(cmd->in_redirs);
+		free(cmd->out_redirs);
 		free(cmd);
 		cmd = next;
 	}
@@ -136,18 +154,20 @@ t_cmd	*parse_tokens(t_token *tokens)
 			redirect_type = tokens->type;
 			tokens = tokens->next;
 			if (redirect_type == TOK_LESS)
-				current_cmd->infile = ft_strdup(tokens->value);
+			{
+				add_redirection(current_cmd, REDIR_IN, tokens->value);
+			}
 			else if (redirect_type == TOK_GREATER)
-				current_cmd->outfile = ft_strdup(tokens->value);
+			{
+				add_redirection(current_cmd, REDIR_OUT, tokens->value);
+			}
 			else if (redirect_type == TOK_DLESS)
 			{
-				current_cmd->heredoc = 1;
-				current_cmd->infile = ft_strdup(tokens->value);
+				add_redirection(current_cmd, REDIR_HEREDOC, tokens->value);
 			}
 			else if (redirect_type == TOK_DGREATER)
 			{
-				current_cmd->append = 1;
-				current_cmd->outfile = ft_strdup(tokens->value);
+				add_redirection(current_cmd, REDIR_APPEND, tokens->value);
 			}
 		}
 		else if (tokens->type == TOK_PIPE)
@@ -204,14 +224,24 @@ void	print_cmds(t_cmd *cmd)
 			printf("  arg[%d]: %s\n", i, cmd->args[i]);
 			i++;
 		}
-		if (cmd->infile)
-			printf("  infile: %s\n", cmd->infile);
-		if (cmd->outfile)
-			printf("  outfile: %s\n", cmd->outfile);
-		if (cmd->append)
-			printf("  append: true\n");
-		if (cmd->heredoc)
-			printf("  heredoc: true\n");
+		if (cmd->in_redirs)
+		{
+			t_redir *redir = cmd->in_redirs;
+			while (redir)
+			{
+				printf("  in_redir: %s\n", redir->filename);
+				redir = redir->next;
+			}
+		}
+		if (cmd->out_redirs)
+		{
+			t_redir *redir = cmd->out_redirs;
+			while (redir)
+			{
+				printf("  out_redir: %s\n", redir->filename);
+				redir = redir->next;
+			}
+		}
 		cmd = cmd->next;
 	}
 }
