@@ -84,8 +84,8 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 |:-|:------------|:--------|:----------------------------|:--------|
 | 1 | Simple echo | `echo hello` | `hello\n`, exit code `0` | ✅ |
 | 2 | Multiple arguments | `echo one two three` | `one two three\n`, exit code `0` | ✅ |
-| 3 | Output redirection (truncate) | `echo hi > out.txt` | `out.txt` contains `hi\n` | ❌ |
-| 4 | Output redirection (append) | `echo again >> out.txt` | `out.txt` now contains `hi\nagain\n` | ❌ |
+| 3 | Output redirection (truncate) | `echo hi > out.txt` | `out.txt` contains `hi\n` | ✅ |
+| 4 | Output redirection (append) | `echo again >> out.txt` | `out.txt` now contains `hi\nagain\n` | ✅ |
 | 5 | Input redirection | `cat < out.txt` | Outputs file content, exit code `0` | ✅ |
 | 6 | Pipe between two commands | `echo hello \| wc -c` | `6\n`, exit code `0` | ✅ |
 | 7 | Pipe chain (3 commands) | `seq 1 5 \| grep 3 \| wc -l` | `1\n`, exit code `0` | ✅ |
@@ -108,16 +108,16 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 ---
 | # | Command | Expected Output / Behavior | Checked |
 |:-:|:---------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------|
-| 1 | `echo hi` | stdout: `hi\n`<br>exit code: `0`<br>no files created | ❌ |
-| 2 | `echo hi > out.txt` | `[out.txt]`: `hi\n`<br>stdout empty<br>exit code: `0` | ❌ |
-| 3 | `echo again >> out.txt` | `[out.txt]`: `hi\n again\n`<br>stdout empty<br>exit code: `0` | ❌ |
-| 4 | `cat < infile.txt` | stdout: contents of `infile.txt`<br>exit code: `0`<br>`infile.txt` unchanged | ❌ |
-| 5 | `cat << EOF`<br>`foo`<br>`bar`<br>`EOF` | stdout: `foo\n bar\n`<br>exit code: `0`<br>no files created | ❌ |
-| 6 | `echo hi > out1 > out2 > out3` | `[out1]`, `[out2]`: exist and are empty<br>`[out3]`: `hi\n`<br>stdout empty<br>exit code: `0` | ❌ |
-| 7 | `echo hi >> out1 >> out2` | `[out1]`: exists and is empty<br>`[out2]`: `hi\n`<br>stdout empty<br>exit code: `0` | ❌ |
-| 8 | `cat < in1.txt < in2.txt` | stdout: contents of `in2.txt` only<br>exit code: `0`<br>`in1.txt`, `in2.txt` unchanged | ❌ |
-| 9 | `grep foo < in.txt > out.txt` | `[out.txt]`: lines matching `foo` from `in.txt`<br>stdout empty<br>exit code: `0` | ❌ |
-| 10 | `grep foo < in1.txt < in2.txt > out1.txt >> out2.txt` | reads from `in2.txt`<br>`[out1.txt]`: overwritten with matches<br>`[out2.txt]`: appended with matches<br>stdout empty<br>exit code: `0` | ❌ |
-| 11 | `echo hi > out1.txt < in.txt` | `[out1.txt]`: `hi\n`<br>stdout empty<br>exit code: `0` | ❌ |
-| 12 | ``cat << EOF > out.txt`` | `[out.txt]`: <br>stdout empty<br>exit code: `0` | ❌ |
-| 13 | `cat < out1 < out2 \| grep o > out3 > out4` | reads from `out2`<br>`[out3]`: exists and is empty<br>`[out4]`: contains lines with 'o' from `out2`<br>stdout empty<br>exit code: `0` | ❌ |
+| 1 | `echo hi` | stdout: `hi\n`<br>exit code: `0`<br>no files created | ✅ |
+| 2 | `echo hi > out.txt` | `[out.txt]`: `hi\n`<br>stdout empty<br>exit code: `0` | ✅ |
+| 3 | `echo again >> out.txt` | `[out.txt]`: `hi\n again\n`<br>stdout empty<br>exit code: `0` | ✅ |
+| 4 | `cat < infile.txt` | stdout: contents of `infile.txt`<br>exit code: `0`<br>`infile.txt` unchanged | ✅ |
+| 5 | `cat << EOF`<br>`foo`<br>`bar`<br>`EOF` | stdout: `foo\n bar\n`<br>exit code: `0`<br>no files created | ✅ |
+| 6 | `echo hi > out1 > out2 > out3` | `[out1]`, `[out2]`: exist and are empty<br>`[out3]`: `hi\n`<br>stdout empty<br>exit code: `0` | ✅ |
+| 7 | `echo hi >> out1 >> out2` | `[out1]`: exists and is empty<br>`[out2]`: `hi\n`<br>stdout empty<br>exit code: `0` | ✅ |
+| 8 | `cat < in1.txt < in2.txt` | stdout: contents of `in2.txt` only<br>exit code: `0`<br>`in1.txt`, `in2.txt` unchanged | ✅ |
+| 9 | `grep foo < in.txt > out.txt` | `[out.txt]`: lines matching `foo` from `in.txt`<br>stdout empty<br>exit code: `0` | ✅ |
+| 10 | `grep foo < in1.txt < in2.txt > out1.txt >> out2.txt` | reads from `in2.txt`<br>`[out1.txt]`: overwritten with matches<br>`[out2.txt]`: appended with matches<br>stdout empty<br>exit code: `0` | ✅ |
+| 11 | `echo hi > out1.txt < in.txt` | `[out1.txt]`: `hi\n`<br>stdout empty<br>exit code: `0` | ✅ |
+| 12 | `cat << EOF > out.txt` <br>`foo`<br>`bar`<br>`EOF` | `[out.txt]`: `foo\n bar\n` <br>stdout empty<br>exit code: `0` | ✅ |
+| 13 | `cat < out1 < out2 \| grep o > out3 > out4` | reads from `out2`<br>`[out3]`: exists and is empty<br>`[out4]`: contains lines with 'o' from `out2`<br>stdout empty<br>exit code: `0` | ✅ |
