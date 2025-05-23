@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 10:51:53 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:58:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,74 +19,110 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-void	handle_heredoc_file(t_cmd *cmd)
+static int	handle_heredoc(const char *limiter)
 {
-	(void)cmd;
-	// int		fd;
-	// char	*line;
+	int		pipefd[2];
+	char	*line;
 
-	// fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	// if (fd < 0)
-	// 	error_exit("heredoc");
-	// while (1)
-	// {
-	// 	line = readline("heredoc> ");
-	// 	if (!line || ft_strcmp(line, cmd->infile) == 0)
-	// 	{
-	// 		free(line);
-	// 		break ;
-	// 	}
-	// 	write(fd, line, ft_strlen(line));
-	// 	write(fd, "\n", 1);
-	// 	free(line);
-	// }
-	// close(fd);
-	// free(cmd->infile);
-	// cmd->infile = ft_strdup(HEREDOC_TMPFILE);
-	// cmd->heredoc = 0;
+	if (pipe(pipefd) < 0)
+	{
+		perror("pipe");
+		return (-1);
+	}
+	while (1)
+	{
+		line = readline("heredoc> ");
+		if (!line || !strcmp(line, limiter))
+		{
+			free(line);
+			break ;
+		}
+		write(pipefd[1], line, strlen(line));
+		write(pipefd[1], "\n", 1);
+		free(line);
+	}
+	close(pipefd[1]);
+	// duplicate the end of the pipe into stdin
+	if (dup2(pipefd[0], STDIN_FILENO) < 0)
+	{
+		perror("dup2 heredoc");
+		close(pipefd[0]);
+		return (-1);
+	}
+	close(pipefd[0]);
+	return (0);
 }
 
-void	handle_input_redirection(t_cmd *cmd)
+static int	apply_one_redir(t_redir *redir)
 {
-	(void)cmd;
-	// int	fd;
+	int	fd;
+	int	ret;
 
-	// if (cmd->heredoc && cmd->infile)
-	// 	handle_heredoc_file(cmd);
-	// if (cmd->infile)
-	// {
-	// 	fd = open(cmd->infile, O_RDONLY);
-	// 	if (fd < 0)
-	// 		error_exit("open infile");
-	// 	dup2(fd, STDIN_FILENO);
-	// 	close(fd);
-	// }
+	if (redir->type == REDIR_HEREDOC)
+		return (handle_heredoc(redir->filename));
+	// 2) open the file with the required mode
+	if (redir->type == REDIR_IN)
+	{
+		fd = open(redir->filename, O_RDONLY);
+	}
+	else if (redir->type == REDIR_OUT)
+	{
+		fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	else if (redir->type == REDIR_APPEND)
+	{
+		fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	if (fd < 0)
+	{
+		perror(redir->filename);
+		return (-1);
+	}
+	// 3) duplicate the descriptor into stdin or stdout
+	if (redir->type == REDIR_IN)
+	{
+		ret = dup2(fd, STDIN_FILENO);
+	}
+	else
+	{
+		ret = dup2(fd, STDOUT_FILENO);
+	}
+	if (ret < 0)
+	{
+		perror("dup2");
+		close(fd);
+		return (-1);
+	}
+	close(fd);
+	return (0);
 }
 
-void	handle_output_redirection(t_cmd *cmd)
+int	handle_redirections(t_cmd *cmd)
 {
-	(void)cmd;
-	// int	fd;
+	t_redir	*redir;
 
-	// if (cmd->outfile)
-	// {
-	// 	if (cmd->append)
-	// 		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	// 	else
-	// 		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// 	if (fd < 0)
-	// 		error_exit("open outfile");
-	// 	dup2(fd, STDOUT_FILENO);
-	// 	close(fd);
-	// }
+	redir = cmd->in_redirs;
+	while (redir)
+	{
+		if (apply_one_redir(redir) < 0)
+			return (-1);
+		redir = redir->next;
+	}
+	redir = cmd->out_redirs;
+	while (redir)
+	{
+		if (apply_one_redir(redir) < 0)
+			return (-1);
+		redir = redir->next;
+	}
+	return (0);
 }
 
 void	execute_child(t_cmd *cmd, t_shell *sh)
 {
 	char	*full_cmd;
 
-	handle_input_redirection(cmd);
-	handle_output_redirection(cmd);
+	handle_redirections(cmd);
 	if (run_builtin(cmd, sh) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], sh->env_tab);

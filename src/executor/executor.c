@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/22 17:04:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:46:48 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		saved_stdin = dup(STDIN_FILENO);
 		// TODO: check -1 return for dup
 		saved_stdout = dup(STDOUT_FILENO);
-		handle_input_redirection(cmd);
-		handle_output_redirection(cmd);
+		handle_redirections(cmd);
 		// Run builtin (or fall back to external)
 		if (run_builtin(cmd, sh) == -1)
 			execute_cmds(cmd, sh);
