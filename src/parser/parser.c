@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 11:40:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:52:13 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,6 @@ void	free_cmd_list(t_cmd *cmd)
 				free(temp);
 			}
 		}
-		free(cmd->in_redirs);
-		free(cmd->out_redirs);
 		free(cmd);
 		cmd = next;
 	}
