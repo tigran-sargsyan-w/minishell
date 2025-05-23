@@ -94,3 +94,7 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 | 10 | Permission denied | `./non_exec_file` | Error: permission denied, exit code `126` | ✅ |
 | 11 | Pipe with empty command after | `echo hi \|` | Syntax error, exit code `2` | ✅ |
 | 12 | Pipe at the start of input | `\| grep something` | Syntax error, exit code `2` | ✅ |
+
+
+echo hi > out1 > out2 > out3
+grep foo < in1 < in2 >> out1 > out2
