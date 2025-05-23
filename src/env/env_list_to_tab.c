@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_to_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/16 17:22:06 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:43:34 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 	return (res);
 }
 
-void free_env_tab(char **env_tab)
+void	free_env_tab(char **env_tab)
 {
-	char **tmp;
+	char	**tmp;
 
 	if (env_tab == NULL)
 		return ;
@@ -48,9 +48,9 @@ void free_env_tab(char **env_tab)
 	free(env_tab);
 }
 
-static char **return_empty_tab(void)
+static char	**return_empty_tab(void)
 {
-	char **tab;
+	char	**tab;
 
 	tab = malloc(sizeof(char *));
 	if (tab == NULL)
@@ -61,10 +61,11 @@ static char **return_empty_tab(void)
 	*tab = NULL;
 	return (tab);
 }
-static char **fill_tab(t_env_list **list, char **tab, size_t len)
+
+static char	**fill_tab(t_env_list **list, char **tab, size_t len)
 {
-	t_env_list *tmp;
-	size_t i;
+	t_env_list	*tmp;
+	size_t		i;
 
 	tmp = *list;
 	i = 0;
@@ -85,11 +86,11 @@ static char **fill_tab(t_env_list **list, char **tab, size_t len)
 
 char	**env_list_to_tab(t_env_list **env_list)
 {
-	char **env_tab;
-	size_t len;
+	char	**env_tab;
+	size_t	len;
 
 	if ((!env_list) || ((len = lst_size(env_list)) == 0))
-		return(return_empty_tab());
+		return (return_empty_tab());
 	env_tab = malloc(sizeof(char *) * (len + 1));
 	if (env_tab == NULL)
 	{

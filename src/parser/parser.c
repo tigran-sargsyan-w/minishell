@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/02 13:03:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:00:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,23 @@ t_cmd	*init_cmd(void)
 	i = 0;
 	while (i < cmd->arg_cap)
 		cmd->args[i++] = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-	cmd->append = 0;
-	cmd->heredoc = 0;
+	cmd->in_redirs = NULL;
+	cmd->out_redirs = NULL;
 	cmd->next = NULL;
 	return (cmd);
+}
+
+void	free_redirs(t_redir *redir)
+{
+	t_redir	*next;
+
+	while (redir)
+	{
+		next = redir->next;
+		free(redir->filename);
+		free(redir);
+		redir = next;
+	}
 }
 
 void	free_cmd_list(t_cmd *cmd)
@@ -102,10 +113,14 @@ void	free_cmd_list(t_cmd *cmd)
 			}
 			free(cmd->args);
 		}
-		if (cmd->infile)
-			free(cmd->infile);
-		if (cmd->outfile)
-			free(cmd->outfile);
+		if (cmd->in_redirs)
+		{
+			free_redirs(cmd->in_redirs);
+		}
+		if (cmd->out_redirs)
+		{
+			free_redirs(cmd->out_redirs);
+		}
 		free(cmd);
 		cmd = next;
 	}
@@ -122,12 +137,12 @@ t_cmd	*parse_tokens(t_token *tokens)
 	current_cmd = cmd;
 	while (tokens)
 	{
-		if (tokens->type == WORD)
+		if (tokens->type == TOK_WORD)
 			append_arg(current_cmd, tokens->value);
-		else if (tokens->type == REDIR_IN || tokens->type == REDIR_OUT
-			|| tokens->type == HEREDOC || tokens->type == APPEND)
+		else if (tokens->type == TOK_LESS || tokens->type == TOK_GREATER
+			|| tokens->type == TOK_DLESS || tokens->type == TOK_DGREATER)
 		{
-			if (!tokens->next || tokens->next->type != WORD)
+			if (!tokens->next || tokens->next->type != TOK_WORD)
 			{
 				printf("minishell: syntax error near `%s'\n", tokens->value);
 				free_cmd_list(cmd);
@@ -135,22 +150,24 @@ t_cmd	*parse_tokens(t_token *tokens)
 			}
 			redirect_type = tokens->type;
 			tokens = tokens->next;
-			if (redirect_type == REDIR_IN)
-				current_cmd->infile = ft_strdup(tokens->value);
-			else if (redirect_type == REDIR_OUT)
-				current_cmd->outfile = ft_strdup(tokens->value);
-			else if (redirect_type == HEREDOC)
+			if (redirect_type == TOK_LESS)
 			{
-				current_cmd->heredoc = 1;
-				current_cmd->infile = ft_strdup(tokens->value);
+				add_redirection(current_cmd, REDIR_IN, tokens->value);
 			}
-			else if (redirect_type == APPEND)
+			else if (redirect_type == TOK_GREATER)
 			{
-				current_cmd->append = 1;
-				current_cmd->outfile = ft_strdup(tokens->value);
+				add_redirection(current_cmd, REDIR_OUT, tokens->value);
+			}
+			else if (redirect_type == TOK_DLESS)
+			{
+				add_redirection(current_cmd, REDIR_HEREDOC, tokens->value);
+			}
+			else if (redirect_type == TOK_DGREATER)
+			{
+				add_redirection(current_cmd, REDIR_APPEND, tokens->value);
 			}
 		}
-		else if (tokens->type == PIPE)
+		else if (tokens->type == TOK_PIPE)
 		{
 			if (!current_cmd || (current_cmd->args[0] == NULL))
 			{
@@ -158,7 +175,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 				free_cmd_list(cmd);
 				return (NULL);
 			}
-			if (!tokens->next || tokens->next->type != WORD)
+			if (!tokens->next || tokens->next->type != TOK_WORD)
 			{
 				printf("minishell: syntax error near unexpected token ");
 				if (!tokens->next)
@@ -191,8 +208,9 @@ t_cmd	*parse_tokens(t_token *tokens)
 
 void	print_cmds(t_cmd *cmd)
 {
-	int	i;
-	int	cmd_num;
+	int		i;
+	int		cmd_num;
+	t_redir	*redir;
 
 	cmd_num = 1;
 	while (cmd)
@@ -204,14 +222,24 @@ void	print_cmds(t_cmd *cmd)
 			printf("  arg[%d]: %s\n", i, cmd->args[i]);
 			i++;
 		}
-		if (cmd->infile)
-			printf("  infile: %s\n", cmd->infile);
-		if (cmd->outfile)
-			printf("  outfile: %s\n", cmd->outfile);
-		if (cmd->append)
-			printf("  append: true\n");
-		if (cmd->heredoc)
-			printf("  heredoc: true\n");
+		if (cmd->in_redirs)
+		{
+			redir = cmd->in_redirs;
+			while (redir)
+			{
+				printf("  in_redir: %s\n", redir->filename);
+				redir = redir->next;
+			}
+		}
+		if (cmd->out_redirs)
+		{
+			redir = cmd->out_redirs;
+			while (redir)
+			{
+				printf("  out_redir: %s\n", redir->filename);
+				redir = redir->next;
+			}
+		}
 		cmd = cmd->next;
 	}
 }

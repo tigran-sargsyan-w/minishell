@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/15 16:37:29 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:44:24 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,11 @@ void	lst_clear(t_env_list **list)
 		*list = tmp;
 	}
 }
+
 size_t	lst_size(t_env_list **list)
 {
-	size_t size;
-	t_env_list *tmp;
+	size_t		size;
+	t_env_list	*tmp;
 
 	tmp = *list;
 	size = 0;

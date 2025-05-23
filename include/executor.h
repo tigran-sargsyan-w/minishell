@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/22 17:06:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:07:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void					execute_cmds(t_cmd *cmd, t_shell *sh);
 void					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
 							int prev_fd, t_pipe pd);
 void					execute_child(t_cmd *cmd, t_shell *sh);
-void					handle_input_redirection(t_cmd *cmd);
-void					handle_output_redirection(t_cmd *cmd);
+int						handle_redirections(t_cmd *cmd);
 
 // exit_utils.c
 void					error_exit(char *msg);

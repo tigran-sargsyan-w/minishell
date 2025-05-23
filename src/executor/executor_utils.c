@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/22 17:03:48 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:20:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,25 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-void	handle_heredoc_file(t_cmd *cmd)
+static int	handle_heredoc(t_redir *redir)
 {
 	int		fd;
 	char	*line;
 
+	// 1) create/truncate tmp file for heredoc
 	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
-		error_exit("heredoc");
+	{
+		perror("open heredoc tmpfile");
+		return (-1);
+	}
+	// 2) read lines until matching the limiter
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (!line || ft_strcmp(line, cmd->infile) == 0)
+		if (!line)
+			break ;
+		if (ft_strcmp(line, redir->filename) == 0)
 		{
 			free(line);
 			break ;
@@ -40,50 +47,88 @@ void	handle_heredoc_file(t_cmd *cmd)
 		free(line);
 	}
 	close(fd);
-	free(cmd->infile);
-	cmd->infile = ft_strdup(HEREDOC_TMPFILE);
-	cmd->heredoc = 0;
+	// 3) change the node: from heredoc to a regular infile
+	free(redir->filename);
+	redir->filename = ft_strdup(HEREDOC_TMPFILE);
+	if (!redir->filename)
+	{
+		perror("strdup");
+		return (-1);
+	}
+	redir->type = REDIR_IN;
+	return (0);
 }
 
-void	handle_input_redirection(t_cmd *cmd)
+static int	apply_one_redir(t_redir *redir)
 {
 	int	fd;
+	int	ret;
 
-	if (cmd->heredoc && cmd->infile)
-		handle_heredoc_file(cmd);
-	if (cmd->infile)
+	if (redir->type == REDIR_HEREDOC)
+		return (handle_heredoc(redir));
+	// 2) open the file with the required mode
+	if (redir->type == REDIR_IN)
 	{
-		fd = open(cmd->infile, O_RDONLY);
-		if (fd < 0)
-			error_exit("open infile");
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		fd = open(redir->filename, O_RDONLY);
 	}
+	else if (redir->type == REDIR_OUT)
+	{
+		fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	else if (redir->type == REDIR_APPEND)
+	{
+		fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	if (fd < 0)
+	{
+		perror(redir->filename);
+		return (-1);
+	}
+	// 3) duplicate the descriptor into stdin or stdout
+	if (redir->type == REDIR_IN)
+	{
+		ret = dup2(fd, STDIN_FILENO);
+	}
+	else
+	{
+		ret = dup2(fd, STDOUT_FILENO);
+	}
+	if (ret < 0)
+	{
+		perror("dup2");
+		close(fd);
+		return (-1);
+	}
+	close(fd);
+	return (0);
 }
 
-void	handle_output_redirection(t_cmd *cmd)
+int	handle_redirections(t_cmd *cmd)
 {
-	int	fd;
+	t_redir	*redir;
 
-	if (cmd->outfile)
+	redir = cmd->in_redirs;
+	while (redir)
 	{
-		if (cmd->append)
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-			error_exit("open outfile");
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		if (apply_one_redir(redir) < 0)
+			return (-1);
+		redir = redir->next;
 	}
+	redir = cmd->out_redirs;
+	while (redir)
+	{
+		if (apply_one_redir(redir) < 0)
+			return (-1);
+		redir = redir->next;
+	}
+	return (0);
 }
 
 void	execute_child(t_cmd *cmd, t_shell *sh)
 {
 	char	*full_cmd;
 
-	handle_input_redirection(cmd);
-	handle_output_redirection(cmd);
+	handle_redirections(cmd);
 	if (run_builtin(cmd, sh) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], sh->env_tab);
