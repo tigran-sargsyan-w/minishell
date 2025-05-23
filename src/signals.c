@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 21:58:12 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 22:57:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 22:58:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 static void	sigint_handler(int signo)
 {
 	(void)signo;
-	write(1, "\n", 1);    // new line
-	rl_on_new_line();       // notify readline that the screen is "rewound"
-	rl_replace_line("", 0); // clear the current input line
-	rl_redisplay();         // redraw the prompt
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	setup_signal_handlers(void)
