@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:37:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 typedef struct s_env_list	t_env_list;
-
 
 // Main structure
 typedef struct s_shell
