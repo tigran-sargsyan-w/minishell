@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 19:58:25 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:20:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,43 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static int	handle_heredoc(const char *limiter)
+static int	handle_heredoc(t_redir *redir)
 {
-	int		pipefd[2];
+	int		fd;
 	char	*line;
 
-	if (pipe(pipefd) < 0)
+	// 1) create/truncate tmp file for heredoc
+	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
 	{
-		perror("pipe");
+		perror("open heredoc tmpfile");
 		return (-1);
 	}
+	// 2) read lines until matching the limiter
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (!line || !strcmp(line, limiter))
+		if (!line)
+			break ;
+		if (ft_strcmp(line, redir->filename) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(pipefd[1], line, strlen(line));
-		write(pipefd[1], "\n", 1);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
-	close(pipefd[1]);
-	// duplicate the end of the pipe into stdin
-	if (dup2(pipefd[0], STDIN_FILENO) < 0)
+	close(fd);
+	// 3) change the node: from heredoc to a regular infile
+	free(redir->filename);
+	redir->filename = ft_strdup(HEREDOC_TMPFILE);
+	if (!redir->filename)
 	{
-		perror("dup2 heredoc");
-		close(pipefd[0]);
+		perror("strdup");
 		return (-1);
 	}
-	close(pipefd[0]);
+	redir->type = REDIR_IN;
 	return (0);
 }
 
@@ -59,7 +65,7 @@ static int	apply_one_redir(t_redir *redir)
 	int	ret;
 
 	if (redir->type == REDIR_HEREDOC)
-		return (handle_heredoc(redir->filename));
+		return (handle_heredoc(redir));
 	// 2) open the file with the required mode
 	if (redir->type == REDIR_IN)
 	{
