@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 18:00:44 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 10:58:14 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ void	free_cmd_list(t_cmd *cmd)
 	}
 }
 
+int	is_arg_token(t_token_type type)
+{
+	return (type == TOK_WORD || type == TOK_SQUOTED || type == TOK_DQUOTED);
+}
+
 t_cmd	*parse_tokens(t_token *tokens)
 {
 	t_cmd	*cmd;
@@ -137,12 +142,12 @@ t_cmd	*parse_tokens(t_token *tokens)
 	current_cmd = cmd;
 	while (tokens)
 	{
-		if (tokens->type == TOK_WORD)
+		if (is_arg_token(tokens->type))
 			append_arg(current_cmd, tokens->value);
 		else if (tokens->type == TOK_LESS || tokens->type == TOK_GREATER
 			|| tokens->type == TOK_DLESS || tokens->type == TOK_DGREATER)
 		{
-			if (!tokens->next || tokens->next->type != TOK_WORD)
+			if (!tokens->next || !is_arg_token(tokens->next->type))
 			{
 				printf("minishell: syntax error near `%s'\n", tokens->value);
 				free_cmd_list(cmd);
@@ -175,7 +180,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 				free_cmd_list(cmd);
 				return (NULL);
 			}
-			if (!tokens->next || tokens->next->type != TOK_WORD)
+			if (!tokens->next || !is_arg_token(tokens->next->type))
 			{
 				printf("minishell: syntax error near unexpected token ");
 				if (!tokens->next)
