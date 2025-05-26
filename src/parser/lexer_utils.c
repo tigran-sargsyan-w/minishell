@@ -6,11 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:25:20 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/24 12:32:07 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:18:12 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "parser.h"
 #include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,6 +50,7 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 
 void	print_tokens(t_token *tokens)
 {
+	printf(YELLOW "TOKENS:\n" RESET);
 	while (tokens)
 	{
 		switch (tokens->type)

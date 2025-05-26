@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 13:47:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:18:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ void	print_cmds(t_cmd *cmd)
 	t_redir	*redir;
 
 	cmd_num = 1;
+	printf(YELLOW "COMMANDS:\n" RESET);
 	while (cmd)
 	{
 		printf("Command %d:\n", cmd_num++);
@@ -258,4 +259,5 @@ void	print_cmds(t_cmd *cmd)
 		}
 		cmd = cmd->next;
 	}
+		printf("\n");
 }

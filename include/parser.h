@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 13:46:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:20:06 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include "minishell.h"
 
 # define INITIAL_ARG_CAP 8
+
+# define RED "\x1B[31m"
+# define GREEN "\x1B[32m"
+# define YELLOW "\x1B[33m"
+# define BLUE "\x1B[34m"
+# define RESET "\x1B[0m"
 
 typedef struct s_cmd		t_cmd;
 typedef enum e_redir_type	t_redir_type;
