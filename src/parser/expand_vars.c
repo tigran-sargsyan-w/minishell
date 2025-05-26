@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 19:45:36 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:55:30 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 static int  handle_exit_status(const char *input, size_t *i, char **res, t_shell *sh);
 static int  handle_env_var(const char *input, size_t *i, char **res, t_shell *sh);
 static int  handle_literal_dollar(const char *input, size_t *i, char **res);
+static void append_char_to_result(const char *input, size_t *pos, char **result);
 static char *get_env_value(const char *var_name, t_env_list *env_list);
 
 static char *get_env_value(const char *var_name, t_env_list *env_list)
@@ -94,6 +95,19 @@ static int handle_literal_dollar(const char *input, size_t *pos, char **result)
     return (SUCCESS);
 }
 
+static void append_char_to_result(const char *input, size_t *pos, char **result)
+{
+    char    buf[2];
+    char   *tmp;
+
+    buf[0] = input[*pos];
+    buf[1] = '\0';
+    tmp = *result;
+    *result = ft_strjoin(*result, buf);
+    free(tmp);
+    (*pos)++;
+}
+
 char *expand_vars(const char *input, t_shell *sh)
 {
     char   *result;
@@ -117,12 +131,7 @@ char *expand_vars(const char *input, t_shell *sh)
         }
         else
         {
-            char buf[2] = { input[pos], '\0' };
-            char *tmp   = result;
-
-            result = ft_strjoin(result, buf);
-            free(tmp);
-            pos++;
+			append_char_to_result(input, &pos, &result);
         }
     }
     return (result);
