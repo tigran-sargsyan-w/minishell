@@ -121,3 +121,5 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 | 11 | `echo hi > out1.txt < in.txt` | `[out1.txt]`: `hi\n`<br>stdout empty<br>exit code: `0` | ✅ |
 | 12 | `cat << EOF > out.txt` <br>`foo`<br>`bar`<br>`EOF` | `[out.txt]`: `foo\n bar\n` <br>stdout empty<br>exit code: `0` | ✅ |
 | 13 | `cat < out1 < out2 \| grep o > out3 > out4` | reads from `out2`<br>`[out3]`: exists and is empty<br>`[out4]`: contains lines with 'o' from `out2`<br>stdout empty<br>exit code: `0` | ✅ |
+
+echo "Path is $HOME/bin:$PATH"
