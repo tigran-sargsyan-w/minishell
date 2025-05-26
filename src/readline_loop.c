@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/23 22:37:25 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:05:24 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	readline_loop(t_shell *sh)
 			// print_tokens(tokens);
 			if (tokens)
 			{
-				cmd = parse_tokens(tokens);
+				cmd = parse_tokens(tokens, sh);
 				// print_cmds(cmd);
 			}
 			if (cmd)

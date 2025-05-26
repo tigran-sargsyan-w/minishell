@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 20:37:28 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:48:16 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_shell
 typedef enum e_token_type
 {
 	TOK_WORD,
+	TOK_SQUOTED,
+	TOK_DQUOTED,
 	TOK_PIPE,
 	TOK_LESS,
 	TOK_GREATER,

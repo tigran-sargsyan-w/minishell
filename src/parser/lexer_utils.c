@@ -6,14 +6,15 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:25:20 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 10:39:55 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:18:12 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdlib.h>
 #include "libft.h"
+#include "parser.h"
+#include "minishell.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int	is_space(char c)
 {
@@ -49,20 +50,41 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 
 void	print_tokens(t_token *tokens)
 {
+	printf(YELLOW "TOKENS:\n" RESET);
 	while (tokens)
 	{
-		if (tokens->type == TOK_WORD)
-			printf("WORD: [%s]\n", tokens->value);
-		else if (tokens->type == TOK_PIPE)
-			printf("PIPE: [%s]\n", tokens->value);
-		else if (tokens->type == TOK_LESS)
-			printf("REDIR_IN: [%s]\n", tokens->value);
-		else if (tokens->type == TOK_GREATER)
-			printf("REDIR_OUT: [%s]\n", tokens->value);
-		else if (tokens->type == TOK_DLESS)
-			printf("HEREDOC: [%s]\n", tokens->value);
-		else if (tokens->type == TOK_DGREATER)
-			printf("APPEND: [%s]\n", tokens->value);
+		switch (tokens->type)
+		{
+		case TOK_WORD:
+			printf("WORD      : [%s]\n", tokens->value);
+			break ;
+		case TOK_SQUOTED:
+			printf("SQUOTED   : [%s]\n", tokens->value);
+			break ;
+		case TOK_DQUOTED:
+			printf("DQUOTED   : [%s]\n", tokens->value);
+			break ;
+		case TOK_PIPE:
+			printf("PIPE      : [%s]\n", tokens->value ? tokens->value : "|");
+			break ;
+		case TOK_LESS:
+			printf("REDIR_IN  : [%s]\n", tokens->value ? tokens->value : "<");
+			break ;
+		case TOK_GREATER:
+			printf("REDIR_OUT : [%s]\n", tokens->value ? tokens->value : ">");
+			break ;
+		case TOK_DLESS:
+			printf("HEREDOC   : [%s]\n", tokens->value ? tokens->value : "<<");
+			break ;
+		case TOK_DGREATER:
+			printf("APPEND    : [%s]\n", tokens->value ? tokens->value : ">>");
+			break ;
+		default:
+			printf("UNKNOWN(%d): [%s]\n",
+					tokens->type,
+					tokens->value ? tokens->value : "");
+			break ;
+		}
 		tokens = tokens->next;
 	}
 }
