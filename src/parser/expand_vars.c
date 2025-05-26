@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 18:02:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:29:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,32 @@
 #include "env.h"
 #include <stdlib.h>
 
-// Ищет переменную var_name в списке env_list.
-// Если находит — возвращает её value, иначе — пустую строку.
-char *get_env_value(const char *var_name, t_env_list *env_list)
+static int  handle_exit_status(const char *input, size_t *i, char **res, t_shell *sh);
+static int  handle_env_var(const char *input, size_t *i, char **res, t_shell *sh);
+static int  handle_literal_dollar(const char *input, size_t *i, char **res);
+static char *get_env_value(const char *var_name, t_env_list *env_list);
+
+static char *get_env_value(const char *var_name, t_env_list *env_list)
 {
     t_env_list *tmp = env_list;
     size_t      len;
 
     while (tmp)
     {
-        len = ft_strlen(tmp->key);
-        // сравниваем полное совпадение ключа   
+        len = ft_strlen(tmp->key); 
         if (ft_strncmp(tmp->key, var_name, len + 1) == 0)
             return tmp->value;
         tmp = tmp->next;
     }
-    return "";  // переменной нет — будем добавлять пустое
+    return ("");
 }
 
-// Раскрывает все $VAR и $? внутри строки input.
-// input — нуль-терминированная строка без внешних кавычек.
-// Возвращает новую строку, которую нужно free() по завершении.
+// Главная функция — сканирует строку и вызывает хендлеры:
 char *expand_vars(const char *input, t_shell *sh)
 {
-    char    *result;
-    size_t   i;
+    char   *result;
+    size_t  i;
 
-    // Инициализируем результат пустой строкой
     result = ft_strdup("");
     if (!result)
         return (NULL);
@@ -51,81 +50,87 @@ char *expand_vars(const char *input, t_shell *sh)
     {
         if (input[i] == '$')
         {
-            // 1) Спец-переменная $?
-            if (input[i + 1] == '?')
-            {
-                char *status_str;
-                char *tmp;
-
-                status_str = ft_itoa(sh->last_status);
-                if (!status_str)
-                    return (free(result), NULL);
-
-                tmp = result;
-                result = ft_strjoin(result, status_str);
-                free(tmp);
-                free(status_str);
-
-                i += 2;
-            }
-            // 2) Обычная переменная $NAME
-            else if (ft_isalnum((unsigned char)input[i + 1]) 
-                     || input[i + 1] == '_')
-            {
-                size_t j = i + 1;
-                char  *var_name;
-                char  *val;
-                char  *tmp;
-
-                // найдём конец имени переменной
-                while (input[j] &&
-                       (ft_isalnum((unsigned char)input[j]) 
-                        || input[j] == '_'))
-                    j++;
-
-                // вырезаем имя переменной
-                var_name = ft_substr(input, i + 1, j - (i + 1));
-                if (!var_name)
-                    return (free(result), NULL);
-
-                // смотрим в вашем списке env
-                val = get_env_value(var_name, sh->env_list);
-                free(var_name);
-
-                // добавляем значение (или пустую строку)
-                tmp = result;
-                result = ft_strjoin(result, val);
-                free(tmp);
-
-                i = j;
-            }
-            // 3) не $?, не $LETTER — просто литерал '$'
-            else
-            {
-                char *tmp;
-
-                tmp = result;
-                result = ft_strjoin(result, "$");
-                free(tmp);
-                i++;
-            }
+            if (handle_exit_status(input, &i, &result, sh))
+                continue;
+            if (handle_env_var(input, &i, &result, sh))
+                continue;
+            if (handle_literal_dollar(input, &i, &result))
+                continue;
         }
         else
         {
-            // Все прочие символы — копируем «как есть»
-            char buf[2];
-            char *tmp;
+            // копируем обычный символ
+            char buf[2] = { input[i], '\0' };
+            char *tmp   = result;
 
-            buf[0] = input[i];
-            buf[1] = '\0';
-            tmp = result;
             result = ft_strjoin(result, buf);
             free(tmp);
             i++;
         }
     }
-
     return (result);
 }
 
+// 1) $?
+static int handle_exit_status(const char *input, size_t *i, char **res, t_shell *sh)
+{
+    if (input[*i + 1] != '?')
+        return (0);
 
+    char *status_str = ft_itoa(sh->last_status);
+    if (!status_str)
+        return (0);
+
+    // result = result + status_str
+    char *tmp = *res;
+    *res = ft_strjoin(*res, status_str);
+    free(tmp);
+    free(status_str);
+
+    *i += 2;
+    return (1);
+}
+
+// 2) $NAME
+static int handle_env_var(const char *input, size_t *i, char **res, t_shell *sh)
+{
+    size_t j = *i + 1;
+
+    // проверяем, что за $ идёт допустимый первый символ имени
+    if (!(ft_isalnum((unsigned char)input[j]) || input[j] == '_'))
+        return (0);
+
+    // ищем конец имени
+    while (input[j] && (ft_isalnum((unsigned char)input[j]) || input[j] == '_'))
+        j++;
+
+    // вырезаем имя
+    char *var_name = ft_substr(input, *i + 1, j - (*i + 1));
+    if (!var_name)
+        return (0);
+
+    // ищем в вашем списке env
+    char *val = get_env_value(var_name, sh->env_list);
+    free(var_name);
+
+    // конкатенируем значение
+    char *tmp = *res;
+    *res = ft_strjoin(*res, val);
+    free(tmp);
+
+    *i = j;
+    return (1);
+}
+
+// 3) просто литерал '$'
+static int handle_literal_dollar(const char *input, size_t *i, char **res)
+{
+    (void)input;
+    // здесь мы гарантированно на input[*i] == '$'
+    char *tmp = *res;
+    *res = ft_strjoin(*res, "$");
+    free(tmp);
+
+    *i += 1;
+    return (1);
+}
