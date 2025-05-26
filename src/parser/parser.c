@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 10:58:14 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:47:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,21 +131,35 @@ int	is_arg_token(t_token_type type)
 	return (type == TOK_WORD || type == TOK_SQUOTED || type == TOK_DQUOTED);
 }
 
-t_cmd	*parse_tokens(t_token *tokens)
+int	is_redir_token(t_token_type type)
+{
+	return (type == TOK_LESS || type == TOK_GREATER || type == TOK_DLESS
+		|| type == TOK_DGREATER);
+}
+
+
+t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 {
 	t_cmd	*cmd;
 	t_cmd	*current_cmd;
 	t_cmd	*new_cmd;
 	int		redirect_type;
+	char	*tmp_token_value;
 
 	cmd = init_cmd();
 	current_cmd = cmd;
 	while (tokens)
 	{
 		if (is_arg_token(tokens->type))
-			append_arg(current_cmd, tokens->value);
-		else if (tokens->type == TOK_LESS || tokens->type == TOK_GREATER
-			|| tokens->type == TOK_DLESS || tokens->type == TOK_DGREATER)
+		{
+			if (tokens->type == TOK_SQUOTED)
+				tmp_token_value = ft_strdup(tokens->value);
+			else if (tokens->type == TOK_WORD || tokens->type == TOK_DQUOTED)
+				tmp_token_value = expand_vars(tokens->value, sh);
+			append_arg(current_cmd, tmp_token_value);
+			free(tmp_token_value);
+		}
+		else if (is_redir_token(tokens->type))
 		{
 			if (!tokens->next || !is_arg_token(tokens->next->type))
 			{
@@ -155,22 +169,19 @@ t_cmd	*parse_tokens(t_token *tokens)
 			}
 			redirect_type = tokens->type;
 			tokens = tokens->next;
+			if (tokens->type == TOK_SQUOTED)
+				tmp_token_value = ft_strdup(tokens->value);
+			else if (tokens->type == TOK_WORD || tokens->type == TOK_DQUOTED)
+				tmp_token_value = expand_vars(tokens->value, sh);
 			if (redirect_type == TOK_LESS)
-			{
-				add_redirection(current_cmd, REDIR_IN, tokens->value);
-			}
+				add_redirection(current_cmd, REDIR_IN, tmp_token_value);
 			else if (redirect_type == TOK_GREATER)
-			{
-				add_redirection(current_cmd, REDIR_OUT, tokens->value);
-			}
+				add_redirection(current_cmd, REDIR_OUT, tmp_token_value);
 			else if (redirect_type == TOK_DLESS)
-			{
-				add_redirection(current_cmd, REDIR_HEREDOC, tokens->value);
-			}
+				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value);
 			else if (redirect_type == TOK_DGREATER)
-			{
-				add_redirection(current_cmd, REDIR_APPEND, tokens->value);
-			}
+				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value);
+			free(tmp_token_value);
 		}
 		else if (tokens->type == TOK_PIPE)
 		{
