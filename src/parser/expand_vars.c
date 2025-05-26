@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 20:08:09 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:24:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*get_env_value(const char *var_name, t_env_list *env_list)
 	return ("");
 }
 
-// 1) $?
+// $?
 static int	handle_exit_status(const char *input, size_t *pos, char **result,
 		t_shell *sh)
 {
@@ -60,7 +60,7 @@ static int	handle_exit_status(const char *input, size_t *pos, char **result,
 	return (SUCCESS);
 }
 
-// 2) $NAME
+// $NAME
 static int	handle_env_var(const char *input, size_t *pos, char **result,
 		t_shell *sh)
 {
