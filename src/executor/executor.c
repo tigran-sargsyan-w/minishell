@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 19:46:48 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 02:46:13 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ void	executor(t_cmd *cmd, t_shell *sh)
 	}
 	else
 		execute_cmds(cmd, sh);
-	free_cmd_list(cmd);
+	//free_cmd_list(cmd); // TODO: Fix crash (e.g. export TMP)
 	free_env_tab(sh->env_tab);
 }
