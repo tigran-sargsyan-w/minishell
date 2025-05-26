@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 19:55:30 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:04:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 static int  handle_exit_status(const char *input, size_t *i, char **res, t_shell *sh);
 static int  handle_env_var(const char *input, size_t *i, char **res, t_shell *sh);
-static int  handle_literal_dollar(const char *input, size_t *i, char **res);
 static void append_char_to_result(const char *input, size_t *pos, char **result);
 static char *get_env_value(const char *var_name, t_env_list *env_list);
 
@@ -81,30 +80,16 @@ static int handle_env_var(const char *input, size_t *pos, char **result, t_shell
     return (SUCCESS);
 }
 
-// 3) just symbol '$'
-static int handle_literal_dollar(const char *input, size_t *pos, char **result)
-{
-    char *tmp = *result;
-    
-    if (input[*pos] != '$')
-        return (FAILURE);
-    *result = ft_strjoin(tmp, "$");
-    free(tmp);
-
-    *pos += 1;
-    return (SUCCESS);
-}
-
 static void append_char_to_result(const char *input, size_t *pos, char **result)
 {
     char    buf[2];
-    char   *tmp;
+    char   *old;
 
     buf[0] = input[*pos];
     buf[1] = '\0';
-    tmp = *result;
-    *result = ft_strjoin(*result, buf);
-    free(tmp);
+	old = *result;
+    *result = ft_strjoin(old, buf);
+    free(old);
     (*pos)++;
 }
 
@@ -126,11 +111,12 @@ char *expand_vars(const char *input, t_shell *sh)
                 continue;
             if (handle_env_var(input, &pos, &result, sh) == SUCCESS)
                 continue;
-            if (handle_literal_dollar(input, &pos, &result) == SUCCESS)
-                continue;
+			// ни $? ни $NAME — вставляем просто '$'
+            append_char_to_result(input, &pos, &result);
         }
         else
         {
+			// любой другой символ
 			append_char_to_result(input, &pos, &result);
         }
     }
