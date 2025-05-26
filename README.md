@@ -123,3 +123,4 @@ This project is about creating a simple shell. Yes, your own little bash. You wi
 | 13 | `cat < out1 < out2 \| grep o > out3 > out4` | reads from `out2`<br>`[out3]`: exists and is empty<br>`[out4]`: contains lines with 'o' from `out2`<br>stdout empty<br>exit code: `0` | ✅ |
 
 echo "Path is $HOME/bin:$PATH"
+echo "Path is $HOME/bin:$HOME"
