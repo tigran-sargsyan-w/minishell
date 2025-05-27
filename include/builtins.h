@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/17 10:13:19 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/27 18:56:02 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,9 @@ int							builtin_export(t_cmd *cmd, t_env_list **env);
 int							builtin_unset(t_cmd *cmd, t_env_list **env);
 int							builtin_exit(t_cmd *cmd, t_env_list **env);
 int							run_builtin(t_cmd *cmd, t_shell *sh);
+
+// Utils
+char						*find_equal_sign(const char *arg);
+void						free_key_value(char *key, char *value);
 
 #endif
