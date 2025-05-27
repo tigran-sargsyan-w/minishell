@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/22 19:50:48 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:08:01 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-static t_env_list	*find_node_by_key(t_env_list **env, char *key)
-{
-	t_env_list	*tmp;
-
-	tmp = *env;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, key) == 0)
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-static t_env_list	*set_value(t_env_list *node, char *value)
-{
-	free(node->value);
-	node->value = ft_strdup(value);
-	if (!node->value)
-		return (NULL);
-	return (node);
-}
 
 // READ MAN CD
 int	builtin_cd(t_cmd *cmd, t_env_list **env)
