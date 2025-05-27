@@ -13,7 +13,7 @@ Below are organized test suites covering all core components of the project:
 | 🧷 Parser               | [PARSER.md](tests/PARSER.md) | ✅ |
 | 🗣️ Quotes & Expansion  | [QUOTES_AND_EXPANSION.md](tests/QUOTES_AND_EXPANSION.md) | ❌ |
 | 🔀 Redirection         | [REDIRECTION.md](tests/REDIRECTION.md) | ✅ |
-| ⚙️ Executor            | [EXECUTOR.md](tests/EXECUTOR.md) |       |
+| ⚙️ Executor            | [EXECUTOR.md](tests/EXECUTOR.md) | ✅ |
 | 🧾 Exit Status (`$?`)  | [EXIT_STATUS.md](tests/EXIT_STATUS.md) |     |
 
 ---
