@@ -30,6 +30,7 @@ SRCS = minishell.c \
 		builtin/builtin_unset.c \
 		builtin/builtin_env.c \
 		builtin/builtin_exit.c \
+		builtin/builtin_utils.c \
 		executor/executor.c \
 		executor/executor_utils.c \
 		executor/find_command.c \

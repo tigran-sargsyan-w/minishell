@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 18:43:04 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:56:43 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-static void	free_key_value(char *key, char *value)
-{
-	if (key)
-		free(key);
-	if (value)
-		free(value);
-}
 
 static int	export_without_args(t_env_list **env)
 {
@@ -41,31 +33,20 @@ static int	export_without_args(t_env_list **env)
 	return (EXIT_SUCCESS);
 }
 
-static char	*find_equal_sign(const char *arg)
-{
-	char	*equality_sign;
-
-	equality_sign = ft_strchr(arg, '=');
-	if (equality_sign == NULL)
-		return (NULL);
-	return (equality_sign);
-}
-
-static int export_argument(char **argv, t_env_list **env)
+static int	export_argument(char **argv, t_env_list **env)
 {
 	char		*equality_sign;
 	char		*key;
 	char		*value;
 	t_env_list	*new_node;
 	t_env_list	*tmp_node;
-	
+
 	if ((equality_sign = find_equal_sign(*argv)) == NULL)
 	{
 		argv++;
 		return (0);
 	}
-	if ((key = ft_substr(*argv, 0, equality_sign
-				- *argv)) == NULL)
+	if ((key = ft_substr(*argv, 0, equality_sign - *argv)) == NULL)
 	{
 		perror("minishell");
 		return (1);
@@ -99,7 +80,7 @@ static int export_argument(char **argv, t_env_list **env)
 // Check multiple args
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
-	char		**argv;
+	char	**argv;
 
 	if (cmd->args[1] == NULL)
 		return (export_without_args(env));
