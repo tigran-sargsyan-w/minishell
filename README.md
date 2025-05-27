@@ -15,3 +15,20 @@ Below are organized test suites covering all core components of the project:
 | 🔀 Redirection         | [REDIRECTION.md](tests/REDIRECTION.md) |
 | ⚙️ Executor            | [EXECUTOR.md](tests/EXECUTOR.md) |
 | 🧾 Exit Status (`$?`)  | [EXIT_STATUS.md](tests/EXIT_STATUS.md) |
+
+---
+
+## 🧪 Builtin Detection Script
+
+To test **unsupported builtin commands** (i.e., those your minishell is **not required** to implement), run:
+
+```bash
+./tests/test_builtins.sh
+```
+
+This script will:
+- Attempt to run various shell builtins like `source`, `bind`, `declare`, etc.
+- Show the output or error for each one.
+- Help confirm that your shell gracefully reports errors or ignores unsupported commands.
+
+📎 Location: `tests/test_builtins.sh`
