@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 18:56:43 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:19:27 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,11 @@ static int	export_without_args(t_env_list **env)
 	return (EXIT_SUCCESS);
 }
 
-static int	export_argument(char **argv, t_env_list **env)
+static int	export_argument(char *key, char *value, t_env_list **env)
 {
-	char		*equality_sign;
-	char		*key;
-	char		*value;
 	t_env_list	*new_node;
 	t_env_list	*tmp_node;
 
-	if ((equality_sign = find_equal_sign(*argv)) == NULL)
-	{
-		argv++;
-		return (0);
-	}
-	if ((key = ft_substr(*argv, 0, equality_sign - *argv)) == NULL)
-	{
-		perror("minishell");
-		return (1);
-	}
-	value = ft_strdup(++equality_sign);
-	if (!value)
-	{
-		perror("minishell");
-		free(key);
-		return (1);
-	}
 	tmp_node = find_node_by_key(env, key);
 	if (tmp_node)
 	{
@@ -80,14 +60,37 @@ static int	export_argument(char **argv, t_env_list **env)
 // Check multiple args
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
-	char	**argv;
+	t_env_list	*node;
+	char		**argv;
+	char		*equality_sign;
+	char		*key;
+	char		*value;
 
 	if (cmd->args[1] == NULL)
 		return (export_without_args(env));
 	argv = ++cmd->args;
 	while (*argv)
 	{
-		export_argument(argv, env);
+		if ((equality_sign = find_equal_sign(*argv)) == NULL)
+		{
+			argv++;
+			continue ;
+		}
+		if ((key = ft_substr(*argv, 0, equality_sign - *argv)) == NULL)
+		{
+			perror("minishell");
+			return (1);
+		}
+		value = ft_strdup(++equality_sign);
+		if (value == NULL)
+		{
+			perror("minishell");
+			free(key);
+			return (1);
+		}
+		if ((node = find_node_by_key(env, key)) != NULL)
+			set_value(node, value);
+		export_argument(key, value, env);
 		argv++;
 	}
 	return (0);
