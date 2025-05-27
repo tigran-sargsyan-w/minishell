@@ -34,7 +34,8 @@ SRCS = minishell.c \
 		executor/executor_utils.c \
 		executor/find_command.c \
 		env/envp_list.c \
-		env/env_list_to_tab.c
+		env/env_list_to_tab.c \
+		env/env_list_utils.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)

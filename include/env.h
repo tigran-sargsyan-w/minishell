@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:03:21 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/16 17:22:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:10:56 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ void					lst_add_end(t_env_list **list, t_env_list *new_node);
 size_t					lst_size(t_env_list **list);
 char					**env_list_to_tab(t_env_list **env_list);
 void					free_env_tab(char **env_tab);
+t_env_list				*find_node_by_key(t_env_list **env, char *key);
+t_env_list				*set_value(t_env_list *node, char *value);
 
 #endif
