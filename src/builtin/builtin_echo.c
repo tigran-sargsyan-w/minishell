@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/23 20:40:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:53:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,6 @@
 #include "libft.h"
 #include "parser.h"
 #include <stdio.h>
-
-static void	print_env(char *var, t_env_list *env)
-{
-	t_env_list	*tmp_env;
-	size_t		len;
-
-	tmp_env = env;
-	while (tmp_env)
-	{
-		len = ft_strlen(tmp_env->key);
-		if (ft_strncmp(tmp_env->key, var, len + 1) == 0)
-		{
-			printf("%s", tmp_env->value);
-			break ;
-		}
-		tmp_env = tmp_env->next;
-	}
-}
 
 static int	is_arg_n(const char *arg)
 {
@@ -47,14 +29,11 @@ static int	is_arg_n(const char *arg)
 	return (1);
 }
 
-static void	print_args(char **argv, t_env_list **env)
+static void	print_args(char **argv)
 {
 	while (*argv != NULL)
 	{
-		if ((*argv)[0] == '$')
-			print_env(*argv + 1, *env);
-		else
-			printf("%s", *argv);
+		printf("%s", *argv);
 		//TODO: check security
 		if (*(argv + 1) != NULL)
 			printf(" ");
@@ -66,6 +45,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
 	int		has_n_arg;
+	(void) env;
 
 	argv = cmd->args + 1;
 	has_n_arg = 0;
@@ -81,7 +61,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 		//TODO: check security
 		return (0);
 	}
-	print_args(argv, env);
+	print_args(argv);
 	if (has_n_arg == 0)
 		printf("\n");
 	//TODO: check security
