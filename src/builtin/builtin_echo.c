@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 00:53:18 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/27 13:53:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_arg_n(const char *arg)
 	return (1);
 }
 
-static void	print_args(char **argv, t_env_list **env)
+static void	print_args(char **argv)
 {
 	while (*argv != NULL)
 	{
@@ -45,6 +45,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
 	int		has_n_arg;
+	(void) env;
 
 	argv = cmd->args + 1;
 	has_n_arg = 0;
@@ -60,7 +61,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 		//TODO: check security
 		return (0);
 	}
-	print_args(argv, env);
+	print_args(argv);
 	if (has_n_arg == 0)
 		printf("\n");
 	//TODO: check security

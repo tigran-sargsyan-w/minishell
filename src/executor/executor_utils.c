@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 22:56:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:54:06 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static int	apply_one_redir(t_redir *redir)
 	int	fd;
 	int	ret;
 
+	fd = -1;
 	if (redir->type == REDIR_HEREDOC)
 		return (handle_heredoc(redir));
 	// 2) open the file with the required mode
