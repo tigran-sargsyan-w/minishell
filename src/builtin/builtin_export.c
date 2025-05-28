@@ -6,12 +6,13 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 20:25:44 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/28 03:58:29 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "env.h"
+#include "ft_printf.h"
 #include "libft.h"
 #include "parser.h"
 #include <stddef.h>
@@ -56,8 +57,11 @@ static int	export_argument(char *key, char *value, t_env_list **env)
 	}
 	return (0);
 }
-int	parse_key_value(char *arg, char **key, char **value, char *equality_sign)
+int	parse_key_value(char *arg, char **key, char **value)
 {
+	char	*equality_sign;
+
+	equality_sign = find_equal_sign(arg);
 	if ((*key = ft_substr(arg, 0, equality_sign - arg)) == NULL)
 	{
 		perror("minishell");
@@ -77,10 +81,11 @@ int	parse_key_value(char *arg, char **key, char **value, char *equality_sign)
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
-	char	*equality_sign;
 	char	*key;
 	char	*value;
+	int		ret;
 
+	ret = 0;
 	key = NULL;
 	value = NULL;
 	if (cmd->args[1] == NULL)
@@ -88,15 +93,23 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 	argv = ++cmd->args;
 	while (*argv)
 	{
-		if ((equality_sign = find_equal_sign(*argv)) == NULL)
+		if (!is_valid_name(*argv))
+		{
+			ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n",
+				*argv);
+			ret = 1;
+			argv++;
+			continue ;
+		}
+		if (find_equal_sign(*argv) == NULL)
 		{
 			argv++;
 			continue ;
 		}
-		if (parse_key_value(*argv, &key, &value, equality_sign) == 1)
+		if (parse_key_value(*argv, &key, &value) == 1)
 			return (1);
 		export_argument(key, value, env);
 		argv++;
 	}
-	return (0);
+	return (ret);
 }

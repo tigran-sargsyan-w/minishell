@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 18:55:00 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:31:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,20 @@ void	free_key_value(char *key, char *value)
 		free(key);
 	if (value)
 		free(value);
+}
+
+int	is_valid_name(char *arg)
+{
+	if ((ft_isalpha(arg[0]) != 1) && (arg[0] != '_'))
+		return (0);
+	arg++;
+	while (*arg)
+	{
+		if (*arg == '=')
+			return (1);
+		if ((ft_isalnum(*arg) != 1) && (*arg != '_'))
+			return (0);
+		arg++;
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 18:56:02 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/27 22:51:24 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int							run_builtin(t_cmd *cmd, t_shell *sh);
 // Utils
 char						*find_equal_sign(const char *arg);
 void						free_key_value(char *key, char *value);
+int							is_valid_name(char *arg);
 
 #endif
