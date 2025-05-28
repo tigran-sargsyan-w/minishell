@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:22:12 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/28 23:29:47 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int							run_builtin(t_cmd *cmd, t_shell *sh);
 
 // Utils
 void						free_key_value(char *key, char *value);
-t_export_type				is_valid_name(char *arg);
-t_unset_type				is_valid(char *arg);
+t_export_type				is_valid_export(char *arg);
+t_unset_type				is_valid_unset(char *arg);
 
 
 #endif

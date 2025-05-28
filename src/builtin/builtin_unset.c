@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:21:44 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/28 23:29:14 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	builtin_unset(t_cmd *cmd, t_env_list **env)
 		return (1);
 	while (*argv)
 	{
-		if (is_valid(*argv) == VALID)
+		if (is_valid_unset(*argv) == VALID)
 			remove_var(*argv, env);
 		argv++;
 	}

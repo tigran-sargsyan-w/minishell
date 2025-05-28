@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:25:28 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/28 23:30:01 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_key_value(char *key, char *value)
 		free(value);
 }
 
-t_export_type	is_valid_name(char *arg)
+t_export_type	is_valid_export(char *arg)
 {
 	if ((ft_isalpha(arg[0]) != 1) && (arg[0] != '_'))
 		return (ERROR);
@@ -41,7 +41,7 @@ t_export_type	is_valid_name(char *arg)
 	}
 	return (EXPORT);
 }
-t_unset_type	is_valid(char *arg)
+t_unset_type	is_valid_unset(char *arg)
 {
 	if ((ft_isalpha(arg[0]) != 1) && (arg[0] != '_'))
 	{

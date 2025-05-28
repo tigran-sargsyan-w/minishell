@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:19:37 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/28 23:29:55 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 	argv = ++cmd->args;
 	while (*argv)
 	{
-		type = is_valid_name(*argv);
+		type = is_valid_export(*argv);
 		if (type == EXPORT || type == CONCAT)
 		{
 			if (ft_strchr(*argv, '='))
