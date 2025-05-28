@@ -6,7 +6,7 @@
 /*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 22:15:35 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/28 23:22:12 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,15 @@ typedef struct s_env_list	t_env_list;
 typedef struct s_shell		t_shell;
 
 typedef enum e_export_type {
-	INVALID,
+	ERROR,
 	EXPORT,
 	CONCAT
 } t_export_type;
+
+typedef enum e_unset_type {
+	INVALID,
+	VALID
+} t_unset_type;
 
 // Built-ins
 typedef int					(*t_builtin_func)(t_cmd *cmd, t_env_list **env);
@@ -45,5 +50,7 @@ int							run_builtin(t_cmd *cmd, t_shell *sh);
 // Utils
 void						free_key_value(char *key, char *value);
 t_export_type				is_valid_name(char *arg);
+t_unset_type				is_valid(char *arg);
+
 
 #endif
