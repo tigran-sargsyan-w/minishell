@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:29:14 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/29 17:56:52 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ int	builtin_unset(t_cmd *cmd, t_env_list **env)
 		return (1);
 	while (*argv)
 	{
-		if (is_valid_unset(*argv) == VALID)
-			remove_var(*argv, env);
+		remove_var(*argv, env);
 		argv++;
 	}
 	return (0);
