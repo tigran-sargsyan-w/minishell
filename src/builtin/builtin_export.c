@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 03:58:29 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:23:19 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,70 @@ static int	export_without_args(t_env_list **env)
 	return (EXIT_SUCCESS);
 }
 
-static int	export_argument(char *key, char *value, t_env_list **env)
+int	parse_key_value(char *arg, char **key, char **value)
+{
+	char	*plus_sign;
+	char	*equality_sign;
+
+	plus_sign = ft_strchr(arg, '+');
+	equality_sign = ft_strchr(arg, '=');
+	if (plus_sign && (plus_sign + 1 == equality_sign))
+	{
+		*key = ft_substr(arg, 0, plus_sign - arg);
+	if (*key == NULL)
+		{
+			perror("minishell");
+			return (1);
+	}
+		*value = ft_strdup(++equality_sign);
+		if (*value == NULL)
+		{
+			perror("minishell");
+			free(*key);
+			return (1);
+		}
+	} else
+	{
+		*key = ft_substr(arg, 0, equality_sign - arg);
+		if (*key == NULL)
+		{
+			perror("minishell");
+			return (1);
+		}
+		*value = ft_strdup(++equality_sign);
+		if (*value == NULL)
+		{
+			perror("minishell");
+			free(*key);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+
+static int	export_argument(char *key, char *value, t_env_list **env, t_export_type type)
 {
 	t_env_list	*new_node;
 	t_env_list	*tmp_node;
-
+	char		*new_value;
+	
 	tmp_node = find_node_by_key(env, key);
 	if (tmp_node)
 	{
-		set_value(tmp_node, value);
+		if (type == EXPORT)
+			set_value(tmp_node, value);
+		else if (type == CONCAT)
+		{
+			new_value = ft_strjoin(tmp_node->value, value);
+			if (!new_value)
+			{
+				perror("malloc");
+				free_key_value(key, value);
+				return (1);
+			}
+			set_value(tmp_node, new_value);
+		}
 		free_key_value(key, value);
 	}
 	else
@@ -57,26 +112,6 @@ static int	export_argument(char *key, char *value, t_env_list **env)
 	}
 	return (0);
 }
-int	parse_key_value(char *arg, char **key, char **value)
-{
-	char	*equality_sign;
-
-	equality_sign = find_equal_sign(arg);
-	if ((*key = ft_substr(arg, 0, equality_sign - arg)) == NULL)
-	{
-		perror("minishell");
-		return (1);
-	}
-	*value = ft_strdup(++equality_sign);
-	if (*value == NULL)
-	{
-		perror("minishell");
-		free(*key);
-		return (1);
-	}
-	return (0);
-}
-
 // Check multiple args
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
@@ -84,6 +119,7 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 	char	*key;
 	char	*value;
 	int		ret;
+	t_export_type	type;
 
 	ret = 0;
 	key = NULL;
@@ -93,22 +129,22 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 	argv = ++cmd->args;
 	while (*argv)
 	{
-		if (!is_valid_name(*argv))
+		type = is_valid_name(*argv);
+		if (type == EXPORT || type == CONCAT)
+		{
+			if (ft_strchr(*argv, '='))
+			{
+				if (parse_key_value(*argv, &key, &value) == 1)
+					return (1);
+				export_argument(key, value, env, type);
+			}
+		}
+		else
 		{
 			ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n",
 				*argv);
 			ret = 1;
-			argv++;
-			continue ;
 		}
-		if (find_equal_sign(*argv) == NULL)
-		{
-			argv++;
-			continue ;
-		}
-		if (parse_key_value(*argv, &key, &value) == 1)
-			return (1);
-		export_argument(key, value, env);
 		argv++;
 	}
 	return (ret);
