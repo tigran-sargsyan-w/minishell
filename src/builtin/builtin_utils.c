@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:30:01 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/05/29 17:57:54 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "builtins.h"
 #include "ft_printf.h"
+#include "libft.h"
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -40,23 +40,4 @@ t_export_type	is_valid_export(char *arg)
 		arg++;
 	}
 	return (EXPORT);
-}
-t_unset_type	is_valid_unset(char *arg)
-{
-	if ((ft_isalpha(arg[0]) != 1) && (arg[0] != '_'))
-	{
-		ft_dprintf(2, "minishell: unset: `%s': not a valid identifier\n", arg);
-		return (INVALID);
-	}
-	arg++;
-	while (*arg)
-	{
-		if ((ft_isalnum(*arg) != 1) && (*arg != '_'))
-		{
-			ft_dprintf(2, "minishell: unset: `%s': not a valid identifier\n", arg);
-			return (INVALID);
-		}
-		arg++;
-	}
-	return (VALID);
 }
