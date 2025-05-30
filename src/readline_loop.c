@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/26 18:05:24 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:10:53 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	readline_loop(t_shell *sh)
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
-		if (input[0] != '\0')
+		if (input[0] != '\0') // TODO: check if input is empty and if input is only spaces
 		{
 			if (ft_strncmp(input, "exit", 5) == 0)
 			{
@@ -36,7 +36,7 @@ void	readline_loop(t_shell *sh)
 			}
 			add_history(input);
 			tokens = lexer(input);
-			// print_tokens(tokens);
+			print_tokens(tokens);
 			if (tokens)
 			{
 				cmd = parse_tokens(tokens, sh);
