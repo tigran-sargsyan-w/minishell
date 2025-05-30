@@ -25,7 +25,7 @@
 | 7  | Single quoted string                   | `echo 'single quoted text'`           | `[WORD(echo), SQUOTED(single quoted text)]`                                | ✅      |
 | 8  | Nested quotes inside double quotes     | `echo "text with 'nested quotes'"`    | `[WORD(echo), DQUOTED(text with 'nested quotes')]`                         | ✅      |
 | 9  | Escaped space                          | `echo hello\ world`                   | `[WORD(echo), WORD(hello\),WORD(world)]`                                          | ✅      |
-| 10 | Escaped pipe character (treated literally) | `echo this\|is\|one\|word`       | `[WORD(echo), WORD(this\|is\|one\|word)]`                                     | ❌      |
+| 10 | Escaped pipe character (treated literally) | `echo this\|is\|one\|word`       | `[WORD(echo), WORD(this\|is\|one\|word)]`                                     | ✅      |
 | 11 | Redirection with quoted filenames      | `echo "hello" > "file with space.txt"`| `[WORD(echo), DQUOTED(hello), REDIR_OUT(>), DQUOTED(file with space.txt)]` | ✅      |
 | 12 | Empty line                             | ``                                     | `[]`                                                                       | ✅      |
 | 13 | Line with only spaces                  | `    `                                 | `[]`                                                                       | ❌      |
