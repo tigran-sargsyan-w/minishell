@@ -31,8 +31,8 @@
 | 13 | Line with only spaces                  | `    `                                 | `[]`                                                                       | ❌      |
 | 14 | Multiple spaces between words          | `ls        -l       /tmp`             | `[WORD(ls), WORD(-l), WORD(/tmp)]`                                         | ✅      |
 | 15 | Unclosed double quote                  | `echo "unclosed`                      | `Error: Unclosed double quote` (detected in parser)                        | ❌      |
-| 16 | Redirection without a target file      | `cat file.txt >`                      | `Error: Missing file after redirection '>'` (parser)                       | ❓      |
-| 17 | Pipe at the beginning of the line      | `\| grep something`                   | `Error: Pipe at start of input` (parser)                                   | ❓      |
+| 16 | Redirection without a target file      | `cat file.txt >`                      | `Error: Missing file after redirection '>'` (parser)                       | ✅      |
+| 17 | Pipe at the beginning of the line      | `\| grep something`                   | `Error: Pipe at start of input` (parser)                                   | ✅      |
 | 18 | Heredoc operator                       | `cat << limiter`                      | `[WORD(cat), HEREDOC(<<), WORD(limiter)]`                                  | ✅      |
 | 19 | Append redirection                     | `echo hi >> log.txt`                  | `[WORD(echo), WORD(hi), APPEND(>>), WORD(log.txt)]`                        | ✅      |
 | 20 | Mixed redirections                     | `cmd < in.txt >> out.txt`             | `[WORD(cmd), REDIR_IN(<), WORD(in.txt), APPEND(>>), WORD(out.txt)]`        | ✅      |
