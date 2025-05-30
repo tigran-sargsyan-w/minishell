@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/27 13:54:06 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:49:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 	if (run_builtin(cmd, sh) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], sh->env_tab);
+		// TODO: Handle checking if cmd is directory
+		// Validate if cmd is dir return 126
 		if (!full_cmd)
 		{
 			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
