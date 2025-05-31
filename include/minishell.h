@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/31 18:42:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:10:36 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_token						*lexer(char *input);
 int							is_space(char c);
 int							is_special(char c);
 void						add_token(t_token **tokens, t_token_type type,
-								char *value);
+								char *value, int separated);
 void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
 
