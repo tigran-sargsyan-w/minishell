@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/24 11:48:16 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/05/31 18:42:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_token
 {
 	t_token_type			type;
 	char					*value;
+	int						separated;
 	struct s_token			*next;
 }							t_token;
 
