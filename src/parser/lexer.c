@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/02 15:49:41 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:15:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static int	read_squoted(t_token **tokens, char *input, int *i, int sep_flag)
 		(*i)++;
 	if (input[*i] != '\'')
 	{
-		// TODO: handle unclosed single quote
 		printf("minishell: syntax error: unclosed single quote\n");
 		return (1);
 	}
@@ -90,7 +89,6 @@ static int	read_dquoted(t_token **tokens, char *input, int *i, int sep_flag)
 		(*i)++;
 	if (input[*i] != '"')
 	{
-		// TODO: handle unclosed double quote
 		printf("minishell: syntax error: unclosed double quote\n");
 		return (1);
 	}
