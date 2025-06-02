@@ -30,7 +30,7 @@
 | 12 | Empty line                             | ``                                     | `[]`                                                                       | ✅      |
 | 13 | Line with only spaces                  | `    `                                 | `[]`                                                                       | ✅      |
 | 14 | Multiple spaces between words          | `ls        -l       /tmp`             | `[WORD(ls), WORD(-l), WORD(/tmp)]`                                         | ✅      |
-| 15 | Unclosed double quote                  | `echo "unclosed`                      | `Error: Unclosed double quote` (detected in parser)                        | ❌      |
+| 15 | Unclosed double quote                  | `echo "unclosed`                      | `Error: Unclosed double quote` (detected in parser)                        | ✅      |
 | 16 | Redirection without a target file      | `cat file.txt >`                      | `Error: Missing file after redirection '>'` (parser)                       | ✅      |
 | 17 | Pipe at the beginning of the line      | `\| grep something`                   | `Error: Pipe at start of input` (parser)                                   | ✅      |
 | 18 | Heredoc operator                       | `cat << limiter`                      | `[WORD(cat), HEREDOC(<<), WORD(limiter)]`                                  | ✅      |
