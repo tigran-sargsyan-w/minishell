@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 20:18:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:56:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,89 +137,125 @@ int	is_redir_token(t_token_type type)
 		|| type == TOK_DGREATER);
 }
 
-
-t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
+char *build_argument(t_token **tokens, t_shell *sh)
 {
-	t_cmd	*cmd;
-	t_cmd	*current_cmd;
-	t_cmd	*new_cmd;
-	int		redirect_type;
-	char	*tmp_token_value;
+    t_token *tok;
+    char    *combined;
+    char    *chunk;
+    char    *old;
 
-	cmd = init_cmd();
-	current_cmd = cmd;
-	while (tokens)
-	{
-		if (is_arg_token(tokens->type))
-		{
-			if (tokens->type == TOK_SQUOTED)
-				tmp_token_value = ft_strdup(tokens->value);
-			else if (tokens->type == TOK_WORD || tokens->type == TOK_DQUOTED)
-				tmp_token_value = expand_vars(tokens->value, sh);
-			append_arg(current_cmd, tmp_token_value);
-			free(tmp_token_value);
-		}
-		else if (is_redir_token(tokens->type))
-		{
-			if (!tokens->next || !is_arg_token(tokens->next->type))
-			{
-				printf("minishell: syntax error near `%s'\n", tokens->value);
-				free_cmd_list(cmd);
-				return (NULL);
-			}
-			redirect_type = tokens->type;
-			tokens = tokens->next;
-			if (tokens->type == TOK_SQUOTED)
-				tmp_token_value = ft_strdup(tokens->value);
-			else if (tokens->type == TOK_WORD || tokens->type == TOK_DQUOTED)
-				tmp_token_value = expand_vars(tokens->value, sh);
-			if (redirect_type == TOK_LESS)
-				add_redirection(current_cmd, REDIR_IN, tmp_token_value);
-			else if (redirect_type == TOK_GREATER)
-				add_redirection(current_cmd, REDIR_OUT, tmp_token_value);
-			else if (redirect_type == TOK_DLESS)
-				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value);
-			else if (redirect_type == TOK_DGREATER)
-				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value);
-			free(tmp_token_value);
-		}
-		else if (tokens->type == TOK_PIPE)
-		{
-			if (!current_cmd || (current_cmd->args[0] == NULL))
-			{
-				printf("minishell: syntax error near unexpected token `|'\n");
-				free_cmd_list(cmd);
-				return (NULL);
-			}
-			if (!tokens->next || !is_arg_token(tokens->next->type))
-			{
-				printf("minishell: syntax error near unexpected token ");
-				if (!tokens->next)
-					printf("`newline'\n");
-				else
-					printf("`%s'\n", tokens->next->value);
-				free_cmd_list(cmd);
-				return (NULL);
-			}
-			new_cmd = init_cmd();
-			if (!new_cmd)
-			{
-				free_cmd_list(cmd);
-				return (NULL);
-			}
-			current_cmd->next = new_cmd;
-			current_cmd = new_cmd;
-		}
-		else
-		{
-			printf("minishell: syntax error near unexpected token `%s'\n",
-				tokens->value);
-			free_cmd_list(cmd);
-			return (NULL);
-		}
-		tokens = tokens->next;
-	}
-	return (cmd);
+    tok = *tokens;
+	combined = ft_strdup("");
+    if (!combined)
+        return NULL;
+
+	// Loop: while tok is an "argument" token AND (either the first token, or sep==0)
+    while (tok && is_arg_token(tok->type) && (tok == *tokens || tok->separated == 0))
+    {
+        if (tok->type == TOK_SQUOTED)
+            chunk = ft_strdup(tok->value);
+        else if (tok->type == TOK_WORD || tok->type == TOK_DQUOTED)
+			chunk = expand_vars(tok->value, sh);
+        if (!chunk)
+            return (free(combined), NULL);
+        old = combined;
+        combined = ft_strjoin(combined, chunk);
+        free(old);
+        free(chunk);
+        tok = tok->next;
+    }
+
+	// Now tok points to the first "non-concatenable" token
+    *tokens = tok;
+    return combined;
+}
+
+
+t_cmd *parse_tokens(t_token *tokens, t_shell *sh)
+{
+    t_cmd   *cmd;
+    t_cmd   *current_cmd;
+    t_cmd   *new_cmd;
+    int      redirect_type;
+    char    *tmp_token_value;
+
+    cmd = init_cmd();
+    current_cmd = cmd;
+    while (tokens)
+    {
+		// If the token is a "word", collect the whole argument
+        if (is_arg_token(tokens->type))
+        {
+            tmp_token_value = build_argument(&tokens, sh);
+            if (!tmp_token_value)
+                return (free_cmd_list(cmd), NULL);
+            if (append_arg(current_cmd, tmp_token_value))
+                return (free(tmp_token_value), free_cmd_list(cmd), NULL);
+            free(tmp_token_value);
+            continue;
+        }
+		// Redirections: <, >, <<, >>
+        else if (is_redir_token(tokens->type))
+        {
+            if (!tokens->next || !is_arg_token(tokens->next->type))
+            {
+                printf("minishell: syntax error near `%s'\n", tokens->value);
+                return (free_cmd_list(cmd), NULL);
+            }
+            redirect_type = tokens->type;
+            tokens = tokens->next;
+
+			// Collect the filename in the same way as an argument
+            tmp_token_value = build_argument(&tokens, sh);
+            if (!tmp_token_value)
+                return (free_cmd_list(cmd), NULL);
+
+            if (redirect_type == TOK_LESS)
+                add_redirection(current_cmd, REDIR_IN, tmp_token_value);
+            else if (redirect_type == TOK_GREATER)
+                add_redirection(current_cmd, REDIR_OUT, tmp_token_value);
+            else if (redirect_type == TOK_DLESS)
+                add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value);
+            else if (redirect_type == TOK_DGREATER)
+                add_redirection(current_cmd, REDIR_APPEND, tmp_token_value);
+
+            free(tmp_token_value);
+            continue;
+        }
+		// Pipe '|'
+        else if (tokens->type == TOK_PIPE)
+        {
+            if (!current_cmd || (current_cmd->args[0] == NULL))
+            {
+                printf("minishell: syntax error near unexpected token `|'\n");
+                return (free_cmd_list(cmd), NULL);
+            }
+            if (!tokens->next || !is_arg_token(tokens->next->type))
+            {
+                printf("minishell: syntax error near unexpected token ");
+                if (!tokens->next)
+                    printf("`newline'\n");
+                else
+                    printf("`%s'\n", tokens->next->value);
+                return (free_cmd_list(cmd), NULL);
+            }
+            new_cmd = init_cmd();
+            if (!new_cmd)
+                return (free_cmd_list(cmd), NULL);
+            current_cmd->next = new_cmd;
+            current_cmd = new_cmd;
+			tokens = tokens->next;  // skip the '|' token itself
+            continue;
+        }
+		// In all other cases — syntax error
+        else
+        {
+            printf("minishell: syntax error near unexpected token `%s'\n",
+                   tokens->value);
+            return (free_cmd_list(cmd), NULL);
+        }
+    }
+    return cmd;
 }
 
 void	print_cmds(t_cmd *cmd)
