@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/02 17:50:48 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:19:29 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void					execute_child(t_cmd *cmd, t_shell *sh);
 int						handle_redirections(t_cmd *cmd);
 
 // exit_utils.c
-int						is_directory(char *cmd);
 void					error_exit(char *msg);
 
 // signals.c
