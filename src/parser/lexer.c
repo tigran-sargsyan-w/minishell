@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/31 20:21:27 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:15:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	read_squoted(t_token **tokens, char *input, int *i, int sep_flag)
 		(*i)++;
 	if (input[*i] != '\'')
 	{
-		// TODO: handle unclosed single quote
+		printf("minishell: syntax error: unclosed single quote\n");
 		return (1);
 	}
 	add_token(tokens, TOK_SQUOTED, ft_strndup(input + start, *i - start),
@@ -89,7 +89,7 @@ static int	read_dquoted(t_token **tokens, char *input, int *i, int sep_flag)
 		(*i)++;
 	if (input[*i] != '"')
 	{
-		// TODO: handle unclosed double quote
+		printf("minishell: syntax error: unclosed double quote\n");
 		return (1);
 	}
 	add_token(tokens, TOK_DQUOTED, ft_strndup(input + start, *i - start),
@@ -136,13 +136,13 @@ t_token	*lexer(char *input)
 			}
 			else if (input[i] == '\'')
 			{
-				if (read_squoted(&tokens, input, &i, sep_flag))
+				if (read_squoted(&tokens, input, &i, sep_flag) == 1)
 					return (free_tokens(tokens), NULL);
 				last_was_space = 0;
 			}
 			else if (input[i] == '"')
 			{
-				if (read_dquoted(&tokens, input, &i, sep_flag))
+				if (read_dquoted(&tokens, input, &i, sep_flag) == 1)
 					return (free_tokens(tokens), NULL);
 				last_was_space = 0;
 			}

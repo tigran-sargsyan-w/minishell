@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/31 02:32:04 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:05:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	readline_loop(t_shell *sh)
 	while ((input = readline("minishell > ")) != NULL)
 	{
 		if (input[0] != '\0' && !is_only_whitespaces(input))
-			// TODO: check if input is empty and if input is only spaces
 		{
 			if (ft_strncmp(input, "exit", 5) == 0)
 			{
@@ -48,15 +47,18 @@ void	readline_loop(t_shell *sh)
 			}
 			add_history(input);
 			tokens = lexer(input);
-			print_tokens(tokens);
 			if (tokens)
 			{
+				print_tokens(tokens);
 				cmd = parse_tokens(tokens, sh);
-				// print_cmds(cmd);
+				if (cmd)
+				{
+					// print_cmds(cmd);
+					executor(cmd, sh);
+					free_cmd_list(cmd);
+				}
+				free_tokens(tokens);
 			}
-			if (cmd)
-				executor(cmd, sh);
-			free_tokens(tokens);
 		}
 		free(input);
 	}
