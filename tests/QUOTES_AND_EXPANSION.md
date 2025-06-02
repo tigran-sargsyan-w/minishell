@@ -15,8 +15,8 @@
 | 1  | `echo $HOME`                     | `<HOME-value>\n`, <br> exit code `0`                          | ✅ |
 | 2  | `echo "$HOME"`                   | `<HOME-value>\n`, <br> exit code `0`                          | ✅ |
 | 3  | `echo '$HOME'`                   | `$HOME\n`, <br> exit code `0`                                 | ✅ |
-| 4  | `echo pre"$HOME"post`            | `pre<HOME-value>post\n`, <br> exit code `0`                   | ❌ |
-| 5  | `echo pre'$HOME'post`            | `pre$HOMEpost\n`, <br> exit code `0`                          | ❌ |
+| 4  | `echo pre"$HOME"post`            | `pre<HOME-value>post\n`, <br> exit code `0`                   | ✅ |
+| 5  | `echo pre'$HOME'post`            | `pre$HOMEpost\n`, <br> exit code `0`                          | ✅ |
 | 6  | `echo "$USER:$HOME"`             | `<USER-value>:<HOME-value>\n`, <br> exit code `0`             | ✅ |
 | 7  | `echo $UNSET_VAR`                | `\n` (empty), <br> exit code `0`                              | ✅ |
 | 8  | `echo "$UNSET_VAR"`              | `\n` (empty), <br> exit code `0`                              | ✅ |
@@ -32,5 +32,5 @@
 | 18 | `ls '$HOME'`                     | `ls: cannot access '$HOME': No such file or directory\n`, <br> exit code `2` | ✅ |
 | 19 | `touch $PWD/testfile`            | no stdout, <br> creates file `$PWD/testfile`, exit code `0`   | ✅ |
 | 20 | `rm $PWD/testfile`               | no stdout, <br> removes file `$HOME/testfile`, exit code `0`  | ✅ |
-| 21 | `touch "$PWD"/testfile`          | no stdout, <br> creates file `$PWD/testfile`, exit code `0`   | ❌ |
-| 22 | `rm "$PWD"/testfile`             | no stdout, <br> removes file `$HOME/testfile`, exit code `0`  | ❌ |
+| 21 | `touch "$PWD"/testfile`          | no stdout, <br> creates file `$PWD/testfile`, exit code `0`   | ✅ |
+| 22 | `rm "$PWD"/testfile`             | no stdout, <br> removes file `$HOME/testfile`, exit code `0`  | ✅ |
