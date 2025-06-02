@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 22:09:37 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:50:48 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ void					execute_child(t_cmd *cmd, t_shell *sh);
 int						handle_redirections(t_cmd *cmd);
 
 // exit_utils.c
+int						is_directory(char *cmd);
 void					error_exit(char *msg);
 
-//signals.c
+// signals.c
 void					setup_signal_handlers(void);
 
 #endif
