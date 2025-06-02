@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/02 13:58:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:02:01 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 				printf("minishell: syntax error near unexpected token `|'\n");
 				return (free_cmd_list(cmd), NULL);
 			}
-			if (!tokens->next || !is_arg_token(tokens->next->type))
+			if (!tokens->next)
 			{
 				printf("minishell: syntax error near unexpected token ");
 				if (!tokens->next)
