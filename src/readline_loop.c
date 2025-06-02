@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/02 18:01:51 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/02 19:34:54 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,6 @@ void	readline_loop(t_shell *sh)
 	{
 		if (input[0] != '\0' && !is_only_whitespaces(input))
 		{
-			if (ft_strncmp(input, "exit", 5) == 0)
-			{
-				free(input);
-				break ;
-			}
 			add_history(input);
 			tokens = lexer(input);
 			if (tokens)
