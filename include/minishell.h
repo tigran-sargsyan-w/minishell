@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/24 11:48:16 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:10:24 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void						print_tokens(t_token *tokens);
 void						free_tokens(t_token *tokens);
 
 // readline_loop.c
-typedef struct s_env_list	t_env_list;
 void						readline_loop(t_shell *sh);
 
 #endif
