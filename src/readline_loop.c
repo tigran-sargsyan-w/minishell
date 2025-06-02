@@ -19,7 +19,7 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
-int	is_directory(char *cmd)
+static int	is_directory(char *cmd)
 {
 	size_t	len;
 
@@ -33,6 +33,17 @@ int	is_directory(char *cmd)
 	return (0);
 }
 
+static int	is_only_whitespaces(char *input)
+{
+	while (*input)
+	{
+		if (is_space(*input) == 0)
+			return (0);
+		input++;
+	}
+	return (1);
+}
+
 void	readline_loop(t_shell *sh)
 {
 	t_token	*tokens;
@@ -42,8 +53,7 @@ void	readline_loop(t_shell *sh)
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
-		if (input[0] != '\0')
-		// TODO: check if input is empty and if input is only spaces
+		if (input[0] != '\0' && !is_only_whitespaces(input))
 		{
 			if (ft_strncmp(input, "exit", 5) == 0)
 			{
@@ -52,21 +62,23 @@ void	readline_loop(t_shell *sh)
 			}
 			add_history(input);
 			tokens = lexer(input);
-			print_tokens(tokens);
 			if (tokens)
 			{
+				// print_tokens(tokens);
 				cmd = parse_tokens(tokens, sh);
-				if (is_directory(cmd->args[0]))
+				if (cmd && is_directory(cmd->args[0]))
 				{
 					sh->last_status = 126;
 					free(input);
 					continue ;
 				}
-				// print_cmds(cmd);
+				if (cmd)
+				{
+					// print_cmds(cmd);
+					executor(cmd, sh);
+				}
+				free_tokens(tokens);
 			}
-			if (cmd)
-				executor(cmd, sh);
-			free_tokens(tokens);
 		}
 		free(input);
 	}
