@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/03 16:58:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:08:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
@@ -45,7 +46,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		; // Wait for all child processes to finish
 	if (WIFEXITED(status))
 		sh->last_status = WEXITSTATUS(status);
-	//TODO: Wrong exit code for SIGQUIT and SIGINT
+	//TODO: Wrong exit code for SIGQUIT (CTRL +D)
 	if (WIFSIGNALED(status))
 	{
 		sh->last_status = WTERMSIG(status);
