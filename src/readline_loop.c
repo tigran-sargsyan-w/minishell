@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/02 19:34:54 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:19:42 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	readline_loop(t_shell *sh)
 			{
 				// print_tokens(tokens);
 				cmd = parse_tokens(tokens, sh);
+				free_tokens(tokens);
 				if (cmd && is_directory(cmd->args[0]))
 				{
 					sh->last_status = 126;
@@ -72,7 +73,6 @@ void	readline_loop(t_shell *sh)
 					// print_cmds(cmd);
 					executor(cmd, sh);
 				}
-				free_tokens(tokens);
 			}
 		}
 		free(input);
