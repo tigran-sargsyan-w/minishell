@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/27 18:25:56 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:58:26 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
+	int		status;
 
 	prev_pipe_read_fd = 0;
 	while (cmd)
@@ -40,8 +41,19 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		}
 		cmd = cmd->next;
 	}
-	while (wait(NULL) > 0)
-		continue ;
+	while (waitpid(-1, &status, 0) > 0)
+		; // Wait for all child processes to finish
+	if (WIFEXITED(status))
+		sh->last_status = WEXITSTATUS(status);
+	//TODO: Wrong exit code for SIGQUIT and SIGINT
+	if (WIFSIGNALED(status))
+	{
+		sh->last_status = WTERMSIG(status);
+		if (sh->last_status == 3) // SIGQUIT
+			sh->last_status = 128 + sh->last_status; // Convert to exit code
+		else if (sh->last_status == 2) // SIGINT
+			sh->last_status = 130; // Convert to exit code
+	}
 	unlink(HEREDOC_TMPFILE);
 }
 
