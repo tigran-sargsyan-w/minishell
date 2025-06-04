@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/03 16:19:42 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:08:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	is_directory(char *cmd)
 {
 	size_t	len;
 
+	if (!cmd)
+		return (1);
 	len = ft_strlen(cmd);
 	if (((cmd[len - 1] == '.') || (cmd[len - 1] == '/')) || (cmd[0] == '.'
 			&& cmd[1] == '\0'))
