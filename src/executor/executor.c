@@ -6,17 +6,17 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/04 16:42:18 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:57:23 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtins.h"
 #include "env.h"
 #include "executor.h"
-#include "builtins.h"
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
@@ -45,20 +45,20 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	while (waitpid(-1, &status, 0) > 0)
 		;
 	if (WIFEXITED(status))
-        sh->last_status = WEXITSTATUS(status);
-    else if (WIFSIGNALED(status))
-        sh->last_status = 128 + WTERMSIG(status);
+		sh->last_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		sh->last_status = 128 + WTERMSIG(status);
 	unlink(HEREDOC_TMPFILE);
 }
 
 void	executor(t_cmd *cmd, t_shell *sh)
 {
-	int		saved_stdin;
-	int		saved_stdout;
+	int	saved_stdin;
+	int	saved_stdout;
 
 	sh->env_tab = env_list_to_tab(&sh->env_list);
 	// TODO: Handle NULL tab
-	//if (!sh->env_tab)
+	// if (!sh->env_tab)
 	if (cmd->next == NULL)
 	{
 		// Single command with possible redirection
@@ -78,6 +78,6 @@ void	executor(t_cmd *cmd, t_shell *sh)
 	}
 	else
 		execute_cmds(cmd, sh);
-	//free_cmd_list(cmd); TODO: Fix double free crash (export TMP=HELLO)
+	// free_cmd_list(cmd); TODO: Fix double free crash (export TMP=HELLO)
 	free_env_tab(sh->env_tab);
 }
