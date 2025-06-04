@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/30 15:49:29 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:32:07 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,11 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 {
 	char	*full_cmd;
 
-	handle_redirections(cmd);
+	if (handle_redirections(cmd) < 0)
+	{
+		sh->last_status = 1;
+		exit(1);
+	}
 	if (run_builtin(cmd, sh) == -1)
 	{
 		full_cmd = find_command(cmd->args[0], sh->env_tab);
