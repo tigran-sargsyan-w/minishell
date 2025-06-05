@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/05 11:06:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 23:32:38 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,20 @@
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 extern volatile sig_atomic_t	g_signo;
 
-// TODO: move this function to a more appropriate place
-static int	is_directory(char *cmd)
+// TODO: move this function to a more appropriate place?
+static int	is_directory(const char *path)
 {
-	size_t	len;
+	struct stat	sb;
 
-	if (!cmd)
-		return (1);
-	len = ft_strlen(cmd);
-	if (((cmd[len - 1] == '.') || (cmd[len - 1] == '/')) || (cmd[0] == '.'
-			&& cmd[1] == '\0'))
+	if (!path || stat(path, &sb) == 1)
+		return (0);
+	if (S_ISDIR(sb.st_mode))
 	{
-		ft_dprintf(2, "minishell: %s: Is a directory\n", cmd);
+		ft_dprintf(2, "minishell: %s: Is a directory\n", path);
 		return (1);
 	}
 	return (0);
@@ -49,7 +48,6 @@ void	readline_loop(t_shell *sh)
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
-		signal(SIGINT, SIG_IGN);
 		if (g_signo == 1)
 		{
 			if (sh->last_status < 128)
@@ -85,7 +83,6 @@ void	readline_loop(t_shell *sh)
 			}
 		}
 		free(input);
-		setup_signal_handlers();
 	}
 	// imitate Ctrl-D
 	write(1, "exit\n", 5);
