@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/04 19:08:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:41:52 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 
+// TODO: move this function to a more appropriate place
 static int	is_directory(char *cmd)
 {
 	size_t	len;
@@ -35,17 +36,6 @@ static int	is_directory(char *cmd)
 	return (0);
 }
 
-static int	is_only_whitespaces(char *input)
-{
-	while (*input)
-	{
-		if (is_space(*input) == 0)
-			return (0);
-		input++;
-	}
-	return (1);
-}
-
 void	readline_loop(t_shell *sh)
 {
 	t_token	*tokens;
@@ -55,7 +45,7 @@ void	readline_loop(t_shell *sh)
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
-		if (input[0] != '\0' && !is_only_whitespaces(input))
+		if (input[0] != '\0')
 		{
 			add_history(input);
 			tokens = lexer(input);
