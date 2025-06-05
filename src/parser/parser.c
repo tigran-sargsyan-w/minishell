@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/02 20:02:01 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:13:24 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ char	*build_argument(t_token **tokens, t_shell *sh)
 	combined = ft_strdup("");
 	if (!combined)
 		return (NULL);
-	// Loop: while tok is an "argument" token AND 
+	// Loop: while tok is an "argument" token AND
 	// (either the first token, or sep==0)
 	while (tok && is_arg_token(tok->type) && (tok == *tokens
 			|| tok->separated == 0))
@@ -199,6 +199,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 			if (!tokens->next || !is_arg_token(tokens->next->type))
 			{
 				printf("minishell: syntax error near `%s'\n", tokens->value);
+				sh->last_status = 2;
 				return (free_cmd_list(cmd), NULL);
 			}
 			redirect_type = tokens->type;
@@ -247,7 +248,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		else
 		{
 			printf("minishell: syntax error near unexpected token `%s'\n",
-					tokens->value);
+				tokens->value);
 			return (free_cmd_list(cmd), NULL);
 		}
 	}

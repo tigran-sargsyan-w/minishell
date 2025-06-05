@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/02 18:19:29 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:13:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXECUTOR_H
 
 # include "parser.h"
+# include <sys/types.h>
 # define SUCCESS 0
 # define FAILURE 1
 # define CMD_NOT_FOUND 127
@@ -43,7 +44,7 @@ void					executor(t_cmd *cmd, t_shell *sh);
 void					execute_cmds(t_cmd *cmd, t_shell *sh);
 
 // executor_utils.c
-void					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
+pid_t					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
 							int prev_fd, t_pipe pd);
 void					execute_child(t_cmd *cmd, t_shell *sh);
 int						handle_redirections(t_cmd *cmd);

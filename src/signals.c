@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 21:58:12 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 22:58:28 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 00:11:24 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,24 @@
 #include <signal.h>
 #include <unistd.h>
 
+volatile sig_atomic_t	g_signo = 0;
+
 // Handler for SIGINT (Ctrl-C)
 static void	sigint_handler(int signo)
 {
 	(void)signo;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	rl_done = 1;
+	g_signo = 1;
+}
+
+int	event_nothing(void)
+{
+	return (0);
 }
 
 void	setup_signal_handlers(void)
 {
-	// Disable readline's default signal handling
-	rl_catch_signals = 0;
+	rl_event_hook = event_nothing;
 	// Ctrl-C → our handler
 	signal(SIGINT, sigint_handler);
 	// Ctrl-\ → ignore
