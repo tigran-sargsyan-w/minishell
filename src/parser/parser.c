@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/05 05:13:24 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:01:16 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,11 +224,13 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		{
 			if (!current_cmd || (current_cmd->args[0] == NULL))
 			{
+				sh->last_status = 2;
 				printf("minishell: syntax error near unexpected token `|'\n");
 				return (free_cmd_list(cmd), NULL);
 			}
 			if (!tokens->next)
 			{
+				sh->last_status = 2;
 				printf("minishell: syntax error near unexpected token ");
 				if (!tokens->next)
 					printf("`newline'\n");
@@ -247,6 +249,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		// In all other cases — syntax error
 		else
 		{
+			sh->last_status = 2;
 			printf("minishell: syntax error near unexpected token `%s'\n",
 				tokens->value);
 			return (free_cmd_list(cmd), NULL);

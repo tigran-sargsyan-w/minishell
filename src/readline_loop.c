@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/05 05:41:52 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:06:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ void	readline_loop(t_shell *sh)
 					// print_cmds(cmd);
 					executor(cmd, sh);
 				}
+			}
+			else
+			{
+				sh->last_status = 2;
 			}
 		}
 		free(input);
