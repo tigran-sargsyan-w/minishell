@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/04 19:08:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:13:26 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 #include "parser.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdlib.h>
+
+extern volatile sig_atomic_t	g_signo;
 
 static int	is_directory(char *cmd)
 {
@@ -35,27 +38,26 @@ static int	is_directory(char *cmd)
 	return (0);
 }
 
-static int	is_only_whitespaces(char *input)
-{
-	while (*input)
-	{
-		if (is_space(*input) == 0)
-			return (0);
-		input++;
-	}
-	return (1);
-}
-
 void	readline_loop(t_shell *sh)
 {
 	t_token	*tokens;
 	t_cmd	*cmd;
 	char	*input;
 
+	g_signo = 0;
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
-		if (input[0] != '\0' && !is_only_whitespaces(input))
+		signal(SIGINT, SIG_IGN);
+		if (g_signo == 1)
+		{
+			if (sh->last_status < 128)
+				sh->last_status = 130;
+			g_signo = 0;
+			free(input);
+			continue ;
+		}
+		if (input[0] != '\0')
 		{
 			add_history(input);
 			tokens = lexer(input);
@@ -78,6 +80,7 @@ void	readline_loop(t_shell *sh)
 			}
 		}
 		free(input);
+		setup_signal_handlers();
 	}
 	// imitate Ctrl-D
 	write(1, "exit\n", 5);
