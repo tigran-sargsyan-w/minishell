@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/05 05:13:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:41:52 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 extern volatile sig_atomic_t	g_signo;
 
+// TODO: move this function to a more appropriate place
 static int	is_directory(char *cmd)
 {
 	size_t	len;
