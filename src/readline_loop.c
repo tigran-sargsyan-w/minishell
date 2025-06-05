@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/05 23:32:38 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 00:42:56 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	readline_loop(t_shell *sh)
 			free(input);
 			continue ;
 		}
-		if (input[0] != '\0')
+		if (*input)
 		{
 			add_history(input);
 			tokens = lexer(input);
@@ -66,21 +66,12 @@ void	readline_loop(t_shell *sh)
 				cmd = parse_tokens(tokens, sh);
 				free_tokens(tokens);
 				if (cmd && is_directory(cmd->args[0]))
-				{
 					sh->last_status = 126;
-					free(input);
-					continue ;
-				}
-				if (cmd)
-				{
-					// print_cmds(cmd);
+				else if (cmd)
 					executor(cmd, sh);
-				}
 			}
 			else
-			{
 				sh->last_status = 2;
-			}
 		}
 		free(input);
 	}
