@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/04 19:25:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 04:24:21 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
 	int		status;
+	pid_t	pid;
 
 	prev_pipe_read_fd = 0;
 	while (cmd)
@@ -32,7 +33,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
 		}
-		fork_and_execute_cmd(cmd, sh, prev_pipe_read_fd, pipefd);
+		pid = fork_and_execute_cmd(cmd, sh, prev_pipe_read_fd, pipefd);
 		if (prev_pipe_read_fd != 0)
 			close(prev_pipe_read_fd);
 		if (cmd->next)
@@ -42,13 +43,20 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		}
 		cmd = cmd->next;
 	}
-	while (waitpid(-1, &status, 0) > 0)
-		;
+	waitpid(pid, &status, 0);
+	if (pid < 0)
+	{
+		free_env_tab(sh->env_tab);
+		error_exit("fork");
+		return ;
+	}
 	if (WIFEXITED(status))
 		sh->last_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		sh->last_status = 128 + WTERMSIG(status);
 	unlink(HEREDOC_TMPFILE);
+	while (wait(&status) > 0)
+		;
 }
 
 void	executor(t_cmd *cmd, t_shell *sh)

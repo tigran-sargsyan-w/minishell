@@ -17,7 +17,10 @@
 #include "parser.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdlib.h>
+
+extern volatile sig_atomic_t	g_signo;
 
 // TODO: move this function to a more appropriate place
 static int	is_directory(char *cmd)
@@ -42,9 +45,19 @@ void	readline_loop(t_shell *sh)
 	t_cmd	*cmd;
 	char	*input;
 
+	g_signo = 0;
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
+		signal(SIGINT, SIG_IGN);
+		if (g_signo == 1)
+		{
+			if (sh->last_status < 128)
+				sh->last_status = 130;
+			g_signo = 0;
+			free(input);
+			continue ;
+		}
 		if (input[0] != '\0')
 		{
 			add_history(input);
@@ -68,6 +81,7 @@ void	readline_loop(t_shell *sh)
 			}
 		}
 		free(input);
+		setup_signal_handlers();
 	}
 	// imitate Ctrl-D
 	write(1, "exit\n", 5);

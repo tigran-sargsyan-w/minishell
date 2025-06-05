@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/04 19:32:07 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/05 04:19:02 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "executor.h"
 #include "libft.h"
 #include <fcntl.h>
-#include <signal.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -157,7 +157,7 @@ void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	if (prev_fd)
 	{
 		dup2(prev_fd, STDIN_FILENO);
-		//TODO: security check for all dups and closes
+		// TODO: security check for all dups and closes
 		close(prev_fd);
 	}
 	if (cmd->next)
@@ -168,7 +168,7 @@ void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-void	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
+pid_t	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 {
 	pid_t	pid;
 
@@ -185,4 +185,5 @@ void	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 		execute_child(cmd, sh);
 		exit(0);
 	}
+	return (pid);
 }
