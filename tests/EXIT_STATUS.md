@@ -29,8 +29,15 @@
 | 17 | Pipe: false \| true                  | `false \| true`                   | `0`                         | ✅ |
 | 18 | SIGKILL self                         | `bash -c 'kill -9 $$'`            | `137` (`128+9`)             | ✅ |
 | 19 | SIGINT (Ctrl+C) on sleep             | `sleep 5` then Ctrl+C             | `130` (`128+2`)             | ✅ |
-| 20 | SIGQUIT (Ctrl+\\) on sleep            | `sleep 5` then Ctrl+\             | `131` (`128+3`)             | ✅ |
+| 20 | SIGQUIT (Ctrl+\\) on sleep           | `sleep 5` then Ctrl+\             | `131` (`128+3`)             | ✅ |
 | 21 | Subshell exit code                   | `bash -c "exit 77"`               | `77`                        | ✅ |
 | 22 | Grouped command exit                 | `(exit 3)`                        | `3`                         | ✅ |
 | 23 | Multiple piped results               | `false \| true \| false`          | `1`                         | ✅ |
-
+| 24 | Pipe at the beginning                | `\| ls`                           | `2`                         | ❌ |
+| 25 | Logical OR with missing  command     | `ls \|\|`                         | `2`                         | ❌ |
+| 26 | Unclosed double quote                | `echo "unterminated`              | `2`                         | ❌ |
+| 27 | Redirect without filename            | `>`                               | `2`                         | ❌ |
+| 28 | Heredoc without delimiter            | `cat <<`                          | `2`                         | ❌ |
+| 29 | Double AND with missing command      | `cd && && ls`                     | `2`                         | ❌ |
+| 30 | Unsupported redirect operator        | `ls >\| file`                     | `2`                         | ❌ |
+| 31 | Redirect without target              | `echo >`                          | `2`                         | ❌ |
