@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 20:17:34 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:33:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 	}
 	if (*argv == NULL)
 	{
-		if (has_n_arg == 0 || (has_n_arg == 1 && argv[0] == NULL))
+		if (has_n_arg == 0)
 			printf("\n");
 		//TODO: check security
 		return (0);
