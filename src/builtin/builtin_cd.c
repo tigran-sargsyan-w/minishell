@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 14:08:01 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 19:19:59 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,18 @@ int	builtin_cd(t_cmd *cmd, t_env_list **env)
 	}
 	else if (cmd->args[1] == NULL)
 	{
-		chdir(find_node_by_key(env, "HOME")->value);
-		set_value(old_pwd, new_pwd->value);
-		set_value(new_pwd, getcwd(NULL, 0));
-		return (0);
+		if (find_node_by_key(env, "HOME"))
+		{
+			chdir(find_node_by_key(env, "HOME")->value);
+			set_value(old_pwd, new_pwd->value);
+			set_value(new_pwd, getcwd(NULL, 0));
+			return (0);
+		}
+		else
+		{
+			ft_putendl_fd("minishell: cd: HOME not set", 2);
+			return (1);
+		}
 	}
 	if (chdir(cmd->args[1]) == -1)
 	{
