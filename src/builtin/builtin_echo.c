@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 19:03:27 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:17:34 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 	}
 	if (*argv == NULL)
 	{
-		if (has_n_arg == 0)
+		if (has_n_arg == 0 || (has_n_arg == 1 && argv[0] == NULL))
 			printf("\n");
 		//TODO: check security
 		return (0);
