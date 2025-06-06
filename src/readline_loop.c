@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 00:49:32 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 03:37:02 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_directory(const char *path)
 {
 	struct stat	sb;
 
-	if (!path || stat(path, &sb) == 1)
+	if (!path || stat(path, &sb) == -1)
 		return (0);
 	if (S_ISDIR(sb.st_mode))
 	{
@@ -68,7 +68,7 @@ void	readline_loop(t_shell *sh)
 					sh->last_status = 126;
 				else if (cmd)
 					executor(cmd, sh);
-				free_cmd_list(cmd);
+				//free_cmd_list(cmd); TODO: fix segfault (double free?)
 			}
 			else
 				sh->last_status = 2;
