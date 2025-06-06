@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 21:24:29 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 21:34:59 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ static void	print_args(char **argv)
 		printf("\n");
 	while (*argv != NULL)
 	{
+		if (**argv == '\0')
+		{
+			argv++;
+			continue ;
+		}
 		printf("%s", *argv);
 		// TODO: check security
 		if ((argv + 1) != NULL)
