@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/05 11:01:16 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:42:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,24 @@ int	is_redir_token(t_token_type type)
 		|| type == TOK_DGREATER);
 }
 
+char	*build_heredoc_delim(t_token **tokens, int *quoted, t_shell *sh)
+{
+	t_token	*tok;
+	char	*result;
+
+	tok = *tokens;
+	if (tok->type == TOK_SQUOTED || tok->type == TOK_DQUOTED)
+		*quoted = 1;
+	else
+		*quoted = 0;
+	if (*quoted)
+		result = ft_strdup(tok->value);
+	else
+		result = expand_vars(tok->value, sh);
+	*tokens = tok->next;
+	return (result);
+}
+
 char	*build_argument(t_token **tokens, t_shell *sh)
 {
 	t_token	*tok;
@@ -177,6 +195,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 	t_cmd	*new_cmd;
 	int		redirect_type;
 	char	*tmp_token_value;
+	int		quoted;
 
 	cmd = init_cmd();
 	current_cmd = cmd;
@@ -204,18 +223,22 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 			}
 			redirect_type = tokens->type;
 			tokens = tokens->next;
-			// Collect the filename in the same way as an argument
-			tmp_token_value = build_argument(&tokens, sh);
+			quoted = 0;
+			if (redirect_type == TOK_DLESS)
+				tmp_token_value = build_heredoc_delim(&tokens, &quoted, sh);
+			else
+				tmp_token_value = build_argument(&tokens, sh);
 			if (!tmp_token_value)
 				return (free_cmd_list(cmd), NULL);
 			if (redirect_type == TOK_LESS)
-				add_redirection(current_cmd, REDIR_IN, tmp_token_value);
+				add_redirection(current_cmd, REDIR_IN, tmp_token_value, 0);
 			else if (redirect_type == TOK_GREATER)
-				add_redirection(current_cmd, REDIR_OUT, tmp_token_value);
+				add_redirection(current_cmd, REDIR_OUT, tmp_token_value, 0);
 			else if (redirect_type == TOK_DLESS)
-				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value);
+				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value,
+					quoted);
 			else if (redirect_type == TOK_DGREATER)
-				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value);
+				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value, 0);
 			free(tmp_token_value);
 			continue ;
 		}

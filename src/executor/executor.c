@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/05 04:24:21 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:23:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		saved_stdin = dup(STDIN_FILENO);
 		// TODO: check -1 return for dup
 		saved_stdout = dup(STDOUT_FILENO);
-		if (handle_redirections(cmd) < 0)
+		if (handle_redirections(cmd,sh) < 0)
 		{
 			sh->last_status = 1;
 			free_env_tab(sh->env_tab);

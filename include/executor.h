@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/05 05:13:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:23:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void					execute_cmds(t_cmd *cmd, t_shell *sh);
 pid_t					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
 							int prev_fd, t_pipe pd);
 void					execute_child(t_cmd *cmd, t_shell *sh);
-int						handle_redirections(t_cmd *cmd);
+int						handle_redirections(t_cmd *cmd, t_shell *sh);
 
 // exit_utils.c
 void					error_exit(char *msg);
