@@ -6,13 +6,12 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 13:53:53 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 19:03:27 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "env.h"
-#include "libft.h"
 #include "parser.h"
 #include <stdio.h>
 
@@ -31,11 +30,13 @@ static int	is_arg_n(const char *arg)
 
 static void	print_args(char **argv)
 {
+  if (*argv == NULL)
+    printf("\n");
 	while (*argv != NULL)
 	{
 		printf("%s", *argv);
 		//TODO: check security
-		if (*(argv + 1) != NULL)
+		if ((argv + 1) != NULL)
 			printf(" ");
 		argv++;
 	}
