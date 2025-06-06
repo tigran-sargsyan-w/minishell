@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 20:33:51 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 21:24:29 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 
 static int	is_arg_n(const char *arg)
 {
-	if (arg[0] == '-')
+	if ((arg[0] == '-') && (arg[1] == 'n'))
 		arg++;
+	else
+		return (0);
 	while (*arg)
 	{
 		if (*arg != 'n')
@@ -30,12 +32,12 @@ static int	is_arg_n(const char *arg)
 
 static void	print_args(char **argv)
 {
-  if (*argv == NULL)
-    printf("\n");
+	if (*argv == NULL)
+		printf("\n");
 	while (*argv != NULL)
 	{
 		printf("%s", *argv);
-		//TODO: check security
+		// TODO: check security
 		if ((argv + 1) != NULL)
 			printf(" ");
 		argv++;
@@ -46,8 +48,8 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 {
 	char	**argv;
 	int		has_n_arg;
-	(void) env;
 
+	(void)env;
 	argv = cmd->args + 1;
 	has_n_arg = 0;
 	while (*argv && is_arg_n(argv[0]) == 1)
@@ -59,12 +61,12 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 	{
 		if (has_n_arg == 0)
 			printf("\n");
-		//TODO: check security
+		// TODO: check security
 		return (0);
 	}
 	print_args(argv);
 	if (has_n_arg == 0)
 		printf("\n");
-	//TODO: check security
+	// TODO: check security
 	return (0);
 }
