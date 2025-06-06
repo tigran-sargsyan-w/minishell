@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 18:23:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 22:17:00 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define SUCCESS 0
 # define FAILURE 1
 # define CMD_NOT_FOUND 127
+# define CMD_IS_DIRECTORY 126
 # define HEREDOC_TMPFILE "minishell_heredoc"
 
 typedef struct s_pipe	t_pipe;

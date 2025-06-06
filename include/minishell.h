@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/02 18:10:24 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 22:06:14 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ void						free_tokens(t_token *tokens);
 
 // readline_loop.c
 void						readline_loop(t_shell *sh);
+int							is_directory(const char *path);
 
 #endif

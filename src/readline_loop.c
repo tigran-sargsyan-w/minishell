@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 15:54:36 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 22:34:17 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 extern volatile sig_atomic_t	g_signo;
 
 // TODO: move this function to a more appropriate place?
-static int	is_directory(const char *path)
+int	is_directory(const char *path)
 {
 	struct stat	sb;
 
@@ -32,7 +32,7 @@ static int	is_directory(const char *path)
 		return (0);
 	if (S_ISDIR(sb.st_mode))
 	{
-		ft_dprintf(2, "minishell: %s: Is a directory\n", path);
+		ft_dprintf(2, "%s: Is a directory\n", path);
 		return (1);
 	}
 	return (0);

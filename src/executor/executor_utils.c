@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 18:35:10 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 22:34:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,17 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 	}
 	if (run_builtin(cmd, sh) == -1)
 	{
+		if (cmd->args[0] && cmd->args[0][0] == '\0')
+		{
+			write(2, "'': command not found\n", 23);
+			exit(CMD_NOT_FOUND);
+		}
 		full_cmd = find_command(cmd->args[0], sh->env_tab);
-		// TODO: Handle checking if cmd is directory
-		// Validate if cmd is dir return 126
+		if (is_directory(full_cmd))
+		{
+			free(full_cmd);
+			exit(CMD_IS_DIRECTORY);
+		}
 		if (!full_cmd)
 		{
 			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
