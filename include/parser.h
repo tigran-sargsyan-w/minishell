@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 20:20:06 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:09:43 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_redir
 {
 	t_redir_type			type;
 	char					*filename;
+	int						quoted;
 	struct s_redir			*next;
 }							t_redir;
 
@@ -58,7 +59,7 @@ void						free_cmd_list(t_cmd *cmd);
 
 // redir_utils.c
 void						add_redirection(t_cmd *cmd, t_redir_type type,
-								const char *filename);
+								const char *filename, int quoted);
 
 // expand_vars.c
 char						*expand_vars(const char *input, t_shell *sh);

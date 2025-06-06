@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 03:37:02 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:54:36 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ void	readline_loop(t_shell *sh)
 		{
 			add_history(input);
 			tokens = lexer(input);
+			// print_tokens(tokens);
 			if (tokens)
 			{
 				cmd = parse_tokens(tokens, sh);
+				// print_cmds(cmd);
 				free_tokens(tokens);
 				if (cmd && is_directory(cmd->args[0]))
 					sh->last_status = 126;

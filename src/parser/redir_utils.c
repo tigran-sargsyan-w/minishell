@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:19:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 11:35:03 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:42:47 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static t_redir	*new_redir(t_redir_type type, const char *filename)
+static t_redir	*new_redir(t_redir_type type, const char *filename, int quoted)
 {
 	t_redir	*redir;
 
@@ -34,6 +34,7 @@ static t_redir	*new_redir(t_redir_type type, const char *filename)
 		free(redir);
 		return (NULL);
 	}
+	redir->quoted = quoted;
 	redir->next = NULL;
 	return (redir);
 }
@@ -53,11 +54,12 @@ static void	add_redir_node(t_redir **head, t_redir *node)
 	}
 }
 
-void	add_redirection(t_cmd *cmd, t_redir_type type, const char *filename)
+void	add_redirection(t_cmd *cmd, t_redir_type type, const char *filename,
+		int quoted)
 {
 	t_redir	*redir;
 
-	redir = new_redir(type, filename);
+	redir = new_redir(type, filename, quoted);
 	if (!redir)
 		return ;
 	if (type == REDIR_IN || type == REDIR_HEREDOC)

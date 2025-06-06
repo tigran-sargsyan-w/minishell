@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/05 04:19:02 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:35:10 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static int	handle_heredoc(t_redir *redir)
+static int	handle_heredoc(t_redir *redir, t_shell *sh)
 {
 	int		fd;
 	char	*line;
+	char	*expanded;
 
 	// 1) create/truncate tmp file for heredoc
 	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -43,7 +44,16 @@ static int	handle_heredoc(t_redir *redir)
 			free(line);
 			break ;
 		}
-		write(fd, line, ft_strlen(line));
+		if (redir->quoted == 0)
+		{
+			expanded = expand_vars(line, sh);
+			write(fd, expanded, ft_strlen(expanded));
+			free(expanded);
+		}
+		else
+		{
+			write(fd, line, ft_strlen(line));
+		}
 		write(fd, "\n", 1);
 		free(line);
 	}
@@ -60,14 +70,14 @@ static int	handle_heredoc(t_redir *redir)
 	return (0);
 }
 
-static int	apply_one_redir(t_redir *redir)
+static int	apply_one_redir(t_redir *redir, t_shell *sh)
 {
 	int	fd;
 	int	ret;
 
 	fd = -1;
 	if (redir->type == REDIR_HEREDOC)
-		return (handle_heredoc(redir));
+		return (handle_heredoc(redir, sh));
 	// 2) open the file with the required mode
 	if (redir->type == REDIR_IN)
 	{
@@ -105,21 +115,21 @@ static int	apply_one_redir(t_redir *redir)
 	return (0);
 }
 
-int	handle_redirections(t_cmd *cmd)
+int	handle_redirections(t_cmd *cmd, t_shell *sh)
 {
 	t_redir	*redir;
 
 	redir = cmd->in_redirs;
 	while (redir)
 	{
-		if (apply_one_redir(redir) < 0)
+		if (apply_one_redir(redir, sh) < 0)
 			return (-1);
 		redir = redir->next;
 	}
 	redir = cmd->out_redirs;
 	while (redir)
 	{
-		if (apply_one_redir(redir) < 0)
+		if (apply_one_redir(redir, sh) < 0)
 			return (-1);
 		redir = redir->next;
 	}
@@ -130,7 +140,7 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 {
 	char	*full_cmd;
 
-	if (handle_redirections(cmd) < 0)
+	if (handle_redirections(cmd, sh) < 0)
 	{
 		sh->last_status = 1;
 		exit(1);
