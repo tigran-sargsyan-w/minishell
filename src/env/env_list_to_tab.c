@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_to_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/23 20:43:34 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:33:56 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	res = malloc(total_len + 1);
+	total_len = ft_strlen(s1) + ft_strlen(s2) + 2;
+	res = malloc(total_len);
 	if (!res)
 		return (NULL);
 	res[0] = '\0';
