@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/28 23:29:55 by denissemeno      ###   ########.fr       */
+/*   Updated: 2025/06/06 19:44:15 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	parse_key_value(char *arg, char **key, char **value)
 }
 
 
-static int	export_argument(char *key, char *value, t_env_list **env, t_export_type type)
+int	export_argument(char *key, char *value, t_env_list **env, t_export_type type)
 {
 	t_env_list	*new_node;
 	t_env_list	*tmp_node;
