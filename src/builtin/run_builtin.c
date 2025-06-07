@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/05 05:11:46 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/07 03:57:09 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 {
 	if (cmd->args[1] == NULL)
 	{
-		ft_dprintf(1, "exit\n");
+		ft_dprintf(2, "exit\n");
 		return (sh->last_status);
 	}
 	else
 	{
-		if (cmd->args[2])
-			ft_dprintf(2, "exit\nminishell: exit: too many arguments\n");
+		// Check if args[2] is numeric. If not - (bash: exit: asd: numeric argument required), exit code 2
 		ft_dprintf(2, "exit\n");
+		if (cmd->args[2])
+			ft_dprintf(2, "minishell: %s: exit: too many arguments\n",
+				cmd->args[2]);
 		return (ft_atoi(cmd->args[1]) % 256);
 	}
 }
