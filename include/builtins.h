@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 19:53:08 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/07 22:11:34 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int							builtin_pwd(t_cmd *cmd, t_env_list **env);
 int							builtin_env(t_cmd *cmd, t_env_list **env);
 int							builtin_export(t_cmd *cmd, t_env_list **env);
 int							builtin_unset(t_cmd *cmd, t_env_list **env);
-int							builtin_exit(t_shell *sh, t_cmd *cmd);
+int							builtin_exit(t_shell *sh, char **argv);
 int							run_builtin(t_cmd *cmd, t_shell *sh);
 
 // Utils

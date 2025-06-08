@@ -6,14 +6,12 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/29 17:57:54 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/07 21:07:23 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "ft_printf.h"
 #include "libft.h"
-#include <stddef.h>
 #include <stdlib.h>
 
 void	free_key_value(char *key, char *value)
