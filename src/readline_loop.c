@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/09 11:58:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:10:43 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,22 @@ int	is_directory(const char *path)
 	return (0);
 }
 
+int	is_all_whitespace(const char *str)
+{
+	size_t	i;
+
+	if (!str)
+		return (1);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	readline_loop(t_shell *sh)
 {
 	t_token	*tokens;
@@ -58,6 +74,8 @@ void	readline_loop(t_shell *sh)
 		}
 		if (*input)
 		{
+			if (is_all_whitespace(input))
+				continue ;
 			add_history(input);
 			tokens = lexer(input);
 			// print_tokens(tokens);
