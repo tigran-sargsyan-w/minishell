@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 22:34:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:50:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,9 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 		sh->last_status = 1;
 		exit(1);
 	}
+	// Handle the case: no command, only redirections
+	if (!cmd->args || !cmd->args[0])
+		exit(0);
 	if (run_builtin(cmd, sh) == -1)
 	{
 		if (cmd->args[0] && cmd->args[0][0] == '\0')
