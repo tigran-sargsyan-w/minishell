@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/26 20:24:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:27:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,47 @@ char	*expand_vars(const char *input, t_shell *sh)
 {
 	char	*result;
 	size_t	pos;
+	int		had_content;
 
 	result = ft_strdup("");
 	if (!result)
 		return (NULL);
 	pos = 0;
+	had_content = 0;
 	while (input[pos])
 	{
 		if (input[pos] == '$')
 		{
 			if (handle_exit_status(input, &pos, &result, sh) == SUCCESS)
+			{
+				had_content = 1;
 				continue ;
+			}
 			if (handle_env_var(input, &pos, &result, sh) == SUCCESS)
+			{
+				had_content = 1;
 				continue ;
-			append_char_to_result(input, &pos, &result);
+			}
+			// Если следующий символ — не буква, не _, не ?, просто добавить $
+			if (!ft_isalpha(input[pos + 1]) && input[pos + 1] != '_'
+				&& input[pos + 1] != '?')
+			{
+				append_char_to_result(input, &pos, &result);
+				had_content = 1;
+				continue ;
+			}
+			pos++;
 		}
 		else
+		{
 			append_char_to_result(input, &pos, &result);
+			had_content = 1;
+		}
+	}
+	if (!had_content || (result[0] == '\0' && input[0] == '$'))
+	{
+		free(result);
+		return (NULL);
 	}
 	return (result);
 }
