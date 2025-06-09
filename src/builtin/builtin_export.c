@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 19:44:15 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 00:14:08 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,12 @@ int	export_argument(char *key, char *value, t_env_list **env, t_export_type type
 	t_env_list	*tmp_node;
 	char		*new_value;
 	
+	if (!key || !value)
+	{
+		free(key);
+		free(value);	
+		return (1);
+	}
 	tmp_node = find_node_by_key(env, key);
 	if (tmp_node)
 	{

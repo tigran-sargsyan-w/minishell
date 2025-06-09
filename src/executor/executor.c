@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 18:23:55 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 23:50:22 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include <unistd.h>
 
 void	execute_cmds(t_cmd *cmd, t_shell *sh)
@@ -43,6 +44,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		}
 		cmd = cmd->next;
 	}
+	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	if (pid < 0)
 	{

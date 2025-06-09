@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/07 02:35:23 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 00:18:14 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	cd_no_args(t_env_list *old_pwd_node,
 		return (1);
 	}
 }
-
+//TODO: fix leak when export_argument (return 1). Add freeing with free(new_pwd) in that case
 int setup_pwds(t_env_list *old_pwd_node, t_env_list *new_pwd_node, char *old_pwd, t_env_list **env)
 {
   char *new_pwd;
@@ -75,12 +75,14 @@ int setup_pwds(t_env_list *old_pwd_node, t_env_list *new_pwd_node, char *old_pwd
   if (old_pwd_node) 
     set_value(old_pwd_node, old_pwd);
   else
-    export_argument("OLDPWD", old_pwd, env, EXPORT);
+    if (export_argument(ft_strdup("OLDPWD"), ft_strdup(old_pwd), env, EXPORT) != 0)
+      return (1);
   free(old_pwd);
   if (new_pwd_node)
     set_value(new_pwd_node, new_pwd);
   else
-    export_argument("PWD", new_pwd, env, EXPORT);
+    if (export_argument(ft_strdup("PWD"), ft_strdup(new_pwd), env, EXPORT) != 0)
+      return (1);
   free(new_pwd);
   return (0);
 }

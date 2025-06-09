@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/27 19:33:09 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/09 23:58:49 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 static t_shell	*init_sh(t_shell *sh, char **envp)
 {
-	sh->env_list = lst_init(envp);
 	sh->last_status = 0;
-	if (sh->env_list == NULL)
+	sh->env_list = lst_init(envp);
+	if (sh->env_list == NULL && *envp != NULL)
 	{
 		perror("minishell: init env");
 		return (NULL);
