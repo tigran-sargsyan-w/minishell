@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/09 11:58:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:53:15 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,6 @@ char	*build_argument(t_token **tokens, t_shell *sh)
 	combined = ft_strdup("");
 	if (!combined)
 		return (NULL);
-	// Loop: while tok is an "argument" token AND
-	// (either the first token, or sep==0)
 	while (tok && is_arg_token(tok->type) && (tok == *tokens
 			|| tok->separated == 0))
 	{
@@ -185,9 +183,19 @@ char	*build_argument(t_token **tokens, t_shell *sh)
 		free(chunk);
 		tok = tok->next;
 	}
-	// Now tok points to the first "non-concatenable" token
 	*tokens = tok;
 	return (combined);
+}
+
+int	cmd_is_valid_before_pipe(t_cmd *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (cmd->args && cmd->args[0])
+		return (1);
+	if (cmd->in_redirs || cmd->out_redirs)
+		return (1);
+	return (0);
 }
 
 t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
@@ -238,7 +246,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 				add_redirection(current_cmd, REDIR_OUT, tmp_token_value, 0);
 			else if (redirect_type == TOK_DLESS)
 				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value,
-						quoted);
+					quoted);
 			else if (redirect_type == TOK_DGREATER)
 				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value, 0);
 			free(tmp_token_value);
@@ -247,7 +255,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		// Pipe '|'
 		else if (tokens->type == TOK_PIPE)
 		{
-			if (!current_cmd || (current_cmd->args[0] == NULL))
+			if (!cmd_is_valid_before_pipe(current_cmd))
 			{
 				sh->last_status = 2;
 				printf("minishell: syntax error near unexpected token `|'\n");
@@ -276,7 +284,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		{
 			sh->last_status = 2;
 			printf("minishell: syntax error near unexpected token `%s'\n",
-					tokens->value);
+				tokens->value);
 			return (free_cmd_list(cmd), NULL);
 		}
 	}
