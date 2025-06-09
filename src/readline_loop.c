@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 22:34:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:58:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	readline_loop(t_shell *sh)
 					sh->last_status = 126;
 				else if (cmd)
 					executor(cmd, sh);
-				//free_cmd_list(cmd); TODO: fix segfault (double free?)
 			}
 			else
 				sh->last_status = 2;

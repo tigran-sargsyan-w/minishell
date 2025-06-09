@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 18:42:05 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:58:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,8 @@ char	*build_argument(t_token **tokens, t_shell *sh)
 			chunk = ft_strdup(tok->value);
 		else if (tok->type == TOK_WORD || tok->type == TOK_DQUOTED)
 			chunk = expand_vars(tok->value, sh);
+		if (!chunk && (tok->type == TOK_DQUOTED || tok->type == TOK_SQUOTED))
+			chunk = ft_strdup("");
 		if (!chunk)
 			return (free(combined), NULL);
 		old = combined;
@@ -236,7 +238,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 				add_redirection(current_cmd, REDIR_OUT, tmp_token_value, 0);
 			else if (redirect_type == TOK_DLESS)
 				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value,
-					quoted);
+						quoted);
 			else if (redirect_type == TOK_DGREATER)
 				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value, 0);
 			free(tmp_token_value);
@@ -274,7 +276,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		{
 			sh->last_status = 2;
 			printf("minishell: syntax error near unexpected token `%s'\n",
-				tokens->value);
+					tokens->value);
 			return (free_cmd_list(cmd), NULL);
 		}
 	}
