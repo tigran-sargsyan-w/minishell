@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:04:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:07:30 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 	{
 		sh->last_status = 2;
 		ft_dprintf(2,
-					"minishell: syntax error near unexpected token `newline'\n");
+			"minishell: syntax error near unexpected token `newline'\n");
 		return (FAILURE);
 	}
 	new_cmd = init_cmd();
