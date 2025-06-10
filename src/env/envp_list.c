@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 05:34:00 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:24:46 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,20 @@ t_env_list	*lst_init(char *const *envp)
 	char		*equality_sign;
 	char		*key;
 	char		*value;
-	int			key_len;
 
 	list = NULL;
-	while (*envp != NULL)
+	while (*envp)
 	{
 		equality_sign = ft_strchr(*envp, '=');
-		if (equality_sign == NULL)
+		if (!equality_sign)
 		{
 			envp++;
 			continue ;
 		}
-		key_len = equality_sign - (*envp);
-		key = ft_substr(*envp, 0, key_len);
+		key = ft_substr(*envp, 0, (equality_sign - *envp));
 		value = ft_strdup(++equality_sign);
 		new_node = lst_create_node(key, value);
-		if (key == NULL || value == NULL || new_node == NULL)
+		if (!key || !value || !new_node)
 		{
 			lst_clear(&list);
 			return (NULL);
