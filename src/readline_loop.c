@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 21:01:57 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:04:14 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,11 @@ void	readline_loop(t_shell *sh)
 
 	g_signo = 0;
 	setup_signal_handlers();
-	while ((input = readline("minishell > ")) != NULL)
+	while (1)
 	{
+		input = readline("minishell> ");
+		if (!input)
+			break ;
 		if (handle_signal_interrupt(sh))
 		{
 			free(input);
