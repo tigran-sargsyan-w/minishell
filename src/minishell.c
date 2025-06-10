@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 04:47:52 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:01:58 by denissemeno      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static int	init_sh(t_shell *sh, char **envp)
 {
-	ft_memset(sh, 0, sizeof(sh));
+	ft_memset(sh, 0, sizeof(*sh));
 	sh->last_status = 0;
 	sh->env_list = lst_init(envp);
 	if (sh->env_list == NULL && *envp != NULL)
