@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:45:37 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:48:20 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void						free_cmd_list(t_cmd *cmd);
 t_cmd						*parse_tokens(t_token *tokens, t_shell *sh);
 
 // redir_utils.c
-void						add_redirection(t_cmd *cmd, t_redir_type type,
-								const char *filename, int quoted);
 void						apply_redirection(t_cmd *cmd, int redirect_type,
 								const char *value, int quoted);
 // token_utils.c

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:19:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:46:42 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:47:17 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	add_redir_node(t_redir **head, t_redir *node)
 	}
 }
 
-void	add_redirection(t_cmd *cmd, t_redir_type type, const char *filename,
+static void	add_redirection(t_cmd *cmd, t_redir_type type, const char *filename,
 		int quoted)
 {
 	t_redir	*redir;
