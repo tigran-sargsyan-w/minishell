@@ -6,15 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:40:39 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:43:29 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:52:38 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
 #include "libft.h"
 #include "parser.h"
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static int	expand_args(t_cmd *cmd)
