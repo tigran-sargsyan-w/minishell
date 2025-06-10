@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:07:30 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:21:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,21 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 	return (SUCCESS);
 }
 
-// Main function
+// Диспетчер токена с «inline» обработкой неожиданного токена
+static int	process_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
+{
+	if (is_arg_token((*tokens)->type))
+		return (handle_argument_token(tokens, *current_cmd, sh));
+	if (is_redir_token((*tokens)->type))
+		return (handle_redirection_token(tokens, *current_cmd, sh));
+	if ((*tokens)->type == TOK_PIPE)
+		return (handle_pipe_token(tokens, current_cmd, sh));
+	sh->last_status = 2;
+	ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
+		(*tokens)->value);
+	return (FAILURE);
+}
+
 t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 {
 	t_cmd	*cmd;
@@ -301,32 +315,8 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		return (NULL);
 	while (tokens)
 	{
-		if (is_arg_token(tokens->type))
-		{
-			if (handle_argument_token(&tokens, current_cmd, sh) == FAILURE)
-				return (free_cmd_list(cmd), NULL);
-			continue ;
-		}
-		else if (is_redir_token(tokens->type))
-		{
-			if (handle_redirection_token(&tokens, current_cmd, sh) == FAILURE)
-				return (free_cmd_list(cmd), NULL);
-			continue ;
-		}
-		else if (tokens->type == TOK_PIPE)
-		{
-			if (handle_pipe_token(&tokens, &current_cmd, sh) == FAILURE)
-				return (free_cmd_list(cmd), NULL);
-			continue ;
-		}
-		else
-		{
-			sh->last_status = 2;
-			ft_dprintf(2,
-						"minishell: syntax error near unexpected token `%s'\n",
-						tokens->value);
+		if (process_token(&tokens, &current_cmd, sh) == FAILURE)
 			return (free_cmd_list(cmd), NULL);
-		}
 	}
 	return (cmd);
 }
