@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/09 11:27:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:32:10 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,47 +99,62 @@ static void	append_char_to_result(const char *input, size_t *pos, char **result)
 	(*pos)++;
 }
 
-char	*expand_vars(const char *input, t_shell *sh)
+static int	process_dollar_sequence(const char *input, size_t *pos,
+		char **result, t_shell *sh)
+{
+	if (handle_exit_status(input, pos, result, sh) == SUCCESS)
+		return (1);
+	if (handle_env_var(input, pos, result, sh) == SUCCESS)
+		return (1);
+	if (!ft_isalpha(input[*pos + 1]) && input[*pos + 1] != '_'
+		&& input[*pos + 1] != '?')
+	{
+		append_char_to_result(input, pos, result);
+		return (1);
+	}
+	(*pos)++;
+	return (0);
+}
+
+// Движок: строит строку с развёрнутыми переменными и отмечает, был ли контент
+static char	*do_expand_vars(const char *input, t_shell *sh, int *had_content)
 {
 	char	*result;
 	size_t	pos;
-	int		had_content;
 
 	result = ft_strdup("");
+	pos = 0;
 	if (!result)
 		return (NULL);
-	pos = 0;
-	had_content = 0;
+	*had_content = 0;
 	while (input[pos])
 	{
 		if (input[pos] == '$')
 		{
-			if (handle_exit_status(input, &pos, &result, sh) == SUCCESS)
+			if (process_dollar_sequence(input, &pos, &result, sh))
 			{
-				had_content = 1;
+				*had_content = 1;
 				continue ;
 			}
-			if (handle_env_var(input, &pos, &result, sh) == SUCCESS)
-			{
-				had_content = 1;
-				continue ;
-			}
-			// Если следующий символ — не буква, не _, не ?, просто добавить $
-			if (!ft_isalpha(input[pos + 1]) && input[pos + 1] != '_'
-				&& input[pos + 1] != '?')
-			{
-				append_char_to_result(input, &pos, &result);
-				had_content = 1;
-				continue ;
-			}
-			pos++;
 		}
 		else
 		{
 			append_char_to_result(input, &pos, &result);
-			had_content = 1;
+			*had_content = 1;
 		}
 	}
+	return (result);
+}
+
+// Обёртка: вызывает движок, проверяет пустоту и первый символ '$'
+char	*expand_vars(const char *input, t_shell *sh)
+{
+	int		had_content;
+	char	*result;
+
+	result = do_expand_vars(input, sh, &had_content);
+	if (!result)
+		return (NULL);
 	if (!had_content || (result[0] == '\0' && input[0] == '$'))
 	{
 		free(result);
