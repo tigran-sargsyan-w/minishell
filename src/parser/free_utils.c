@@ -6,15 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:39:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:45:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:56:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include "libft.h"
 #include "parser.h"
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static void	free_redirs(t_redir *redir)
