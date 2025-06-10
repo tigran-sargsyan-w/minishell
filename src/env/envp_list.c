@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/23 20:44:24 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 05:34:00 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ size_t	lst_size(t_env_list **list)
 	size_t		size;
 	t_env_list	*tmp;
 
+	if (list == NULL || *list == NULL)
+		return (0);
 	tmp = *list;
 	size = 0;
 	while (tmp)

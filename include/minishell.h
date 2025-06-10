@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 04:55:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 05:40:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ void						free_tokens(t_token *tokens);
 // readline_loop.c
 void						readline_loop(t_shell *sh);
 bool						is_directory(const char *path);
+
+void						clean_shell(t_shell *sh);
 
 #endif

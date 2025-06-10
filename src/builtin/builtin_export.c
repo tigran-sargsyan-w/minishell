@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 00:14:08 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 05:32:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,18 +121,16 @@ int	export_argument(char *key, char *value, t_env_list **env, t_export_type type
 // Check multiple args
 int	builtin_export(t_cmd *cmd, t_env_list **env)
 {
-	char	**argv;
-	char	*key;
-	char	*value;
-	int		ret;
+	char			**argv;
+	char			*key;
+	char			*value;
+	int				ret;
 	t_export_type	type;
 
 	ret = 0;
-	key = NULL;
-	value = NULL;
 	if (cmd->args[1] == NULL)
 		return (export_without_args(env));
-	argv = ++cmd->args;
+	argv = &cmd->args[1];
 	while (*argv)
 	{
 		type = is_valid_export(*argv);
@@ -142,10 +140,12 @@ int	builtin_export(t_cmd *cmd, t_env_list **env)
 			{
 				if (parse_key_value(*argv, &key, &value) == 1)
 					return (1);
-				export_argument(key, value, env, type);
+				if (export_argument(key, value, env, type) != 0)
+					ret = 1;
 			}
+			// else: без '=' — ничего не делаем
 		}
-		else
+		else if (type == ERROR)
 		{
 			ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n",
 				*argv);

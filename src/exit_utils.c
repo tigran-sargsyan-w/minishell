@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:45:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/23 20:37:56 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:09:31 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include <stdio.h>     // perror
-#include <stdlib.h>    // exit
+#include <stdio.h>
+#include <stdlib.h>
 
 void	error_exit(char *msg)
 {
