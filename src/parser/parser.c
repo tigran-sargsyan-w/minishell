@@ -6,12 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 21:52:57 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:53:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_printf.h"
+#include "libft.h"
 #include "parser.h"
 // #include "minishell.h"
 #include <stddef.h>
@@ -208,115 +208,119 @@ int	cmd_is_valid_before_pipe(t_cmd *cmd)
 }
 
 // Argument handling
-static int handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
+static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
-    char *value = build_argument(tokens, sh);
-    if (!value)
-        return FAILURE;
-    if (append_arg(cmd, value))
-        return (free(value), FAILURE);
-    free(value);
-    return SUCCESS;
+	char	*value;
+
+	value = build_argument(tokens, sh);
+	if (!value)
+		return (FAILURE);
+	if (append_arg(cmd, value))
+		return (free(value), FAILURE);
+	free(value);
+	return (SUCCESS);
 }
 
 // Redirection handling
-static int handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
+static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
-    int  quoted = 0;
-    int  redirect_type = (*tokens)->type;
-    char *value;
+	int		quoted;
+	int		redirect_type;
+	char	*value;
 
-    if (!(*tokens)->next || !is_arg_token((*tokens)->next->type))
-    {
-        ft_dprintf(2, "minishell: syntax error near `%s'\n", (*tokens)->value);
-        sh->last_status = 2;
-        return FAILURE;
-    }
-    *tokens = (*tokens)->next;
-
-    if (redirect_type == TOK_DLESS)
-        value = build_heredoc_delim(tokens, &quoted, sh);
-    else
-        value = build_argument(tokens, sh);
-    if (!value)
-        return FAILURE;
-
-    if (redirect_type == TOK_LESS)
-        add_redirection(cmd, REDIR_IN, value, 0);
-    else if (redirect_type == TOK_GREATER)
-        add_redirection(cmd, REDIR_OUT, value, 0);
-    else if (redirect_type == TOK_DLESS)
-        add_redirection(cmd, REDIR_HEREDOC, value, quoted);
-    else if (redirect_type == TOK_DGREATER)
-        add_redirection(cmd, REDIR_APPEND, value, 0);
-
-    free(value);
-    return SUCCESS;
+	quoted = 0;
+	redirect_type = (*tokens)->type;
+	if (!(*tokens)->next || !is_arg_token((*tokens)->next->type))
+	{
+		ft_dprintf(2, "minishell: syntax error near `%s'\n", (*tokens)->value);
+		sh->last_status = 2;
+		return (FAILURE);
+	}
+	*tokens = (*tokens)->next;
+	if (redirect_type == TOK_DLESS)
+		value = build_heredoc_delim(tokens, &quoted, sh);
+	else
+		value = build_argument(tokens, sh);
+	if (!value)
+		return (FAILURE);
+	if (redirect_type == TOK_LESS)
+		add_redirection(cmd, REDIR_IN, value, 0);
+	else if (redirect_type == TOK_GREATER)
+		add_redirection(cmd, REDIR_OUT, value, 0);
+	else if (redirect_type == TOK_DLESS)
+		add_redirection(cmd, REDIR_HEREDOC, value, quoted);
+	else if (redirect_type == TOK_DGREATER)
+		add_redirection(cmd, REDIR_APPEND, value, 0);
+	free(value);
+	return (SUCCESS);
 }
 
 // Pipe handling
-static int handle_pipe_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
+static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
+		t_shell *sh)
 {
-    t_cmd *new_cmd;
+	t_cmd	*new_cmd;
 
-    if (!cmd_is_valid_before_pipe(*current_cmd))
-    {
-        sh->last_status = 2;
-        ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
-        return FAILURE;
-    }
-    if (!(*tokens)->next)
-    {
-        sh->last_status = 2;
-        ft_dprintf(2, "minishell: syntax error near unexpected token `newline'\n");
-        return FAILURE;
-    }
-    new_cmd = init_cmd();
-    if (!new_cmd)
-        return FAILURE;
-    (*current_cmd)->next = new_cmd;
-    *current_cmd = new_cmd;
-    *tokens = (*tokens)->next;
-    return SUCCESS;
+	if (!cmd_is_valid_before_pipe(*current_cmd))
+	{
+		sh->last_status = 2;
+		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
+		return (FAILURE);
+	}
+	if (!(*tokens)->next)
+	{
+		sh->last_status = 2;
+		ft_dprintf(2,
+				"minishell: syntax error near unexpected token `newline'\n");
+		return (FAILURE);
+	}
+	new_cmd = init_cmd();
+	if (!new_cmd)
+		return (FAILURE);
+	(*current_cmd)->next = new_cmd;
+	*current_cmd = new_cmd;
+	*tokens = (*tokens)->next;
+	return (SUCCESS);
 }
 
 // Main function
-t_cmd *parse_tokens(t_token *tokens, t_shell *sh)
+t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 {
-    t_cmd *cmd = init_cmd();
-    t_cmd *current_cmd = cmd;
+	t_cmd	*cmd;
+	t_cmd	*current_cmd;
 
-    if (!cmd)
-        return NULL;
-
-    while (tokens)
-    {
-        if (is_arg_token(tokens->type))
-        {
-            if (handle_argument_token(&tokens, current_cmd, sh) == FAILURE)
-                return (free_cmd_list(cmd), NULL);
-            continue;
-        }
-        else if (is_redir_token(tokens->type))
-        {
-            if (handle_redirection_token(&tokens, current_cmd, sh) == FAILURE)
-                return (free_cmd_list(cmd), NULL);
-            continue;
-        }
-        else if (tokens->type == TOK_PIPE)
-        {
-            if (handle_pipe_token(&tokens, &current_cmd, sh) == FAILURE)
-                return (free_cmd_list(cmd), NULL);
-            continue;
-        }
-        else
-        {
-            sh->last_status = 2;
-            ft_dprintf(2,
-                "minishell: syntax error near unexpected token `%s'\n",
-                tokens->value);
-            return (free_cmd_list(cmd), NULL);
-        }
-    }
-    return cmd;
+	cmd = init_cmd();
+	current_cmd = cmd;
+	if (!cmd)
+		return (NULL);
+	while (tokens)
+	{
+		if (is_arg_token(tokens->type))
+		{
+			if (handle_argument_token(&tokens, current_cmd, sh) == FAILURE)
+				return (free_cmd_list(cmd), NULL);
+			continue ;
+		}
+		else if (is_redir_token(tokens->type))
+		{
+			if (handle_redirection_token(&tokens, current_cmd, sh) == FAILURE)
+				return (free_cmd_list(cmd), NULL);
+			continue ;
+		}
+		else if (tokens->type == TOK_PIPE)
+		{
+			if (handle_pipe_token(&tokens, &current_cmd, sh) == FAILURE)
+				return (free_cmd_list(cmd), NULL);
+			continue ;
+		}
+		else
+		{
+			sh->last_status = 2;
+			ft_dprintf(2,
+						"minishell: syntax error near unexpected token `%s'\n",
+						tokens->value);
+			return (free_cmd_list(cmd), NULL);
+		}
+	}
+	return (cmd);
 }
