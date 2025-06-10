@@ -6,12 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:05:37 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 14:06:32 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:15:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+#include "lexer.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 04:55:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:01:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,6 @@ typedef struct s_token
 	int						separated;
 	struct s_token			*next;
 }							t_token;
-
-// lexer.c
-t_token						*lexer(char *input);
-
-// lexer_utils.c
-int							is_space(char c);
-int							is_special(char c);
-void						add_token(t_token **tokens, t_token_type type,
-								char *value, int separated);
-void						print_tokens(t_token *tokens);
-void						free_tokens(t_token *tokens);
 
 // readline_loop.c
 void						readline_loop(t_shell *sh);
