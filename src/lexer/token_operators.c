@@ -6,15 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:05:39 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 14:15:30 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:03:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "minishell.h"
 #include "lexer.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 void	handle_pipe(t_token **tokens, int *i, int sep_flag)
 {

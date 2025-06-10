@@ -6,15 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 18:16:27 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:55:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "executor.h"
 #include "libft.h"
 #include "parser.h"
-#include "minishell.h"
 #include <stdlib.h>
 
 static char	*do_expand_vars(const char *input, t_shell *sh, int *had_content)
