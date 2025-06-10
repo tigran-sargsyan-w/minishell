@@ -6,14 +6,32 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:07:42 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 14:11:01 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:07:30 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-# include "minishell.h"
+typedef enum e_token_type
+{
+	TOK_WORD,
+	TOK_SQUOTED,
+	TOK_DQUOTED,
+	TOK_PIPE,
+	TOK_LESS,
+	TOK_GREATER,
+	TOK_DLESS,
+	TOK_DGREATER
+}							t_token_type;
+
+typedef struct s_token
+{
+	t_token_type			type;
+	char					*value;
+	int						separated;
+	struct s_token			*next;
+}							t_token;
 
 // lexer.c
 t_token	*lexer(char *input);

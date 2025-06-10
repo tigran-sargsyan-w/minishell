@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 15:01:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:02:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,7 @@ typedef struct s_shell
 	int						last_status;
 }							t_shell;
 
-typedef enum e_token_type
-{
-	TOK_WORD,
-	TOK_SQUOTED,
-	TOK_DQUOTED,
-	TOK_PIPE,
-	TOK_LESS,
-	TOK_GREATER,
-	TOK_DLESS,
-	TOK_DGREATER
-}							t_token_type;
 
-typedef struct s_token
-{
-	t_token_type			type;
-	char					*value;
-	int						separated;
-	struct s_token			*next;
-}							t_token;
 
 // readline_loop.c
 void						readline_loop(t_shell *sh);
