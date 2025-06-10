@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 21:50:54 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:52:57 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int	cmd_is_valid_before_pipe(t_cmd *cmd)
 	return (0);
 }
 
-// Обработка аргументов
+// Argument handling
 static int handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
     char *value = build_argument(tokens, sh);
@@ -219,7 +219,7 @@ static int handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
     return SUCCESS;
 }
 
-// Обработка редиректов
+// Redirection handling
 static int handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
     int  quoted = 0;
@@ -254,7 +254,7 @@ static int handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
     return SUCCESS;
 }
 
-// Обработка пайпа
+// Pipe handling
 static int handle_pipe_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
 {
     t_cmd *new_cmd;
@@ -276,11 +276,11 @@ static int handle_pipe_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
         return FAILURE;
     (*current_cmd)->next = new_cmd;
     *current_cmd = new_cmd;
-    *tokens = (*tokens)->next; // пропустить '|'
+    *tokens = (*tokens)->next;
     return SUCCESS;
 }
 
-// Основная функция
+// Main function
 t_cmd *parse_tokens(t_token *tokens, t_shell *sh)
 {
     t_cmd *cmd = init_cmd();
