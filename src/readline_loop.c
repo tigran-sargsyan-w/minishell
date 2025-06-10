@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 04:35:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 04:51:00 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	process_input_line(char *input, t_shell *sh)
 	}
 	else
 		executor(cmd, sh);
-	free_cmd_list(cmd);
+	//free_cmd_list(cmd);
 }
 
 void	readline_loop(t_shell *sh)
