@@ -6,14 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:21:55 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:24:12 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 #include "parser.h"
-// #include "minishell.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -207,7 +206,6 @@ int	cmd_is_valid_before_pipe(t_cmd *cmd)
 	return (0);
 }
 
-// Argument handling
 static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
 	char	*value;
@@ -234,7 +232,6 @@ static void	apply_redirection(t_cmd *cmd, int redirect_type, const char *value,
 		add_redirection(cmd, REDIR_APPEND, value, 0);
 }
 
-// Redirection handling
 static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
 	int		quoted;
@@ -261,7 +258,6 @@ static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 	return (SUCCESS);
 }
 
-// Pipe handling
 static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 		t_shell *sh)
 {
@@ -289,7 +285,6 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 	return (SUCCESS);
 }
 
-// Диспетчер токена с «inline» обработкой неожиданного токена
 static int	process_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
 {
 	if (is_arg_token((*tokens)->type))
