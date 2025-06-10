@@ -6,16 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:19:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:47:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:58:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 static t_redir	*new_redir(t_redir_type type, const char *filename, int quoted)
 {
