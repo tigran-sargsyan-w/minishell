@@ -6,15 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 14:11:24 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:02:09 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "minishell.h"
 #include "lexer.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <stddef.h>
 
 static int	handle_token(t_token **tokens, char *input, int *i, int sep_flag)
 {

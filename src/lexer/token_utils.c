@@ -6,14 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 20:25:20 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 14:02:57 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:04:39 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minishell.h"
 #include "parser.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 int	is_space(char c)

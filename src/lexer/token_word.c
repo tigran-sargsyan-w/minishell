@@ -6,16 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:05:37 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 19:43:04 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:05:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_printf.h"
-#include "minishell.h"
 #include "lexer.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 int	read_unquoted(t_token **tokens, char *input, int *i, int sep_flag)
 {
