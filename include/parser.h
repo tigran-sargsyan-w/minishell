@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:37:46 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:43:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_redir
 
 // cmd_args_builder.c
 t_cmd						*init_cmd(void);
-int							expand_args(t_cmd *cmd);
 int							append_arg(t_cmd *cmd, char *arg);
 char						*build_argument(t_token **tokens, t_shell *sh);
 char						*build_heredoc_delim(t_token **tokens, int *quoted,

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   argument_builder.c                                 :+:      :+:    :+:   */
+/*   cmd_args_builder.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:40:39 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:50:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:43:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-t_cmd	*init_cmd(void)
-{
-	t_cmd	*cmd;
-	int		i;
-
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	cmd->arg_cap = INITIAL_ARG_CAP;
-	cmd->args = malloc(sizeof(char *) * cmd->arg_cap);
-	if (!cmd->args)
-		return (free(cmd), NULL);
-	i = 0;
-	while (i < cmd->arg_cap)
-		cmd->args[i++] = NULL;
-	cmd->in_redirs = NULL;
-	cmd->out_redirs = NULL;
-	cmd->next = NULL;
-	return (cmd);
-}
-
-int	expand_args(t_cmd *cmd)
+static int	expand_args(t_cmd *cmd)
 {
 	int		old_cap;
 	int		new_cap;
@@ -62,6 +41,27 @@ int	expand_args(t_cmd *cmd)
 	cmd->args = new_args;
 	cmd->arg_cap = new_cap;
 	return (0);
+}
+
+t_cmd	*init_cmd(void)
+{
+	t_cmd	*cmd;
+	int		i;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->arg_cap = INITIAL_ARG_CAP;
+	cmd->args = malloc(sizeof(char *) * cmd->arg_cap);
+	if (!cmd->args)
+		return (free(cmd), NULL);
+	i = 0;
+	while (i < cmd->arg_cap)
+		cmd->args[i++] = NULL;
+	cmd->in_redirs = NULL;
+	cmd->out_redirs = NULL;
+	cmd->next = NULL;
+	return (cmd);
 }
 
 int	append_arg(t_cmd *cmd, char *value)
