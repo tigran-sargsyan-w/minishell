@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/09 16:53:50 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:33:13 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,20 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
-static int	handle_heredoc(t_redir *redir, t_shell *sh)
+static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
 	int		fd;
 	char	*line;
 	char	*expanded;
 
-	// 1) create/truncate tmp file for heredoc
 	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		perror("open heredoc tmpfile");
-		return (-1);
+		perror("open heredoc");
+		exit(1);
 	}
-	// 2) read lines until matching the limiter
 	while (1)
 	{
 		line = readline("> ");
@@ -58,14 +57,46 @@ static int	handle_heredoc(t_redir *redir, t_shell *sh)
 		free(line);
 	}
 	close(fd);
-	// 3) change the node: from heredoc to a regular infile
+	exit(0);
+}
+
+static int	handle_heredoc(t_redir *redir, t_shell *sh)
+{
+	pid_t	pid;
+	int		status;
+
+	// 1. Ignore SIGINT in the parent process
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid == 0)
+	{
+		// 2. In the child process — restore SIGINT
+		signal(SIGINT, SIG_DFL);
+		write_heredoc_content(redir, sh);
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		// 3. Restore signals in the parent
+		signal(SIGINT, sigint_handler);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			// Ctrl+C → interrupt the entire command
+			unlink(HEREDOC_TMPFILE);
+			sh->last_status = 130;
+			return (-1);
+		}
+	}
+	else
+	{
+		perror("fork");
+		return (-1);
+	}
+	// 4. Replace heredoc with a regular infile
 	free(redir->filename);
 	redir->filename = ft_strdup(HEREDOC_TMPFILE);
 	if (!redir->filename)
-	{
-		perror("strdup");
 		return (-1);
-	}
 	redir->type = REDIR_IN;
 	return (0);
 }

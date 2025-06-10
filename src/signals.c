@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 21:58:12 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/05 00:11:24 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:09:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 volatile sig_atomic_t	g_signo = 0;
 
 // Handler for SIGINT (Ctrl-C)
-static void	sigint_handler(int signo)
+void	sigint_handler(int signo)
 {
 	(void)signo;
 	rl_done = 1;
