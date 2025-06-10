@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 05:40:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:01:43 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdbool.h>
 # define SUCCESS 0
 # define FAILURE 1
 
 typedef struct s_env_list	t_env_list;
 
-// Main structure
 typedef struct s_shell
 {
 	t_env_list				*env_list;
@@ -27,9 +25,8 @@ typedef struct s_shell
 	int						last_status;
 }							t_shell;
 
-// readline_loop.c
 void						readline_loop(t_shell *sh);
-bool						is_directory(const char *path);
+int							is_directory(const char *path);
 
 void						clean_shell(t_shell *sh);
 
