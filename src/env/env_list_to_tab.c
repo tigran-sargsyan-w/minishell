@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/07 02:34:26 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:08:00 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ char	**env_list_to_tab(t_env_list **env_list)
 	char	**env_tab;
 	size_t	len;
 
-	if ((!env_list) || ((len = lst_size(env_list)) == 0))
+	len = lst_size(env_list);
+	if ((!env_list) || (len == 0))
 		return (return_empty_tab());
 	env_tab = malloc(sizeof(char *) * (len + 1));
 	if (env_tab == NULL)
