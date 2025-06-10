@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 15:02:51 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:16:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ typedef struct s_shell
 	char					**env_tab;
 	int						last_status;
 }							t_shell;
-
-
 
 // readline_loop.c
 void						readline_loop(t_shell *sh);
