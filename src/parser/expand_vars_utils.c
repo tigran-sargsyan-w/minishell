@@ -6,12 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 18:08:16 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 18:13:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:54:15 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
-#include "executor.h"
 #include "libft.h"
 #include "minishell.h"
 #include <stdlib.h>
