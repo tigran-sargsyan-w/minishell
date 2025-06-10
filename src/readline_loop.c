@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/09 23:50:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 04:35:26 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,83 +18,93 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 
 extern volatile sig_atomic_t	g_signo;
 
-// TODO: move this function to a more appropriate place?
-int	is_directory(const char *path)
+bool	is_directory(const char *path)
 {
 	struct stat	sb;
 
-	if (!path || stat(path, &sb) == -1)
-		return (0);
-	if (S_ISDIR(sb.st_mode))
-	{
-		ft_dprintf(2, "%s: Is a directory\n", path);
-		return (1);
-	}
-	return (0);
+	if (!path || (stat(path, &sb) == -1))
+		return (false);
+	return (S_ISDIR(sb.st_mode));
 }
 
-int	is_all_whitespace(const char *str)
+static bool	handle_signal_interrupt(t_shell *sh)
+{
+	if (g_signo == 1)
+	{
+		if (sh->last_status < 128)
+			sh->last_status = 130;
+		g_signo = 0;
+		return (true);
+	}
+	return (false);
+}
+
+static bool	should_skip_input(const char *input)
 {
 	size_t	i;
 
-	if (!str)
-		return (1);
 	i = 0;
-	while (str[i])
+	while (input[i])
 	{
-		if (str[i] != ' ' && str[i] != '\t')
-			return (0);
+		if (input[i] != ' ' && input[i] != '\t')
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
+}
+static void	process_input_line(char *input, t_shell *sh)
+{
+	t_token	*tokens;
+	t_cmd	*cmd;
+
+	add_history(input);
+	tokens = lexer(input);
+	if (!tokens)
+	{
+		sh->last_status = 2;
+		return ;
+	}
+	cmd = parse_tokens(tokens, sh);
+	free_tokens(tokens);
+	if (!cmd)
+		return ;
+	if (is_directory(cmd->args[0]))
+	{
+		ft_dprintf(2, "%s: Is a directory\n", cmd->args[0]);
+		sh->last_status = 126;
+	}
+	else
+		executor(cmd, sh);
+	free_cmd_list(cmd);
 }
 
 void	readline_loop(t_shell *sh)
 {
-	t_token	*tokens;
-	t_cmd	*cmd;
-	char	*input;
+	char *input;
 
 	g_signo = 0;
 	setup_signal_handlers();
 	while ((input = readline("minishell > ")) != NULL)
 	{
-		if (g_signo == 1)
+		if (handle_signal_interrupt(sh))
 		{
-			if (sh->last_status < 128)
-				sh->last_status = 130;
-			g_signo = 0;
 			free(input);
 			continue ;
 		}
-		if (*input)
+		if (should_skip_input(input))
 		{
-			if (is_all_whitespace(input))
-				continue ;
-			add_history(input);
-			tokens = lexer(input);
-			// print_tokens(tokens);
-			if (tokens)
-			{
-				cmd = parse_tokens(tokens, sh);
-				// print_cmds(cmd);
-				free_tokens(tokens);
-				if (cmd && is_directory(cmd->args[0]))
-					sh->last_status = 126;
-				else if (cmd)
-					executor(cmd, sh);
-			}
-			else
-				sh->last_status = 2;
+			free(input);
+			continue ;
 		}
+		process_input_line(input, sh);
 		free(input);
 		setup_signal_handlers();
-
 	}
 	write(1, "exit\n", 5);
 }
