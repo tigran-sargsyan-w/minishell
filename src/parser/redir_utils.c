@@ -6,11 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:19:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 18:42:47 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:21:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +28,7 @@ static t_redir	*new_redir(t_redir_type type, const char *filename, int quoted)
 		return (NULL);
 	}
 	redir->type = type;
-	redir->filename = strdup(filename);
+	redir->filename = ft_strdup(filename);
 	if (!redir->filename)
 	{
 		perror("strdup");
