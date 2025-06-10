@@ -6,15 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:47:52 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:57:38 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
 #include "parser.h"
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
