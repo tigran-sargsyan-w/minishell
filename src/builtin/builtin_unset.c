@@ -6,21 +6,21 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 20:13:04 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 05:26:54 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "builtins.h"
-#include "parser.h"
+#include "env.h"
 #include "libft.h"
+#include "parser.h"
 #include <stdlib.h>
 
-int remove_var(char *argv, t_env_list **env)
+int	remove_var(char *argv, t_env_list **env)
 {
 	t_env_list	*cur;
 	t_env_list	*prev;
-	
+
 	cur = *env;
 	prev = NULL;
 	while (cur && ft_strcmp(cur->key, argv) != 0)
@@ -42,10 +42,9 @@ int remove_var(char *argv, t_env_list **env)
 	return (0);
 }
 
-//Check multiple and use is_valid in the loop
 int	builtin_unset(t_cmd *cmd, t_env_list **env)
 {
-	char **argv;
+	char	**argv;
 
 	argv = &cmd->args[1];
 	if (argv == NULL)

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 00:18:14 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 05:20:38 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ int setup_pwds(t_env_list *old_pwd_node, t_env_list *new_pwd_node, char *old_pwd
     set_value(new_pwd_node, new_pwd);
   else
     if (export_argument(ft_strdup("PWD"), ft_strdup(new_pwd), env, EXPORT) != 0)
+    {
+      free(new_pwd);
       return (1);
+    }
   free(new_pwd);
   return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/06 21:34:59 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 05:21:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ static void	print_args(char **argv)
 			continue ;
 		}
 		printf("%s", *argv);
-		// TODO: check security
-		if ((argv + 1) != NULL)
+		if (*(argv + 1) != NULL)
 			printf(" ");
 		argv++;
 	}
