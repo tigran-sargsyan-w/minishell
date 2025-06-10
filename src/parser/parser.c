@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 21:53:32 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:04:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,19 @@ static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 	return (SUCCESS);
 }
 
+static void	apply_redirection(t_cmd *cmd, int redirect_type, const char *value,
+		int quoted)
+{
+	if (redirect_type == TOK_LESS)
+		add_redirection(cmd, REDIR_IN, value, 0);
+	else if (redirect_type == TOK_GREATER)
+		add_redirection(cmd, REDIR_OUT, value, 0);
+	else if (redirect_type == TOK_DLESS)
+		add_redirection(cmd, REDIR_HEREDOC, value, quoted);
+	else if (redirect_type == TOK_DGREATER)
+		add_redirection(cmd, REDIR_APPEND, value, 0);
+}
+
 // Redirection handling
 static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
@@ -243,14 +256,7 @@ static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 		value = build_argument(tokens, sh);
 	if (!value)
 		return (FAILURE);
-	if (redirect_type == TOK_LESS)
-		add_redirection(cmd, REDIR_IN, value, 0);
-	else if (redirect_type == TOK_GREATER)
-		add_redirection(cmd, REDIR_OUT, value, 0);
-	else if (redirect_type == TOK_DLESS)
-		add_redirection(cmd, REDIR_HEREDOC, value, quoted);
-	else if (redirect_type == TOK_DGREATER)
-		add_redirection(cmd, REDIR_APPEND, value, 0);
+	apply_redirection(cmd, redirect_type, value, quoted);
 	free(value);
 	return (SUCCESS);
 }
@@ -271,7 +277,7 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 	{
 		sh->last_status = 2;
 		ft_dprintf(2,
-				"minishell: syntax error near unexpected token `newline'\n");
+					"minishell: syntax error near unexpected token `newline'\n");
 		return (FAILURE);
 	}
 	new_cmd = init_cmd();
