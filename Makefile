@@ -21,10 +21,13 @@ SRCS = minishell.c \
 		lexer/token_operators.c \
 		lexer/token_utils.c \
 		lexer/token_word.c \
-		parser/redir_utils.c \
-		parser/parser.c \
+		parser/cmd_args_builder.c \
 		parser/expand_vars_utils.c \
 		parser/expand_vars.c \
+		parser/free_utils.c \
+		parser/parser.c \
+		parser/redir_utils.c \
+		parser/token_utils.c \
 		builtin/run_builtin.c \
 		builtin/builtin_echo.c \
 		builtin/builtin_cd.c \
