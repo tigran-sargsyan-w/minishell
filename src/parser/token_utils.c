@@ -6,16 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:42:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:33:13 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:59:43 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
 #include "libft.h"
 #include "parser.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 int	is_arg_token(t_token_type type)
 {
