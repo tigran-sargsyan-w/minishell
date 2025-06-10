@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 21:04:14 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:05:40 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	should_skip_input(const char *input)
 	}
 	return (1);
 }
+
 static void	process_input_line(char *input, t_shell *sh)
 {
 	t_token	*tokens;
@@ -87,7 +88,7 @@ static void	process_input_line(char *input, t_shell *sh)
 
 void	readline_loop(t_shell *sh)
 {
-	char *input;
+	char	*input;
 
 	g_signo = 0;
 	setup_signal_handlers();
