@@ -17,10 +17,13 @@ SRCS = minishell.c \
     	readline_loop.c \
 		exit_utils.c \
 		signals.c \
+		lexer/lexer.c \
+		lexer/token_operators.c \
+		lexer/token_utils.c \
+		lexer/token_word.c \
 		parser/redir_utils.c \
-		parser/lexer.c \
-		parser/lexer_utils.c \
 		parser/parser.c \
+		parser/expand_vars_utils.c \
 		parser/expand_vars.c \
 		builtin/run_builtin.c \
 		builtin/builtin_echo.c \

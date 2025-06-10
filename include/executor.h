@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/06 22:17:00 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:10:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void					error_exit(char *msg);
 
 // signals.c
 void					setup_signal_handlers(void);
+void					sigint_handler(int signo);
 
 #endif

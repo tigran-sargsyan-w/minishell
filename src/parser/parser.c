@@ -6,11 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/09 12:53:15 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:43:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 #include "parser.h"
 #include <stddef.h>
 #include <stdio.h>
@@ -114,13 +115,9 @@ void	free_cmd_list(t_cmd *cmd)
 			free(cmd->args);
 		}
 		if (cmd->in_redirs)
-		{
 			free_redirs(cmd->in_redirs);
-		}
 		if (cmd->out_redirs)
-		{
 			free_redirs(cmd->out_redirs);
-		}
 		free(cmd);
 		cmd = next;
 	}
@@ -155,12 +152,26 @@ char	*build_heredoc_delim(t_token **tokens, int *quoted, t_shell *sh)
 	return (result);
 }
 
+static char	*get_chunk_for_token(t_token *tok, t_shell *sh)
+{
+	char	*chunk;
+
+	chunk = NULL;
+	if (tok->type == TOK_SQUOTED)
+		chunk = ft_strdup(tok->value);
+	else if (tok->type == TOK_WORD || tok->type == TOK_DQUOTED)
+		chunk = expand_vars(tok->value, sh);
+	if (!chunk && (tok->type == TOK_SQUOTED || tok->type == TOK_DQUOTED))
+		chunk = ft_strdup("");
+	return (chunk);
+}
+
 char	*build_argument(t_token **tokens, t_shell *sh)
 {
 	t_token	*tok;
 	char	*combined;
 	char	*chunk;
-	char	*old;
+	char	*new_combined;
 
 	tok = *tokens;
 	combined = ft_strdup("");
@@ -169,18 +180,15 @@ char	*build_argument(t_token **tokens, t_shell *sh)
 	while (tok && is_arg_token(tok->type) && (tok == *tokens
 			|| tok->separated == 0))
 	{
-		if (tok->type == TOK_SQUOTED)
-			chunk = ft_strdup(tok->value);
-		else if (tok->type == TOK_WORD || tok->type == TOK_DQUOTED)
-			chunk = expand_vars(tok->value, sh);
-		if (!chunk && (tok->type == TOK_DQUOTED || tok->type == TOK_SQUOTED))
-			chunk = ft_strdup("");
+		chunk = get_chunk_for_token(tok, sh);
 		if (!chunk)
 			return (free(combined), NULL);
-		old = combined;
-		combined = ft_strjoin(combined, chunk);
-		free(old);
+		new_combined = ft_strjoin(combined, chunk);
+		free(combined);
 		free(chunk);
+		if (!new_combined)
+			return (NULL);
+		combined = new_combined;
 		tok = tok->next;
 	}
 	*tokens = tok;
@@ -227,7 +235,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		{
 			if (!tokens->next || !is_arg_token(tokens->next->type))
 			{
-				printf("minishell: syntax error near `%s'\n", tokens->value);
+				ft_dprintf(2, "minishell: syntax error near `%s'\n", tokens->value);
 				sh->last_status = 2;
 				return (free_cmd_list(cmd), NULL);
 			}
@@ -246,7 +254,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 				add_redirection(current_cmd, REDIR_OUT, tmp_token_value, 0);
 			else if (redirect_type == TOK_DLESS)
 				add_redirection(current_cmd, REDIR_HEREDOC, tmp_token_value,
-					quoted);
+						quoted);
 			else if (redirect_type == TOK_DGREATER)
 				add_redirection(current_cmd, REDIR_APPEND, tmp_token_value, 0);
 			free(tmp_token_value);
@@ -258,17 +266,17 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 			if (!cmd_is_valid_before_pipe(current_cmd))
 			{
 				sh->last_status = 2;
-				printf("minishell: syntax error near unexpected token `|'\n");
+				ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
 				return (free_cmd_list(cmd), NULL);
 			}
 			if (!tokens->next)
 			{
 				sh->last_status = 2;
-				printf("minishell: syntax error near unexpected token ");
+				ft_dprintf(2, "minishell: syntax error near unexpected token ");
 				if (!tokens->next)
-					printf("`newline'\n");
+					ft_dprintf(2, "`newline'\n");
 				else
-					printf("`%s'\n", tokens->next->value);
+					ft_dprintf(2, "`%s'\n", tokens->next->value);
 				return (free_cmd_list(cmd), NULL);
 			}
 			new_cmd = init_cmd();
@@ -283,50 +291,10 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		else
 		{
 			sh->last_status = 2;
-			printf("minishell: syntax error near unexpected token `%s'\n",
-				tokens->value);
+			ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
+					tokens->value);
 			return (free_cmd_list(cmd), NULL);
 		}
 	}
 	return (cmd);
-}
-
-void	print_cmds(t_cmd *cmd)
-{
-	int		i;
-	int		cmd_num;
-	t_redir	*redir;
-
-	cmd_num = 1;
-	printf(YELLOW "COMMANDS:\n" RESET);
-	while (cmd)
-	{
-		printf("Command %d:\n", cmd_num++);
-		i = 0;
-		while (cmd->args && cmd->args[i])
-		{
-			printf("  arg[%d]: %s\n", i, cmd->args[i]);
-			i++;
-		}
-		if (cmd->in_redirs)
-		{
-			redir = cmd->in_redirs;
-			while (redir)
-			{
-				printf("  in_redir: %s\n", redir->filename);
-				redir = redir->next;
-			}
-		}
-		if (cmd->out_redirs)
-		{
-			redir = cmd->out_redirs;
-			while (redir)
-			{
-				printf("  out_redir: %s\n", redir->filename);
-				redir = redir->next;
-			}
-		}
-		cmd = cmd->next;
-	}
-	printf("\n");
 }
