@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/09 12:53:15 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:21:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,44 +289,4 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		}
 	}
 	return (cmd);
-}
-
-void	print_cmds(t_cmd *cmd)
-{
-	int		i;
-	int		cmd_num;
-	t_redir	*redir;
-
-	cmd_num = 1;
-	printf(YELLOW "COMMANDS:\n" RESET);
-	while (cmd)
-	{
-		printf("Command %d:\n", cmd_num++);
-		i = 0;
-		while (cmd->args && cmd->args[i])
-		{
-			printf("  arg[%d]: %s\n", i, cmd->args[i]);
-			i++;
-		}
-		if (cmd->in_redirs)
-		{
-			redir = cmd->in_redirs;
-			while (redir)
-			{
-				printf("  in_redir: %s\n", redir->filename);
-				redir = redir->next;
-			}
-		}
-		if (cmd->out_redirs)
-		{
-			redir = cmd->out_redirs;
-			while (redir)
-			{
-				printf("  out_redir: %s\n", redir->filename);
-				redir = redir->next;
-			}
-		}
-		cmd = cmd->next;
-	}
-	printf("\n");
 }
