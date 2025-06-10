@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:39:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 22:48:12 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:45:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	free_redirs(t_redir *redir)
+static void	free_redirs(t_redir *redir)
 {
 	t_redir	*next;
 

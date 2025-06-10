@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:43:55 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:45:37 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int							process_dollar_sequence(const char *input,
 								size_t *pos, char **result, t_shell *sh);
 
 // free_utils.c
-void						free_redirs(t_redir *redir);
 void						free_cmd_list(t_cmd *cmd);
 
 // parser.c
