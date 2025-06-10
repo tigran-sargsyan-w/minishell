@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: denissemenov <denissemenov@student.42.f    +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 05:39:51 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:28:57 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,6 @@ static int	init_sh(t_shell *sh, char **envp)
 		return (FAILURE);
 	}
 	return (SUCCESS);
-}
-
-void	clean_shell(t_shell *sh)
-{
-	free_env_tab(sh->env_tab);
-	lst_clear(&sh->env_list);
 }
 
 int	main(int argc, char **argv, char **envp)
