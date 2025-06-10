@@ -6,11 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 19:19:12 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:43:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 #include "parser.h"
 #include <stddef.h>
 #include <stdio.h>
@@ -234,7 +235,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		{
 			if (!tokens->next || !is_arg_token(tokens->next->type))
 			{
-				printf("minishell: syntax error near `%s'\n", tokens->value);
+				ft_dprintf(2, "minishell: syntax error near `%s'\n", tokens->value);
 				sh->last_status = 2;
 				return (free_cmd_list(cmd), NULL);
 			}
@@ -265,17 +266,17 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 			if (!cmd_is_valid_before_pipe(current_cmd))
 			{
 				sh->last_status = 2;
-				printf("minishell: syntax error near unexpected token `|'\n");
+				ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
 				return (free_cmd_list(cmd), NULL);
 			}
 			if (!tokens->next)
 			{
 				sh->last_status = 2;
-				printf("minishell: syntax error near unexpected token ");
+				ft_dprintf(2, "minishell: syntax error near unexpected token ");
 				if (!tokens->next)
-					printf("`newline'\n");
+					ft_dprintf(2, "`newline'\n");
 				else
-					printf("`%s'\n", tokens->next->value);
+					ft_dprintf(2, "`%s'\n", tokens->next->value);
 				return (free_cmd_list(cmd), NULL);
 			}
 			new_cmd = init_cmd();
@@ -290,7 +291,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		else
 		{
 			sh->last_status = 2;
-			printf("minishell: syntax error near unexpected token `%s'\n",
+			ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
 					tokens->value);
 			return (free_cmd_list(cmd), NULL);
 		}

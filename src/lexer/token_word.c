@@ -6,11 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:05:37 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 14:15:51 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:43:04 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 #include "minishell.h"
 #include "lexer.h"
 #include <stdio.h>
@@ -38,7 +39,7 @@ int	read_squoted(t_token **tokens, char *input, int *i, int sep_flag)
 		(*i)++;
 	if (input[*i] != '\'')
 	{
-		printf("minishell: syntax error: unclosed single quote\n");
+		ft_dprintf(2, "minishell: syntax error: unclosed single quote\n");
 		return (1);
 	}
 	add_token(tokens, TOK_SQUOTED, ft_strndup(input + start, *i - start),
@@ -56,7 +57,7 @@ int	read_dquoted(t_token **tokens, char *input, int *i, int sep_flag)
 		(*i)++;
 	if (input[*i] != '"')
 	{
-		printf("minishell: syntax error: unclosed double quote\n");
+		ft_dprintf(2, "minishell: syntax error: unclosed double quote\n");
 		return (1);
 	}
 	add_token(tokens, TOK_DQUOTED, ft_strndup(input + start, *i - start),
