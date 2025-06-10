@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/09 23:58:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/10 04:47:52 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,19 @@
 #include "minishell.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-static t_shell	*init_sh(t_shell *sh, char **envp)
+static int	init_sh(t_shell *sh, char **envp)
 {
+	ft_memset(sh, 0, sizeof(sh));
 	sh->last_status = 0;
 	sh->env_list = lst_init(envp);
 	if (sh->env_list == NULL && *envp != NULL)
 	{
 		perror("minishell: init env");
-		return (NULL);
+		return (FAILURE);
 	}
-	return (sh);
+	return (SUCCESS);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -35,9 +37,8 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	ft_memset(&sh, 0, sizeof(sh));
-	if (init_sh(&sh, envp) == NULL)
-		return (1);
+	if (init_sh(&sh, envp) == FAILURE)
+		return (EXIT_FAILURE);
 	readline_loop(&sh);
 	lst_clear(&sh.env_list);
 	return (sh.last_status);
