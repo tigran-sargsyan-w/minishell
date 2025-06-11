@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/09 10:02:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:35:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	run_builtin(t_cmd *cmd, t_shell *sh)
 {
 	int								i;
 	static const t_builtins_array	builtins_arr[] = {{"echo", builtin_echo},
-			{"cd", builtin_cd}, {"pwd", builtin_pwd}, {"env", builtin_env},
-			{"export", builtin_export}, {"unset", builtin_unset}, {NULL, NULL}};
+	{"cd", builtin_cd}, {"pwd", builtin_pwd}, {"env", builtin_env},
+	{"export", builtin_export}, {"unset", builtin_unset}, {NULL, NULL}};
 
 	i = 0;
 	if (cmd == NULL || cmd->args == NULL || cmd->args[0] == NULL)
