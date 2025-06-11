@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 13:33:03 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:37:03 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void	execute_external_command(t_cmd *cmd, t_shell *sh)
+static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 {
 	char	*cmd_name;
 	char	*full_cmd;
@@ -49,7 +49,7 @@ void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	error_exit("execve");
 }
 
-void	execute_child(t_cmd *cmd, t_shell *sh)
+static void	execute_child(t_cmd *cmd, t_shell *sh)
 {
 	if (handle_redirections(cmd, sh) < 0)
 	{
@@ -62,7 +62,7 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 		execute_external_command(cmd, sh);
 }
 
-void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
+static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 {
 	int	dup2_ret;
 
