@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:57:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:07:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,46 +71,51 @@ static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 	exit(0);
 }
 
-static int	handle_heredoc(t_redir *redir, t_shell *sh)
+// Хелпер: ждёт fork-процесс heredoc, восстанавливает SIGINT и обрабатывает Ctrl+C
+static int wait_for_heredoc(pid_t pid, t_shell *sh)
 {
-	pid_t	pid;
-	int		status;
+    int status;
 
-	// 1. Ignore SIGINT in the parent process
-	signal(SIGINT, SIG_IGN);
-	pid = fork();
-	if (pid == 0)
-	{
-		// 2. In the child process — restore SIGINT
-		signal(SIGINT, SIG_DFL);
-		write_heredoc_content(redir, sh);
-	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		// 3. Restore signals in the parent
-		signal(SIGINT, sigint_handler);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		{
-			// Ctrl+C → interrupt the entire command
-			unlink(HEREDOC_TMPFILE);
-			sh->last_status = 130;
-			return (-1);
-		}
-	}
-	else
-	{
-		perror("fork");
-		return (-1);
-	}
-	// 4. Replace heredoc with a regular infile
-	free(redir->filename);
-	redir->filename = ft_strdup(HEREDOC_TMPFILE);
-	if (!redir->filename)
-		return (-1);
-	redir->type = REDIR_IN;
-	return (0);
+    waitpid(pid, &status, 0);
+    signal(SIGINT, sigint_handler);
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+    {
+        unlink(HEREDOC_TMPFILE);
+        sh->last_status = 130;
+        return -1;
+    }
+    return 0;
 }
+
+static int handle_heredoc(t_redir *redir, t_shell *sh)
+{
+    pid_t pid;
+
+    signal(SIGINT, SIG_IGN);
+    pid = fork();
+    if (pid == 0)
+    {
+        signal(SIGINT, SIG_DFL);
+        write_heredoc_content(redir, sh);
+    }
+    else if (pid > 0)
+    {
+        if (wait_for_heredoc(pid, sh) < 0)
+            return -1;
+    }
+    else
+    {
+        perror("fork");
+        return -1;
+    }
+    free(redir->filename);
+    redir->filename = ft_strdup(HEREDOC_TMPFILE);
+    if (!redir->filename)
+        return -1;
+    redir->type = REDIR_IN;
+    return 0;
+}
+
 
 static int	apply_one_redir(t_redir *redir, t_shell *sh)
 {
