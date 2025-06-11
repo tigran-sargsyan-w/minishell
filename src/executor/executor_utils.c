@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 12:26:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:36:27 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,41 +183,45 @@ int	handle_redirections(t_cmd *cmd, t_shell *sh)
 	return (0);
 }
 
-void	execute_child(t_cmd *cmd, t_shell *sh)
+static void execute_external_command(t_cmd *cmd, t_shell *sh)
 {
-	char	*full_cmd;
+    char *cmd_name;
+    char *full_cmd;
 
-	if (handle_redirections(cmd, sh) < 0)
-	{
-		sh->last_status = 1;
-		exit(1);
-	}
-	// Handle the case: no command, only redirections
-	if (!cmd->args || !cmd->args[0])
-		exit(0);
-	if (run_builtin(cmd, sh) == -1)
-	{
-		if (cmd->args[0] && cmd->args[0][0] == '\0')
-		{
-			write(2, "'': command not found\n", 23);
-			exit(CMD_NOT_FOUND);
-		}
-		full_cmd = find_command(cmd->args[0], sh->env_tab);
-		if (is_directory(full_cmd))
-		{
-			free(full_cmd);
-			exit(CMD_IS_DIRECTORY);
-		}
-		if (!full_cmd)
-		{
-			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
-			write(2, ": command not found\n", 21);
-			exit(CMD_NOT_FOUND);
-		}
-		execve(full_cmd, cmd->args, sh->env_tab);
-		free(full_cmd);
-		error_exit("execve");
-	}
+    cmd_name = cmd->args[0];
+    if (cmd_name[0] == '\0')
+    {
+        write(2, "'': command not found\n", 23);
+        exit(CMD_NOT_FOUND);
+    }
+    full_cmd = find_command(cmd_name, sh->env_tab);
+    if (!full_cmd)
+    {
+        write(2, cmd_name, ft_strlen(cmd_name));
+        write(2, ": command not found\n", 21);
+        exit(CMD_NOT_FOUND);
+    }
+    if (is_directory(full_cmd))
+    {
+        free(full_cmd);
+        exit(CMD_IS_DIRECTORY);
+    }
+    execve(full_cmd, cmd->args, sh->env_tab);
+    free(full_cmd);
+    error_exit("execve");
+}
+
+void execute_child(t_cmd *cmd, t_shell *sh)
+{
+    if (handle_redirections(cmd, sh) < 0)
+    {
+        sh->last_status = 1;
+        exit(1);
+    }
+    if (!cmd->args || !cmd->args[0])
+        exit(0);
+    if (run_builtin(cmd, sh) == -1)
+        execute_external_command(cmd, sh);
 }
 
 void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
