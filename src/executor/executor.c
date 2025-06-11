@@ -6,25 +6,45 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 10:46:05 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:00:54 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "env.h"
-#include "ft_printf.h"
 #include "executor.h"
+#include "ft_printf.h"
+#include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <signal.h>
 #include <unistd.h>
 
-void	execute_cmds(t_cmd *cmd, t_shell *sh)
+static void	finalize_execution(pid_t last_pid, t_shell *sh)
+{
+	int	status;
+
+	signal(SIGINT, SIG_IGN);
+	waitpid(last_pid, &status, 0);
+	if (last_pid < 0)
+	{
+		lst_clear(&sh->env_list);
+		error_exit("fork");
+	}
+	if (WIFEXITED(status))
+		sh->last_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		sh->last_status = 128 + WTERMSIG(status);
+	unlink(HEREDOC_TMPFILE);
+	while (wait(&status) > 0)
+		;
+}
+
+// Main function for executing commands in a pipeline
+static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
 	t_pipe	pipefd;
 	int		prev_pipe_read_fd;
-	int		status;
 	pid_t	pid;
 
 	prev_pipe_read_fd = 0;
@@ -45,21 +65,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		}
 		cmd = cmd->next;
 	}
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	if (pid < 0)
-	{
-		lst_clear(&sh->env_list);
-		error_exit("fork");
-		return ;
-	}
-	if (WIFEXITED(status))
-		sh->last_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		sh->last_status = 128 + WTERMSIG(status);
-	unlink(HEREDOC_TMPFILE);
-	while (wait(&status) > 0)
-		;
+	finalize_execution(pid, sh);
 }
 
 void	executor(t_cmd *cmd, t_shell *sh)

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 11:10:05 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:01:24 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void					free_array(char **array);
 
 // executor.c
 void					executor(t_cmd *cmd, t_shell *sh);
-void					execute_cmds(t_cmd *cmd, t_shell *sh);
+// void					execute_cmds(t_cmd *cmd, t_shell *sh);
 
 // executor_utils.c
 pid_t					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
