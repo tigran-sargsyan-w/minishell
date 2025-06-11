@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 12:25:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:26:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ static int	handle_heredoc(t_redir *redir, t_shell *sh)
 	return (0);
 }
 
-// Открывает файл для редиректа и выводит perror при ошибке
 static int	open_redirection_file(t_redir *redir)
 {
 	int	fd;
@@ -131,7 +130,7 @@ static int	open_redirection_file(t_redir *redir)
 	return (fd);
 }
 
-// Дублирует fd в stdin или stdout, закрывает и возвращает 0 или -1
+// Duplicates fd to stdin or stdout, closes it, and returns 0 or -1
 static int	redirect_fd_to_stdio(int fd, t_redir *redir)
 {
 	int	ret;
@@ -150,7 +149,7 @@ static int	redirect_fd_to_stdio(int fd, t_redir *redir)
 	return (0);
 }
 
-// Применяет один редирект (включая heredoc)
+// Applies a single redirection (including heredoc)
 static int	apply_one_redir(t_redir *redir, t_shell *sh)
 {
 	int	fd;
