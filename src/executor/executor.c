@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:00:54 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:17:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,39 +68,43 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	finalize_execution(pid, sh);
 }
 
-void	executor(t_cmd *cmd, t_shell *sh)
+// Function for a single command (without pipes)
+static void	run_single_command(t_cmd *cmd, t_shell *sh)
 {
 	int	saved_stdin;
 	int	saved_stdout;
 
+	saved_stdin = dup(STDIN_FILENO);
+	if (saved_stdin < 0)
+		error_exit("dup stdin");
+	saved_stdout = dup(STDOUT_FILENO);
+	if (saved_stdout < 0)
+		error_exit("dup stdout");
+	if (handle_redirections(cmd, sh) < 0)
+	{
+		sh->last_status = 1;
+		free_env_tab(sh->env_tab);
+		return ;
+	}
+	if (run_builtin(cmd, sh) == -1)
+		execute_cmds(cmd, sh);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+}
+
+void	executor(t_cmd *cmd, t_shell *sh)
+{
 	sh->env_tab = env_list_to_tab(&sh->env_list);
 	if (!sh->env_tab)
 	{
-		ft_dprintf(2, "minishell: env_list_to_tab failed");
+		ft_dprintf(2, "minishell: env_list_to_tab failed\n");
 		sh->last_status = EXIT_FAILURE;
 		return ;
 	}
 	if (cmd->next == NULL)
-	{
-		saved_stdin = dup(STDIN_FILENO);
-		if (saved_stdin < 0)
-			error_exit("dup stdin");
-		saved_stdout = dup(STDOUT_FILENO);
-		if (saved_stdout < 0)
-			error_exit("dup stdout");
-		if (handle_redirections(cmd, sh) < 0)
-		{
-			sh->last_status = 1;
-			free_env_tab(sh->env_tab);
-			return ;
-		}
-		if (run_builtin(cmd, sh) == -1)
-			execute_cmds(cmd, sh);
-		dup2(saved_stdin, STDIN_FILENO);
-		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdin);
-		close(saved_stdout);
-	}
+		run_single_command(cmd, sh);
 	else
 		execute_cmds(cmd, sh);
 	free_cmd_list(cmd);
