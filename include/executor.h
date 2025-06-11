@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:40:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:43:13 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,6 @@ void					executor(t_cmd *cmd, t_shell *sh);
 char					*find_command(char *cmd, char **envp);
 
 // heredoc.c
-int						process_heredoc_line(char *line, int fd, t_redir *redir,
-							t_shell *sh);
-int						write_heredoc_content(t_redir *redir, t_shell *sh);
-int						wait_for_heredoc(pid_t pid, t_shell *sh);
 int						handle_heredoc(t_redir *redir, t_shell *sh);
 
 // redirection.c

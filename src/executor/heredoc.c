@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 13:33:24 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:42:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	process_heredoc_line(char *line, int fd, t_redir *redir,
+static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 		t_shell *sh)
 {
 	char	*expanded;
@@ -48,7 +48,7 @@ int	process_heredoc_line(char *line, int fd, t_redir *redir,
 }
 
 // Main function for writing heredoc
-int	write_heredoc_content(t_redir *redir, t_shell *sh)
+static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
 	int		fd;
 	char	*line;
@@ -71,7 +71,7 @@ int	write_heredoc_content(t_redir *redir, t_shell *sh)
 	exit(0);
 }
 
-int	wait_for_heredoc(pid_t pid, t_shell *sh)
+static int	wait_for_heredoc(pid_t pid, t_shell *sh)
 {
 	int	status;
 
