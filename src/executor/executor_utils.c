@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 12:44:09 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:47:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,16 +226,21 @@ void	execute_child(t_cmd *cmd, t_shell *sh)
 
 void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 {
+	int	dup2_ret;
+
 	if (prev_fd)
 	{
-		dup2(prev_fd, STDIN_FILENO);
-		// TODO: security check for all dups and closes
+		dup2_ret = dup2(prev_fd, STDIN_FILENO);
+		if (dup2_ret < 0)
+			error_exit("dup2");
 		close(prev_fd);
 	}
 	if (cmd->next)
 	{
 		close(pd.read);
-		dup2(pd.write, STDOUT_FILENO);
+		dup2_ret = dup2(pd.write, STDOUT_FILENO);
+		if (dup2_ret < 0)
+			error_exit("dup2");
 		close(pd.write);
 	}
 }
