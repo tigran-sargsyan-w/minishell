@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:48:06 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:54:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 	if (redir->quoted == 0)
 	{
 		expanded = expand_vars(line, sh);
-		write(fd, expanded, ft_strlen(expanded));
+		if(expanded != NULL)
+			write(fd, expanded, ft_strlen(expanded));
 		free(expanded);
 	}
 	else
