@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:10:08 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:38:41 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,31 @@ typedef struct s_pipe
 	};
 }						t_pipe;
 
-// find_command.c
-char					*find_command(char *cmd, char **envp);
-void					free_array(char **array);
+// executor_child.c
+void					execute_external_command(t_cmd *cmd, t_shell *sh);
+void					execute_child(t_cmd *cmd, t_shell *sh);
+void					setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd);
+pid_t					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
+							int prev_fd, t_pipe pd);
 
 // executor.c
 void					executor(t_cmd *cmd, t_shell *sh);
+
+// find_command.c
+char					*find_command(char *cmd, char **envp);
+
+// heredoc.c
+int						process_heredoc_line(char *line, int fd, t_redir *redir,
+							t_shell *sh);
+int						write_heredoc_content(t_redir *redir, t_shell *sh);
+int						wait_for_heredoc(pid_t pid, t_shell *sh);
+int						handle_heredoc(t_redir *redir, t_shell *sh);
+
+// redirection.c
+int						open_redirection_file(t_redir *redir);
+int						redirect_fd_to_stdio(int fd, t_redir *redir);
+int						apply_one_redir(t_redir *redir, t_shell *sh);
+int						handle_redirection(t_redir *redir, t_shell *sh);
 
 // executor_utils.c
 pid_t					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
