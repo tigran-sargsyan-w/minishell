@@ -6,19 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:44:27 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:56:23 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
 #include "executor.h"
-#include "libft.h"
 #include <fcntl.h>
 #include <readline/readline.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 static int	open_redirection_file(t_redir *redir)
