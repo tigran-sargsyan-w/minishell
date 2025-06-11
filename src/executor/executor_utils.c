@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:47:10 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:48:06 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,62 +18,57 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 // Вынесённая функция для обработки одной строки heredoc
-static int process_heredoc_line(char *line, int fd, t_redir *redir, t_shell *sh)
+static int	process_heredoc_line(char *line, int fd, t_redir *redir,
+		t_shell *sh)
 {
-    char *expanded;
+	char	*expanded;
 
-    // Если встречен delimiter — прекращаем чтение
-    if (ft_strcmp(line, redir->filename) == 0)
-    {
-        free(line);
-        return 0;
-    }
-
-    // Разворачиваем переменные, если не в кавычках
-    if (redir->quoted == 0)
-    {
-        expanded = expand_vars(line, sh);
-        write(fd, expanded, ft_strlen(expanded));
-        free(expanded);
-    }
-    else
-    {
-        write(fd, line, ft_strlen(line));
-    }
-
-    write(fd, "\n", 1);
-    free(line);
-    return 1;
+	if (ft_strcmp(line, redir->filename) == 0)
+	{
+		free(line);
+		return (0);
+	}
+	if (redir->quoted == 0)
+	{
+		expanded = expand_vars(line, sh);
+		write(fd, expanded, ft_strlen(expanded));
+		free(expanded);
+	}
+	else
+	{
+		write(fd, line, ft_strlen(line));
+	}
+	write(fd, "\n", 1);
+	free(line);
+	return (1);
 }
 
 // Основная функция записи heredoc
-static int write_heredoc_content(t_redir *redir, t_shell *sh)
+static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
-    int  fd;
-    char *line;
+	int		fd;
+	char	*line;
 
 	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    if (fd < 0)
-    {
-        perror("open heredoc");
-        exit(1);
-    }
-
-    while (1)
-    {
+	if (fd < 0)
+	{
+		perror("open heredoc");
+		exit(1);
+	}
+	while (1)
+	{
 		line = readline("> ");
 		if (!line)
 			break ;
-        if (!process_heredoc_line(line, fd, redir, sh))
-            break;
-    }
-
-    close(fd);
-    exit(0);
+		if (!process_heredoc_line(line, fd, redir, sh))
+			break ;
+	}
+	close(fd);
+	exit(0);
 }
 
 static int	handle_heredoc(t_redir *redir, t_shell *sh)
