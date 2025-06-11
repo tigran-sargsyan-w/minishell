@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 05:39:39 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/11 01:48:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	waitpid(pid, &status, 0);
 	if (pid < 0)
 	{
-		clean_shell(sh);
+		lst_clear(&sh->env_list);
 		error_exit("fork");
 		return ;
 	}

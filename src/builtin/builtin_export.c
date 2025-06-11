@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 05:32:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/11 01:04:18 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ int	parse_key_value(char *arg, char **key, char **value)
 	if (plus_sign && (plus_sign + 1 == equality_sign))
 	{
 		*key = ft_substr(arg, 0, plus_sign - arg);
-	if (*key == NULL)
+		if (*key == NULL)
 		{
 			perror("minishell");
 			return (1);
-	}
+		}
 		*value = ft_strdup(++equality_sign);
 		if (*value == NULL)
 		{
@@ -56,7 +56,8 @@ int	parse_key_value(char *arg, char **key, char **value)
 			free(*key);
 			return (1);
 		}
-	} else
+	}
+	else
 	{
 		*key = ft_substr(arg, 0, equality_sign - arg);
 		if (*key == NULL)
@@ -75,17 +76,17 @@ int	parse_key_value(char *arg, char **key, char **value)
 	return (0);
 }
 
-
-int	export_argument(char *key, char *value, t_env_list **env, t_export_type type)
+int	export_argument(char *key, char *value, t_env_list **env,
+		t_export_type type)
 {
 	t_env_list	*new_node;
 	t_env_list	*tmp_node;
 	char		*new_value;
-	
+
 	if (!key || !value)
 	{
 		free(key);
-		free(value);	
+		free(value);
 		return (1);
 	}
 	tmp_node = find_node_by_key(env, key);

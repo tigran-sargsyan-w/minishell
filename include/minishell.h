@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 21:01:43 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/11 01:42:32 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,5 @@ typedef struct s_shell
 
 void						readline_loop(t_shell *sh);
 int							is_directory(const char *path);
-
-void						clean_shell(t_shell *sh);
 
 #endif
