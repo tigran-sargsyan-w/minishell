@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 01:48:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:46:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "env.h"
+#include "ft_printf.h"
 #include "executor.h"
 #include <stdlib.h>
 #include <sys/types.h>
@@ -67,32 +68,35 @@ void	executor(t_cmd *cmd, t_shell *sh)
 	int	saved_stdout;
 
 	sh->env_tab = env_list_to_tab(&sh->env_list);
-	// TODO: Handle NULL tab
-	// if (!sh->env_tab)
+	if (!sh->env_tab)
+	{
+		ft_dprintf(2, "minishell: env_list_to_tab failed");
+		sh->last_status = EXIT_FAILURE;
+		return ;
+	}
 	if (cmd->next == NULL)
 	{
-		// Single command with possible redirection
 		saved_stdin = dup(STDIN_FILENO);
-		// TODO: check -1 return for dup
+		if (saved_stdin < 0)
+			error_exit("dup stdin");
 		saved_stdout = dup(STDOUT_FILENO);
-		if (handle_redirections(cmd,sh) < 0)
+		if (saved_stdout < 0)
+			error_exit("dup stdout");
+		if (handle_redirections(cmd, sh) < 0)
 		{
 			sh->last_status = 1;
 			free_env_tab(sh->env_tab);
 			return ;
 		}
-		// Run builtin (or fall back to external)
 		if (run_builtin(cmd, sh) == -1)
 			execute_cmds(cmd, sh);
-		// Restore original fds
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdin);
-		// TODO: check if closed
 		close(saved_stdout);
 	}
 	else
 		execute_cmds(cmd, sh);
-	// free_cmd_list(cmd); TODO: Fix double free crash (export TMP=HELLO)
+	free_cmd_list(cmd);
 	free_env_tab(sh->env_tab);
 }
