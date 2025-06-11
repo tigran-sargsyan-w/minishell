@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 13:33:09 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:44:27 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	open_redirection_file(t_redir *redir)
+static int	open_redirection_file(t_redir *redir)
 {
 	int	fd;
 
@@ -37,7 +37,7 @@ int	open_redirection_file(t_redir *redir)
 }
 
 // Duplicates fd to stdin or stdout, closes it, and returns 0 or -1
-int	redirect_fd_to_stdio(int fd, t_redir *redir)
+static int	redirect_fd_to_stdio(int fd, t_redir *redir)
 {
 	int	ret;
 
@@ -56,7 +56,7 @@ int	redirect_fd_to_stdio(int fd, t_redir *redir)
 }
 
 // Applies a single redirection (including heredoc)
-int	apply_one_redir(t_redir *redir, t_shell *sh)
+static int	apply_one_redir(t_redir *redir, t_shell *sh)
 {
 	int	fd;
 
