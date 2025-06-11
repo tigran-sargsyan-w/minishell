@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:56:05 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:57:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-// Вынесённая функция для обработки одной строки heredoc
 static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 		t_shell *sh)
 {
@@ -48,7 +47,7 @@ static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 	return (1);
 }
 
-// Основная функция записи heredoc
+// Main function for writing heredoc
 static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
 	int		fd;
