@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 11:17:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:52:27 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 #include "executor.h"
 #include "ft_printf.h"
 #include <signal.h>
-#include <stdlib.h>
-#include <sys/types.h>
 #include <sys/wait.h>
-#include <unistd.h>
 
 static void	finalize_execution(pid_t last_pid, t_shell *sh)
 {
@@ -100,7 +97,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 	if (!sh->env_tab)
 	{
 		ft_dprintf(2, "minishell: env_list_to_tab failed\n");
-		sh->last_status = EXIT_FAILURE;
+		sh->last_status = FAILURE;
 		return ;
 	}
 	if (cmd->next == NULL)
