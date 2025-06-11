@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:46:20 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 01:42:32 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 # define SUCCESS 0
 # define FAILURE 1
-# define CMD_NOT_FOUND 127
-# define CMD_IS_DIRECTORY 126
-# define HEREDOC_TMPFILE "minishell_heredoc"
 
 typedef struct s_env_list	t_env_list;
 

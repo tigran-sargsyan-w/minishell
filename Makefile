@@ -37,11 +37,9 @@ SRCS = minishell.c \
 		builtin/builtin_env.c \
 		builtin/builtin_exit.c \
 		builtin/builtin_utils.c \
-		executor/executor_child.c \
 		executor/executor.c \
+		executor/executor_utils.c \
 		executor/find_command.c \
-		executor/heredoc.c \
-		executor/redirection.c \
 		env/envp_list.c \
 		env/env_list_to_tab.c \
 		env/env_list_utils.c
