@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:19:46 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 12:47:51 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:50:12 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,10 +252,8 @@ pid_t	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 	pid = fork();
 	if (pid < 0)
 		error_exit("fork");
-	// TODO: Change error exit (avoid exit call)
 	if (pid == 0)
 	{
-		// In the child process — default signal handling
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_fds(prev_fd, pd, cmd);
