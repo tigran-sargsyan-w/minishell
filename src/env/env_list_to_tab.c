@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 21:08:00 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/11 01:31:30 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,15 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 
 void	free_env_tab(char **env_tab)
 {
-	char	**tmp;
+	size_t	i;
 
+	i = 0;
 	if (env_tab == NULL)
 		return ;
-	tmp = env_tab;
-	while (*tmp)
+	while (env_tab[i])
 	{
-		free(*tmp);
-		tmp++;
+		free(env_tab[i]);
+		i++;
 	}
 	free(env_tab);
 }

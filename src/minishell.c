@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 20:28:57 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/11 01:41:33 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ int	main(int argc, char **argv, char **envp)
 	if (init_sh(&sh, envp) == FAILURE)
 		return (EXIT_FAILURE);
 	readline_loop(&sh);
-	clean_shell(&sh);
+	lst_clear(&sh.env_list);
 	return (sh.last_status);
 }

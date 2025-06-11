@@ -1,7 +1,7 @@
 # Compiler and flags
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3
 LD_FLAGS = -lreadline
 
 # Directories
@@ -42,8 +42,7 @@ SRCS = minishell.c \
 		executor/find_command.c \
 		env/envp_list.c \
 		env/env_list_to_tab.c \
-		env/env_list_utils.c \
-		utils/clean_shell.c
+		env/env_list_utils.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
