@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/11 01:04:18 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 03:31:45 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,13 @@ int	export_argument(char *key, char *value, t_env_list **env,
 				free_key_value(key, value);
 				return (1);
 			}
-			set_value(tmp_node, new_value);
+			if (!set_value(tmp_node, new_value))
+			{
+				free(new_value);
+				free_key_value(key, value);
+				return (1);
+			}
+			free(new_value);
 		}
 		free_key_value(key, value);
 	}

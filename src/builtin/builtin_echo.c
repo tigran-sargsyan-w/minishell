@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 05:21:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:54:37 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "env.h"
 #include "parser.h"
 #include <stdio.h>
 
@@ -32,8 +30,6 @@ static int	is_arg_n(const char *arg)
 
 static void	print_args(char **argv)
 {
-	if (*argv == NULL)
-		printf("\n");
 	while (*argv != NULL)
 	{
 		if (**argv == '\0')
@@ -65,12 +61,10 @@ int	builtin_echo(t_cmd *cmd, t_env_list **env)
 	{
 		if (has_n_arg == 0)
 			printf("\n");
-		// TODO: check security
 		return (0);
 	}
 	print_args(argv);
 	if (has_n_arg == 0)
 		printf("\n");
-	// TODO: check security
 	return (0);
 }

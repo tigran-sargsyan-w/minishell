@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:52:27 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:55:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static void	run_single_command(t_cmd *cmd, t_shell *sh)
 	if (handle_redirections(cmd, sh) < 0)
 	{
 		sh->last_status = 1;
-		free_env_tab(sh->env_tab);
 		return ;
 	}
 	if (run_builtin(cmd, sh) == -1)
