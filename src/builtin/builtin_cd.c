@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/12 00:59:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 01:09:39 by dsemenov         ###   ########.fr       */
+/*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/06/12 02:39:43 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int	update_var(t_env_list **env, const char *key, const char *value)
+static int	update_var(t_env_list **env, char *key, char *value)
 {
 	t_env_list	*node;
-	char		*duplicate_key;
-	char		*duplicate_variable;
 
 	node = find_node_by_key(env, (char *)key);
 	if (node)
-		return (!set_value(node, value));
-	if (safe_strdup_pair(key, value, &duplicate_key, &duplicate_variable))
-		return (1);
-	if (export_argument(duplicate_key, duplicate_variable, env, EXPORT))
 	{
-		free(duplicate_key);
-		free(duplicate_variable);
-		return (1);
+		if (!set_value(node, value))
+			return (1);
+	}
+	else
+	{
+		if (export_argument(ft_strdup(key), ft_strdup(value), env, EXPORT))
+			return (1);
 	}
 	return (0);
 }
 
-static int	update_pwd_pair(t_env_list **env, const char *old, const char *new)
+static int	update_pwd_pair(t_env_list **env, char *old, char *new)
 {
 	if (update_var(env, "OLDPWD", old))
 		return (1);
@@ -76,7 +74,7 @@ static int	get_target_path(t_cmd *cmd, t_env_list **env, char **dst)
 	return (0);
 }
 
-static int	perform_cd(const char *target, char **old_pwd, char **new_pwd)
+static int	perform_cd(char *target, char **old_pwd, char **new_pwd)
 {
 	*old_pwd = getcwd(NULL, 0);
 	if (!*old_pwd)
