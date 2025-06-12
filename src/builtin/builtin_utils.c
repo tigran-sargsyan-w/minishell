@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 01:10:01 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 02:46:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_export_type	is_valid_export(char *arg)
 	return (EXPORT);
 }
 
-int	safe_strdup_pair(const char *key, const char *value, char **output_key,
+int	safe_strdup_pair(char *key, char *value, char **output_key,
 		char **output_value)
 {
 	*output_key = ft_strdup(key);
