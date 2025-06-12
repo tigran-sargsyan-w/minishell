@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 22:02:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 05:01:54 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/13 00:25:40 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "minishell.h"
 
-static void	free_all_env(t_shell *sh)
+void	free_all_env(t_shell *sh)
 {
 	lst_clear(&sh->env_list);
 	free_env_tab(sh->env_tab);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/12 17:29:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/13 00:26:34 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	{
 		write(2, cmd_name, ft_strlen(cmd_name));
 		write(2, ": command not found\n", 21);
+		free_all_env(sh);
 		exit(CMD_NOT_FOUND);
 	}
 	if (is_directory(full_cmd))
 	{
+		free_all_env(sh);
 		free(full_cmd);
 		exit(CMD_IS_DIRECTORY);
 	}
