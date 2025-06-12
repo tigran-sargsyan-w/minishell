@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/11 05:09:13 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 03:54:49 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,15 @@ void	lst_add_end(t_env_list **list, t_env_list *new_node)
 t_env_list	*lst_init(char *const *envp)
 {
 	t_env_list	*list;
-	t_env_list	*new_node;
-	char		*equality_sign;
-	char		*key;
-	char		*value;
 
 	list = NULL;
 	while (*envp)
 	{
-		equality_sign = ft_strchr(*envp, '=');
-		if (!equality_sign)
-		{
-			envp++;
-			continue ;
-		}
-		key = ft_substr(*envp, 0, (equality_sign - *envp));
-		value = ft_strdup(++equality_sign);
-		new_node = lst_create_node(key, value);
-		if (!key || !value || !new_node)
+		if (add_env_entry(*envp, &list) == FAILURE)
 		{
 			lst_clear(&list);
 			return (NULL);
 		}
-		lst_add_end(&list, new_node);
 		envp++;
 	}
 	return (list);

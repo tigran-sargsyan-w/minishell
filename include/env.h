@@ -6,16 +6,16 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:03:21 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/05/27 14:10:56 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 03:56:49 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
-
+# define SUCCESS 0
+# define FAILURE 1
 # include <stddef.h>
 
-// Linked list for environment variables
 typedef struct s_env_list
 {
 	char				*key;
@@ -33,5 +33,6 @@ char					**env_list_to_tab(t_env_list **env_list);
 void					free_env_tab(char **env_tab);
 t_env_list				*find_node_by_key(t_env_list **env, char *key);
 t_env_list				*set_value(t_env_list *node, char *value);
+int						add_env_entry(char *entry, t_env_list **list);
 
 #endif
