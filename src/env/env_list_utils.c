@@ -6,14 +6,14 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:07:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 05:37:15 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 03:15:01 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "libft.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 t_env_list	*find_node_by_key(t_env_list **env, char *key)
 {
@@ -31,17 +31,18 @@ t_env_list	*find_node_by_key(t_env_list **env, char *key)
 
 t_env_list	*set_value(t_env_list *node, char *value)
 {
-	char	*new_value;
+	char	*dup;
 
 	if (!node || !value)
 		return (NULL);
-	new_value = ft_strdup(value);
-	if (!new_value)
+	dup = ft_strdup(value);
+	if (!dup)
 	{
 		perror("minishell");
 		return (NULL);
 	}
-	free(node->value);
-	node->value = new_value;
+	if (node->value != value)
+		free(node->value);
+	node->value = dup;
 	return (node);
 }
