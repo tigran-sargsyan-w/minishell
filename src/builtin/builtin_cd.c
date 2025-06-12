@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 02:45:51 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 03:09:23 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ static int	update_var(t_env_list **env, char *key, char *value)
 
 	node = find_node_by_key(env, key);
 	if (node)
-		return (!set_value(node, value));
+	{
+		if (!set_value(node, value))
+			return (1);
+		return (0);
+	}
 	if (safe_strdup_pair(key, value, &temp_key, &temp_value))
 		return (1);
 	if (export_argument(temp_key, temp_value, env, EXPORT))
