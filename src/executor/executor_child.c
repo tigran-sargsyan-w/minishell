@@ -6,13 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:49:56 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:29:17 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "executor.h"
 #include "libft.h"
+#include "env.h"
 #include <signal.h>
 #include <stdlib.h>
 
@@ -91,6 +92,9 @@ pid_t	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_fds(prev_fd, pd, cmd);
 		execute_child(cmd, sh);
+		free_cmd_list(cmd);
+		lst_clear(&sh->env_list);
+		free_env_tab(sh->env_tab);
 		exit(0);
 	}
 	return (pid);
