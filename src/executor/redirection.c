@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:56:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:42:47 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	open_redirection_file(t_redir *redir)
 {
 	int	fd;
 
+	fd = -1;
 	if (redir->type == REDIR_IN)
 		fd = open(redir->filename, O_RDONLY);
 	else if (redir->type == REDIR_OUT)
