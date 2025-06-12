@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 05:11:56 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:54:37 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "env.h"
 #include "parser.h"
 #include <stdio.h>
 
