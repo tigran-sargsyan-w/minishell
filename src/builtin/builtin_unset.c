@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/10 05:26:54 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/12 04:38:48 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 #include "parser.h"
 #include <stdlib.h>
 
-int	remove_var(char *argv, t_env_list **env)
+int	remove_var(char *name, t_env_list **env)
 {
 	t_env_list	*cur;
 	t_env_list	*prev;
 
 	cur = *env;
 	prev = NULL;
-	while (cur && ft_strcmp(cur->key, argv) != 0)
+	while (cur && ft_strcmp(cur->key, name) != 0)
 	{
 		prev = cur;
 		cur = cur->next;
@@ -47,10 +47,10 @@ int	builtin_unset(t_cmd *cmd, t_env_list **env)
 	char	**argv;
 
 	argv = &cmd->args[1];
-	if (argv == NULL)
+	if (*argv == NULL)
 		return (0);
 	if (env == NULL || *env == NULL)
-		return (1);
+		return (0);
 	while (*argv)
 	{
 		remove_var(*argv, env);
