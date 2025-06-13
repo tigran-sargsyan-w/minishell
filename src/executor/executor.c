@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 00:48:48 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 01:22:15 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 }
 
 // Function for a single command (without pipes)
-static void	run_single_command(t_cmd *cmd, t_shell *sh)
+static void	run_single_command(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -77,7 +77,7 @@ static void	run_single_command(t_cmd *cmd, t_shell *sh)
 	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdout < 0)
 		error_exit("dup stdout");
-	if (handle_redirections(cmd, sh) < 0)
+	if (handle_redirections(current_cmd, cmd, sh) < 0)
 	{
 		sh->last_status = 1;
 		return ;
@@ -100,7 +100,7 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		return ;
 	}
 	if (cmd->next == NULL)
-		run_single_command(cmd, sh);
+		run_single_command(cmd, cmd, sh);
 	else
 		execute_cmds(cmd, sh);
 	free_env_tab(sh->env_tab);

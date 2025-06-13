@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 00:49:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 01:12:03 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	error_exit("execve");
 }
 
-static void	execute_child(t_cmd *cmd, t_shell *sh)
+static void	execute_child(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh)
 {
-	if (handle_redirections(cmd, sh) < 0)
+	if (handle_redirections(current_cmd, cmd, sh) < 0)
 	{
+		free_all_env(sh);
+		free_cmd_list(cmd);
 		sh->last_status = 1;
 		exit(1);
 	}
@@ -98,7 +100,7 @@ pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh, int prev
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_fds(prev_fd, pd, current_cmd);
-		execute_child(current_cmd, sh);
+		execute_child(current_cmd, cmd, sh);
 		free_cmd_list(cmd);
 		lst_clear(&sh->env_list);
 		free_env_tab(sh->env_tab);
