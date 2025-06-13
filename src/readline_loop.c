@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/13 23:34:03 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 00:41:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ void	readline_loop(t_shell *sh)
 		free(input);
 		setup_signal_handlers();
 	}
+	clear_history();
 	write(1, "exit\n", 5);
 }
