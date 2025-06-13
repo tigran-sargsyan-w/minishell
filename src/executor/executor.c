@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/13 13:35:27 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:33:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	finalize_execution(pid_t last_pid, t_shell *sh)
 	if (last_pid < 0)
 	{
 		lst_clear(&sh->env_list);
+		//TODO: free char ** env?
 		error_exit("fork");
 	}
 	if (WIFEXITED(status))

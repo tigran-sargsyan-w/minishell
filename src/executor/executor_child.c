@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/13 14:18:03 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:36:01 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ static void	execute_child(t_cmd *cmd, t_shell *sh)
 		exit(1);
 	}
 	if (!cmd->args || !cmd->args[0])
+	{
+		free_all_env(sh);
+		free_cmd_list(cmd);
 		exit(0);
+	}
 	if (run_builtin(cmd, sh) == -1)
 		execute_external_command(cmd, sh);
 }
