@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   executor_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/13 00:26:34 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:18:03 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "executor.h"
 #include "libft.h"
+#include "ft_printf.h"
 #include "env.h"
 #include <signal.h>
 #include <stdlib.h>
@@ -25,14 +26,13 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	cmd_name = cmd->args[0];
 	if (cmd_name[0] == '\0')
 	{
-		write(2, "'': command not found\n", 23);
+		ft_dprintf(2, "'': command not found\n");
 		exit(CMD_NOT_FOUND);
 	}
 	full_cmd = find_command(cmd_name, sh->env_tab);
 	if (!full_cmd)
 	{
-		write(2, cmd_name, ft_strlen(cmd_name));
-		write(2, ": command not found\n", 21);
+		ft_dprintf(2, "%s: command not found\n", cmd_name);
 		free_all_env(sh);
 		exit(CMD_NOT_FOUND);
 	}
