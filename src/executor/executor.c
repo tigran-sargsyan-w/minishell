@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/12 13:55:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/13 13:35:27 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,31 @@ static void	finalize_execution(pid_t last_pid, t_shell *sh)
 		;
 }
 
-// Main function for executing commands in a pipeline
 static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
 	t_pipe	pipefd;
-	int		prev_pipe_read_fd;
-	pid_t	pid;
+	int		prev_fd;
+	pid_t	last_pid;
+	t_cmd	*cur;
 
-	prev_pipe_read_fd = 0;
-	while (cmd)
+	prev_fd = 0;
+	cur = cmd;
+	while (cur)
 	{
-		if (cmd->next)
-		{
+		if (cur->next)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
-		}
-		pid = fork_and_execute_cmd(cmd, sh, prev_pipe_read_fd, pipefd);
-		if (prev_pipe_read_fd != 0)
-			close(prev_pipe_read_fd);
-		if (cmd->next)
+		last_pid = fork_and_execute_cmd(cur, sh, prev_fd, pipefd);
+		if (prev_fd != 0)
+			close(prev_fd);
+		if (cur->next)
 		{
 			close(pipefd.write);
-			prev_pipe_read_fd = pipefd.read;
+			prev_fd = pipefd.read;
 		}
-		cmd = cmd->next;
+		cur = cur->next;
 	}
-	finalize_execution(pid, sh);
+	finalize_execution(last_pid, sh);
 }
 
 // Function for a single command (without pipes)
@@ -103,6 +102,4 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		run_single_command(cmd, sh);
 	else
 		execute_cmds(cmd, sh);
-	free_cmd_list(cmd);
-	free_env_tab(sh->env_tab);
 }
