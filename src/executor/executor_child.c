@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/13 16:36:01 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 00:49:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 		exit(CMD_IS_DIRECTORY);
 	}
 	execve(full_cmd, cmd->args, sh->env_tab);
+	//TODO: free env if execve fails?
 	free(full_cmd);
 	error_exit("execve");
 }
@@ -85,7 +86,7 @@ static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-pid_t	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
+pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 {
 	pid_t	pid;
 
@@ -96,8 +97,8 @@ pid_t	fork_and_execute_cmd(t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		setup_child_fds(prev_fd, pd, cmd);
-		execute_child(cmd, sh);
+		setup_child_fds(prev_fd, pd, current_cmd);
+		execute_child(current_cmd, sh);
 		free_cmd_list(cmd);
 		lst_clear(&sh->env_list);
 		free_env_tab(sh->env_tab);

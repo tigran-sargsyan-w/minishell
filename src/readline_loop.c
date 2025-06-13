@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/13 13:38:21 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 00:41:53 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void	process_input_line(char *input, t_shell *sh)
 	else
 		executor(cmd, sh);
 	free_cmd_list(cmd);
-	free_env_tab(sh->env_tab);
 }
 
 void	readline_loop(t_shell *sh)
@@ -112,5 +111,6 @@ void	readline_loop(t_shell *sh)
 		free(input);
 		setup_signal_handlers();
 	}
+	clear_history();
 	write(1, "exit\n", 5);
 }

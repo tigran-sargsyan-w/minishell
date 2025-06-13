@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/13 16:33:53 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 00:48:48 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		if (cur->next)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
-		last_pid = fork_and_execute_cmd(cur, sh, prev_fd, pipefd);
+		last_pid = fork_and_execute_cmd(cur, cmd, sh, prev_fd, pipefd);
 		if (prev_fd != 0)
 			close(prev_fd);
 		if (cur->next)
@@ -103,4 +103,5 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		run_single_command(cmd, sh);
 	else
 		execute_cmds(cmd, sh);
+	free_env_tab(sh->env_tab);
 }
