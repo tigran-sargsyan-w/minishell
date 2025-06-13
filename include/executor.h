@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:47:12 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 00:17:57 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_pipe
 }						t_pipe;
 
 // executor_child.c
-pid_t					fork_and_execute_cmd(t_cmd *cmd, t_shell *sh,
+pid_t					fork_and_execute_cmd(t_cmd *current, t_cmd *cmd, t_shell *sh,
 							int prev_fd, t_pipe pd);
 
 // executor.c
