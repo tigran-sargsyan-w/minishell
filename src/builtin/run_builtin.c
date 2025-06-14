@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/13 23:32:48 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:55:59 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	handle_exit(t_shell *sh, t_cmd *cmd)
 {
 	if (builtin_exit(sh, cmd->args) == 1)
 	{
-		free_cmd_list(cmd);
+		free_cmd_list(sh->cmd_list);
 		exit(sh->last_status);
 	}
 	else

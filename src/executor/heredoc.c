@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 01:25:09 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:06:39 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 }
 
 // Main function for writing heredoc
-static int	write_heredoc_content(t_cmd *cmd, t_redir *redir, t_shell *sh)
+static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
 	int		fd;
 	char	*line;
@@ -67,7 +67,7 @@ static int	write_heredoc_content(t_cmd *cmd, t_redir *redir, t_shell *sh)
 	}
 	close(fd);
 	free_all_env(sh);
-	free_cmd_list(cmd);
+	free_cmd_list(sh->cmd_list);
 	exit(0);
 }
 
@@ -86,7 +86,7 @@ static int	wait_for_heredoc(pid_t pid, t_shell *sh)
 	return (0);
 }
 
-int	handle_heredoc(t_cmd *cmd, t_redir *redir, t_shell *sh)
+int	handle_heredoc(t_redir *redir, t_shell *sh)
 {
 	pid_t	pid;
 
@@ -95,7 +95,7 @@ int	handle_heredoc(t_cmd *cmd, t_redir *redir, t_shell *sh)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		write_heredoc_content(cmd, redir, sh);
+		write_heredoc_content(redir, sh);
 	}
 	else if (pid > 0)
 	{
