@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/14 17:46:19 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:25:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,7 @@ static void	process_input_line(char *input, t_shell *sh)
 	free_tokens(tokens);
 	if (!sh->cmd_list)
 		return ;
-	if (is_directory(sh->cmd_list->args[0]))
-	{
-		ft_dprintf(2, "%s: Is a directory\n", sh->cmd_list->args[0]);
-		sh->last_status = 126;
-	}
-	else
-		executor(sh);
+	executor(sh);
 	free_cmd_list(sh->cmd_list);
 }
 

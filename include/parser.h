@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:53:04 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:48:20 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:23:16 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ void						append_char_to_result(const char *input,
 								size_t *pos, char **result);
 int							process_dollar_sequence(const char *input,
 								size_t *pos, char **result, t_shell *sh);
-
-// free_utils.c
-void						free_cmd_list(t_cmd *cmd);
 
 // parser.c
 t_cmd						*parse_tokens(t_token *tokens, t_shell *sh);

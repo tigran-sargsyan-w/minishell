@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_to_tab.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/11 01:31:30 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:56:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "libft.h"
+#include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,21 +32,6 @@ static char	*ft_strjoin3(char const *s1, char const *s2)
 	ft_strlcat(res, "=", total_len + 1);
 	ft_strlcat(res, s2, total_len + 1);
 	return (res);
-}
-
-void	free_env_tab(char **env_tab)
-{
-	size_t	i;
-
-	i = 0;
-	if (env_tab == NULL)
-		return ;
-	while (env_tab[i])
-	{
-		free(env_tab[i]);
-		i++;
-	}
-	free(env_tab);
 }
 
 static char	**return_empty_tab(void)

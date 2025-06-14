@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 22:02:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/14 18:17:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:27:30 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include "minishell.h"
-
-void	free_all_env(t_shell *sh)
-{
-	lst_clear(&sh->env_list);
-	free_env_tab(sh->env_tab);
-}
 
 int	is_valid_numeric(char *arg)
 {
