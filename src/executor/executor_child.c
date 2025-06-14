@@ -6,15 +6,15 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 17:50:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:32:46 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "executor.h"
-#include "libft.h"
-#include "ft_printf.h"
 #include "env.h"
+#include "executor.h"
+#include "ft_printf.h"
+#include "libft.h"
 #include <signal.h>
 #include <stdlib.h>
 
@@ -27,23 +27,28 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	if (cmd_name[0] == '\0')
 	{
 		ft_dprintf(2, "'': command not found\n");
+		free_cmd_list(sh->cmd_list);
+		free_all_env(sh);
 		exit(CMD_NOT_FOUND);
 	}
 	full_cmd = find_command(cmd_name, sh->env_tab);
 	if (!full_cmd)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd_name);
+		free_cmd_list(sh->cmd_list);
 		free_all_env(sh);
 		exit(CMD_NOT_FOUND);
 	}
 	if (is_directory(full_cmd))
 	{
+		free_cmd_list(sh->cmd_list);
 		free_all_env(sh);
 		free(full_cmd);
 		exit(CMD_IS_DIRECTORY);
 	}
 	execve(full_cmd, cmd->args, sh->env_tab);
-	//TODO: free env if execve fails?
+	free_cmd_list(sh->cmd_list);
+	free_all_env(sh);
 	free(full_cmd);
 	error_exit("execve");
 }
@@ -88,7 +93,8 @@ static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_shell *sh, int prev_fd, t_pipe pd)
+pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_shell *sh, int prev_fd,
+		t_pipe pd)
 {
 	pid_t	pid;
 

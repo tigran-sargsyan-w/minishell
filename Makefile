@@ -17,6 +17,7 @@ SRCS = minishell.c \
     	readline_loop.c \
 		exit_utils.c \
 		signals.c \
+		free_utils.c \
 		lexer/lexer.c \
 		lexer/token_operators.c \
 		lexer/token_utils.c \
@@ -24,7 +25,6 @@ SRCS = minishell.c \
 		parser/cmd_args_builder.c \
 		parser/expand_vars_utils.c \
 		parser/expand_vars.c \
-		parser/free_utils.c \
 		parser/parser.c \
 		parser/redir_utils.c \
 		parser/token_utils.c \
