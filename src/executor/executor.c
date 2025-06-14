@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 17:53:06 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:48:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static void	finalize_execution(pid_t last_pid, t_shell *sh)
 	waitpid(last_pid, &status, 0);
 	if (last_pid < 0)
 	{
-		lst_clear(&sh->env_list);
-		//TODO: free char ** env?
+		free_all_resources(sh);
 		error_exit("fork");
 	}
 	if (WIFEXITED(status))
