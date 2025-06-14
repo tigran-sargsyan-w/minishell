@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/12 13:42:47 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:08:03 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,18 @@ static int	apply_one_redir(t_redir *redir, t_shell *sh)
 	return (redirect_fd_to_stdio(fd, redir));
 }
 
-int	handle_redirections(t_cmd *cmd, t_shell *sh)
+int	handle_redirections(t_cmd *current_cmd, t_shell *sh)
 {
 	t_redir	*redir;
 
-	redir = cmd->in_redirs;
+	redir = current_cmd->in_redirs;
 	while (redir)
 	{
 		if (apply_one_redir(redir, sh) < 0)
 			return (-1);
 		redir = redir->next;
 	}
-	redir = cmd->out_redirs;
+	redir = current_cmd->out_redirs;
 	while (redir)
 	{
 		if (apply_one_redir(redir, sh) < 0)

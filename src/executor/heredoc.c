@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 14:54:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:06:39 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include "env.h"
 
 static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 		t_shell *sh)
@@ -65,6 +66,8 @@ static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 			break ;
 	}
 	close(fd);
+	free_all_env(sh);
+	free_cmd_list(sh->cmd_list);
 	exit(0);
 }
 
