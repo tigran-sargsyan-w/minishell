@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/14 00:41:53 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:46:19 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static int	should_skip_input(const char *input)
 static void	process_input_line(char *input, t_shell *sh)
 {
 	t_token	*tokens;
-	t_cmd	*cmd;
 
 	add_history(input);
 	tokens = lexer(input);
@@ -72,18 +71,18 @@ static void	process_input_line(char *input, t_shell *sh)
 		sh->last_status = 2;
 		return ;
 	}
-	cmd = parse_tokens(tokens, sh);
+	sh->cmd_list = parse_tokens(tokens, sh);
 	free_tokens(tokens);
-	if (!cmd)
+	if (!sh->cmd_list)
 		return ;
-	if (is_directory(cmd->args[0]))
+	if (is_directory(sh->cmd_list->args[0]))
 	{
-		ft_dprintf(2, "%s: Is a directory\n", cmd->args[0]);
+		ft_dprintf(2, "%s: Is a directory\n", sh->cmd_list->args[0]);
 		sh->last_status = 126;
 	}
 	else
-		executor(cmd, sh);
-	free_cmd_list(cmd);
+		executor(sh);
+	free_cmd_list(sh->cmd_list);
 }
 
 void	readline_loop(t_shell *sh)

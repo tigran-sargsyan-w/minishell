@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 01:12:03 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:50:17 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,23 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	error_exit("execve");
 }
 
-static void	execute_child(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh)
+static void	execute_child(t_cmd *current_cmd, t_shell *sh)
 {
-	if (handle_redirections(current_cmd, cmd, sh) < 0)
+	if (handle_redirections(current_cmd, sh) < 0)
 	{
 		free_all_env(sh);
-		free_cmd_list(cmd);
+		free_cmd_list(sh->cmd_list);
 		sh->last_status = 1;
 		exit(1);
 	}
-	if (!cmd->args || !cmd->args[0])
+	if (!current_cmd->args || !current_cmd->args[0])
 	{
 		free_all_env(sh);
-		free_cmd_list(cmd);
+		free_cmd_list(sh->cmd_list);
 		exit(0);
 	}
-	if (run_builtin(cmd, sh) == -1)
-		execute_external_command(cmd, sh);
+	if (run_builtin(current_cmd, sh) == -1)
+		execute_external_command(current_cmd, sh);
 }
 
 static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
@@ -88,7 +88,7 @@ static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
-pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh, int prev_fd, t_pipe pd)
+pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_shell *sh, int prev_fd, t_pipe pd)
 {
 	pid_t	pid;
 
@@ -100,8 +100,8 @@ pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh, int prev
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_fds(prev_fd, pd, current_cmd);
-		execute_child(current_cmd, cmd, sh);
-		free_cmd_list(cmd);
+		execute_child(current_cmd, sh);
+		free_cmd_list(sh->cmd_list);
 		lst_clear(&sh->env_list);
 		free_env_tab(sh->env_tab);
 		exit(0);

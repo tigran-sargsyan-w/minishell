@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/11 01:41:33 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:43:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	init_sh(t_shell *sh, char **envp)
 		perror("minishell: init env");
 		return (FAILURE);
 	}
+	sh->cmd_list = NULL;
 	return (SUCCESS);
 }
 

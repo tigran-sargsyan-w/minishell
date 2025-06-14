@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 01:22:15 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:53:06 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 		if (cur->next)
 			if (pipe(pipefd.fds) < 0)
 				error_exit("pipe");
-		last_pid = fork_and_execute_cmd(cur, cmd, sh, prev_fd, pipefd);
+		last_pid = fork_and_execute_cmd(cur, sh, prev_fd, pipefd);
 		if (prev_fd != 0)
 			close(prev_fd);
 		if (cur->next)
@@ -66,7 +66,7 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 }
 
 // Function for a single command (without pipes)
-static void	run_single_command(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh)
+static void	run_single_command(t_cmd *current_cmd, t_shell *sh)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -77,20 +77,20 @@ static void	run_single_command(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh)
 	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdout < 0)
 		error_exit("dup stdout");
-	if (handle_redirections(current_cmd, cmd, sh) < 0)
+	if (handle_redirections(current_cmd, sh) < 0)
 	{
 		sh->last_status = 1;
 		return ;
 	}
-	if (run_builtin(cmd, sh) == -1)
-		execute_cmds(cmd, sh);
+	if (run_builtin(current_cmd, sh) == -1)
+		execute_cmds(current_cmd, sh);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
 }
 
-void	executor(t_cmd *cmd, t_shell *sh)
+void	executor(t_shell *sh)
 {
 	sh->env_tab = env_list_to_tab(&sh->env_list);
 	if (!sh->env_tab)
@@ -99,9 +99,9 @@ void	executor(t_cmd *cmd, t_shell *sh)
 		sh->last_status = FAILURE;
 		return ;
 	}
-	if (cmd->next == NULL)
-		run_single_command(cmd, cmd, sh);
+	if (sh->cmd_list->next == NULL)
+		run_single_command(sh->cmd_list, sh);
 	else
-		execute_cmds(cmd, sh);
+		execute_cmds(sh->cmd_list, sh);
 	free_env_tab(sh->env_tab);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 01:22:46 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:48:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,21 @@ static int	apply_one_redir(t_cmd *cmd, t_redir *redir, t_shell *sh)
 	return (redirect_fd_to_stdio(fd, redir));
 }
 
-int	handle_redirections(t_cmd *current_cmd, t_cmd *cmd, t_shell *sh)
+int	handle_redirections(t_cmd *current_cmd, t_shell *sh)
 {
 	t_redir	*redir;
 
 	redir = current_cmd->in_redirs;
 	while (redir)
 	{
-		if (apply_one_redir(cmd, redir, sh) < 0)
+		if (apply_one_redir(current_cmd, redir, sh) < 0)
 			return (-1);
 		redir = redir->next;
 	}
 	redir = current_cmd->out_redirs;
 	while (redir)
 	{
-		if (apply_one_redir(cmd, redir, sh) < 0)
+		if (apply_one_redir(current_cmd, redir, sh) < 0)
 			return (-1);
 		redir = redir->next;
 	}
