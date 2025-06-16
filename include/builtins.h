@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 02:46:41 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 00:31:10 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ typedef enum e_export_type
 	EXPORT,
 	CONCAT
 }							t_export_type;
+
+typedef struct s_export_data
+{
+	char					*key;
+	char					*value;
+	t_export_type			type;
+}							t_export_data;
 
 // Built-ins
 typedef int					(*t_builtin_func)(t_cmd *cmd, t_env_list **env);
@@ -44,10 +51,15 @@ int							builtin_exit(t_shell *sh, char **argv);
 int							run_builtin(t_cmd *cmd, t_shell *sh);
 
 // Utils
-void						free_key_value(char *key, char *value);
-t_export_type				is_valid_export(char *arg);
-int							export_argument(char *key, char *value,
-								t_env_list **env, t_export_type type);
+
 int							safe_strdup_pair(char *key, char *value,
 								char **output_key, char **output_value);
+
+// Export utils
+int							export_without_args(t_env_list **env);
+int							export_argument(char *key, char *value,
+								t_env_list **env, t_export_type type);
+void						free_key_value(char *key, char *value);
+t_export_type				is_valid_export(char *arg);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 03:31:45 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 00:41:09 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-static int	export_without_args(t_env_list **env)
-{
-	t_env_list	*tmp;
-
-	if (env == NULL || *env == NULL)
-		return (1);
-	tmp = *env;
-	while (tmp)
-	{
-		printf("declare -x %s=%s\n", tmp->key, tmp->value);
-		tmp = tmp->next;
-	}
-	return (EXIT_SUCCESS);
-}
 
 int	parse_key_value(char *arg, char **key, char **value)
 {
@@ -125,39 +110,48 @@ int	export_argument(char *key, char *value, t_env_list **env,
 	}
 	return (0);
 }
-// Check multiple args
-int	builtin_export(t_cmd *cmd, t_env_list **env)
+static int	export_or_concat(char *arg, t_export_data *data, t_env_list **env,
+		t_export_type type)
 {
-	char			**argv;
-	char			*key;
-	char			*value;
-	int				ret;
+	if (ft_strchr(arg, '='))
+	{
+		if (parse_key_value(arg, &data->key, &data->value) == 1)
+			return (1);
+		if (export_argument(data->key, data->value, env, type) != 0)
+			return (1);
+	}
+	return (0);
+}
+
+static int	handle_argument(char *arg, t_export_data *data, t_env_list **env)
+{
 	t_export_type	type;
 
+	type = is_valid_export(arg);
+	if (type == ERROR)
+	{
+		ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n", arg);
+		return (1);
+	}
+	else if (type == EXPORT || type == CONCAT)
+		export_or_concat(arg, data, env, type);
+	return (0);
+}
+
+int	builtin_export(t_cmd *cmd, t_env_list **env)
+{
+	t_export_data	data;
+	char			**argv;
+	int				ret;
+
+	ft_memset(&data, 0, sizeof(data));
 	ret = 0;
 	if (cmd->args[1] == NULL)
 		return (export_without_args(env));
 	argv = &cmd->args[1];
 	while (*argv)
 	{
-		type = is_valid_export(*argv);
-		if (type == EXPORT || type == CONCAT)
-		{
-			if (ft_strchr(*argv, '='))
-			{
-				if (parse_key_value(*argv, &key, &value) == 1)
-					return (1);
-				if (export_argument(key, value, env, type) != 0)
-					ret = 1;
-			}
-			// else: без '=' — ничего не делаем
-		}
-		else if (type == ERROR)
-		{
-			ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n",
-				*argv);
-			ret = 1;
-		}
+		ret = handle_argument(*argv, &data, env);
 		argv++;
 	}
 	return (ret);
