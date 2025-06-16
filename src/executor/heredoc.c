@@ -6,10 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 18:06:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:35:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "env.h"
 #include "executor.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -17,7 +18,6 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "env.h"
 
 static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 		t_shell *sh)
@@ -50,13 +50,17 @@ static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
 	int		fd;
 	char	*line;
+	int		tty;
 
+	tty = open("/dev/tty", O_RDONLY);
+	if (tty < 0)
+		error_exit("open /dev/tty");
+	if (dup2(tty, STDIN_FILENO) < 0)
+		error_exit("dup2 tty");
+	close(tty);
 	fd = open(HEREDOC_TMPFILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
-	{
-		perror("open heredoc");
-		exit(1);
-	}
+		error_exit("open heredoc");
 	while (1)
 	{
 		line = readline("> ");

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 18:08:03 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:38:24 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ static int	apply_one_redir(t_redir *redir, t_shell *sh)
 	int	fd;
 
 	if (redir->type == REDIR_HEREDOC)
-		return (handle_heredoc(redir, sh));
+	{
+		if (handle_heredoc(redir, sh) < 0)
+			return (-1);
+	}
 	fd = open_redirection_file(redir);
 	if (fd < 0)
 		return (-1);
