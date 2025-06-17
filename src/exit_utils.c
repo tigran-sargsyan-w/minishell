@@ -6,26 +6,30 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:45:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/17 20:00:07 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:18:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
-#define FD_MAX 1024
+#define FD_MAX 8192
 
 void	close_all_fds(void)
 {
-	int	i;
+	int			fd;
+	struct stat	st;
 
-	i = 3;
-	while (i < FD_MAX)
+	fd = 3;
+	while (fd < FD_MAX)
 	{
-		close(i);
-		i++;
+		if (fstat(fd, &st) != -1 || errno != EBADF)
+			close(fd);
+		fd++;
 	}
 }
 
