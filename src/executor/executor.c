@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 20:48:52 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:51:10 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,24 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	finalize_execution(last_pid, sh);
 }
 
-// Function for a single command (without pipes)
-static void	run_single_command(t_cmd *current_cmd, t_shell *sh)
+static void	run_single_command(t_cmd *c, t_shell *sh)
 {
 	int	saved_stdin;
 	int	saved_stdout;
+	int	redir_status;
 
 	saved_stdin = dup(STDIN_FILENO);
-	if (saved_stdin < 0)
-		error_exit("dup stdin");
 	saved_stdout = dup(STDOUT_FILENO);
-	if (saved_stdout < 0)
-		error_exit("dup stdout");
-	if (handle_redirections(current_cmd, sh) < 0)
+	if (saved_stdin < 0 || saved_stdout < 0)
+		error_exit("dup");
+	redir_status = handle_redirections(c, sh);
+	if (redir_status >= 0 && c->args && c->args[0])
 	{
-		sh->last_status = 1;
-		return ;
+		if (run_builtin(c, sh) == -1)
+			execute_cmds(c, sh);
 	}
-	if (run_builtin(current_cmd, sh) == -1)
-		execute_cmds(current_cmd, sh);
+	else
+		sh->last_status = 1;
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
