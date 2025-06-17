@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 03:22:14 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 21:01:21 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@ void	free_key_value(char *key, char *value)
 		free(key);
 	if (value)
 		free(value);
+}
+
+void	free_pwds(char *old_pwd, char *new_pwd)
+{
+	if (old_pwd)
+		free(old_pwd);
+	if (new_pwd)
+		free(new_pwd);
 }
 
 void	free_export_data(t_export_data *data)
