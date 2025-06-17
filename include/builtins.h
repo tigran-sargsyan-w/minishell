@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 06:32:57 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 21:01:38 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int							run_builtin(t_cmd *cmd, t_shell *sh);
 
 int							safe_strdup_pair(char *key, char *value,
 								char **output_key, char **output_value);
+void						free_pwds(char *old_pwd, char *new_pwd);
 
 // Export utils
 int							export_without_args(t_env_list **env);

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:07:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 03:48:19 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 21:12:58 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ t_env_list	*set_value(t_env_list *node, char *value)
 		perror("minishell");
 		return (NULL);
 	}
-	if (node->value != value)
-		free(node->value);
+	free(node->value);
 	node->value = dup;
 	return (node);
 }

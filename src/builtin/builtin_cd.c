@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 02:21:46 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 21:05:25 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	update_var(t_env_list **env, char *key, char *value)
 	t_env_list	*node;
 	char		*temp_key;
 	char		*temp_value;
+	int			ret;
 
 	node = find_node_by_key(env, key);
 	if (node)
@@ -33,22 +34,10 @@ static int	update_var(t_env_list **env, char *key, char *value)
 	}
 	if (safe_strdup_pair(key, value, &temp_key, &temp_value))
 		return (1);
-	if (export_argument(temp_key, temp_value, env))
-	{
-		free(temp_key);
-		free(temp_value);
-		return (1);
-	}
-	return (0);
-}
-
-static int	update_pwd_pair(t_env_list **env, char *old, char *new)
-{
-	if (update_var(env, "OLDPWD", old))
-		return (1);
-	if (update_var(env, "PWD", new))
-		return (1);
-	return (0);
+	ret = export_argument(temp_key, temp_value, env);
+	free(temp_key);
+	free(temp_value);
+	return (ret);
 }
 
 static int	get_target_path(t_cmd *cmd, t_env_list **env, char **dst)
@@ -80,14 +69,25 @@ static int	get_target_path(t_cmd *cmd, t_env_list **env, char **dst)
 	return (0);
 }
 
-static int	perform_cd(char *target, char **old_pwd, char **new_pwd)
+static char	*safe_getcwd(t_env_list **env)
 {
-	*old_pwd = getcwd(NULL, 0);
-	if (!*old_pwd)
+	char		*cwd;
+	t_env_list	*pwd;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
 	{
-		perror("minishell");
-		return (1);
+		pwd = find_node_by_key(env, "PWD");
+		if (pwd && pwd->value)
+			cwd = ft_strdup(pwd->value);
 	}
+	return (cwd);
+}
+
+static int	perform_cd(char *target, char **old_pwd, char **new_pwd,
+		t_env_list **env)
+{
+	*old_pwd = safe_getcwd(env);
 	if (chdir(target) == -1)
 	{
 		perror("minishell");
@@ -95,6 +95,10 @@ static int	perform_cd(char *target, char **old_pwd, char **new_pwd)
 		return (1);
 	}
 	*new_pwd = getcwd(NULL, 0);
+	if (!*new_pwd)
+	{
+		*new_pwd = ft_strdup(target);
+	}
 	if (!*new_pwd)
 	{
 		perror("minishell");
@@ -112,19 +116,22 @@ int	builtin_cd(t_cmd *cmd, t_env_list **env)
 
 	if (get_target_path(cmd, env, &target))
 		return (1);
-	if (perform_cd(target, &old_pwd, &new_pwd))
+	if (perform_cd(target, &old_pwd, &new_pwd, env))
 	{
 		free(target);
 		return (1);
 	}
 	free(target);
-	if (update_pwd_pair(env, old_pwd, new_pwd))
+	if (old_pwd && update_var(env, "OLDPWD", old_pwd))
 	{
-		free(old_pwd);
-		free(new_pwd);
+		free_pwds(old_pwd, new_pwd);
 		return (1);
 	}
-	free(old_pwd);
-	free(new_pwd);
+	if (update_var(env, "PWD", new_pwd))
+	{
+		free_pwds(old_pwd, new_pwd);
+		return (1);
+	}
+	free_pwds(old_pwd, new_pwd);
 	return (0);
 }
