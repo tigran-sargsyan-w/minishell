@@ -33,6 +33,7 @@ SRCS = minishell.c \
 		builtin/builtin_cd.c \
 		builtin/builtin_pwd.c \
 		builtin/builtin_export.c \
+		builtin/export_utils.c \
 		builtin/builtin_unset.c \
 		builtin/builtin_env.c \
 		builtin/builtin_exit.c \

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 02:46:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 03:22:14 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,10 @@ void	free_key_value(char *key, char *value)
 		free(value);
 }
 
-t_export_type	is_valid_export(char *arg)
+void	free_export_data(t_export_data *data)
 {
-	if ((ft_isalpha(arg[0]) != 1) && (arg[0] != '_'))
-		return (ERROR);
-	arg++;
-	while (*arg)
-	{
-		if ((*arg == '+') && (*(arg + 1) == '='))
-			return (CONCAT);
-		if (*arg == '=')
-			return (EXPORT);
-		if ((ft_isalnum(*arg) != 1) && (*arg != '_'))
-			return (ERROR);
-		arg++;
-	}
-	return (EXPORT);
+	free(data->key);
+	free(data->value);
 }
 
 int	safe_strdup_pair(char *key, char *value, char **output_key,
