@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/16 23:56:22 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 03:22:14 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void	free_key_value(char *key, char *value)
 		free(key);
 	if (value)
 		free(value);
+}
+
+void	free_export_data(t_export_data *data)
+{
+	free(data->key);
+	free(data->value);
 }
 
 int	safe_strdup_pair(char *key, char *value, char **output_key,

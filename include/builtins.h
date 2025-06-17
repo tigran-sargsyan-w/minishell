@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 00:31:10 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 06:32:57 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct s_shell		t_shell;
 
 typedef enum e_export_type
 {
-	ERROR,
+	NONE,
 	EXPORT,
 	CONCAT
 }							t_export_type;
@@ -58,8 +58,12 @@ int							safe_strdup_pair(char *key, char *value,
 // Export utils
 int							export_without_args(t_env_list **env);
 int							export_argument(char *key, char *value,
-								t_env_list **env, t_export_type type);
+								t_env_list **env);
 void						free_key_value(char *key, char *value);
-t_export_type				is_valid_export(char *arg);
+void						free_export_data(t_export_data *data);
+t_export_type				is_valid_export(char *arg, t_export_data *data);
+int							parse_key_value(char *arg, t_export_data *data);
+int							create_new_var(char *key, char *value,
+								t_env_list **env);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 19:56:44 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/17 06:21:11 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_shell *sh, int prev_fd,
 		setup_child_fds(prev_fd, pd, current_cmd);
 		execute_child(current_cmd, sh);
 		free_all_resources(sh);
-		exit(0);
+		exit(sh->last_status);
 	}
 	return (pid);
 }

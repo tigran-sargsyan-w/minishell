@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 03:09:23 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/17 02:21:46 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	update_var(t_env_list **env, char *key, char *value)
 	}
 	if (safe_strdup_pair(key, value, &temp_key, &temp_value))
 		return (1);
-	if (export_argument(temp_key, temp_value, env, EXPORT))
+	if (export_argument(temp_key, temp_value, env))
 	{
 		free(temp_key);
 		free(temp_value);
