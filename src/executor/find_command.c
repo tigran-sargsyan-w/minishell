@@ -6,13 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/05/06 16:20:00 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:34:19 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"      // ft_strncmp, ft_strlcpy, ft_strlcat, ft_strdup
-#include <stdlib.h>     // exit
-#include <unistd.h>     // X_OK
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 static char	*get_from_env(char **envp, char *key);
 static char	*build_command_path(char *dir, char *cmd);
