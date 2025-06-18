@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 11:00:01 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:21:19 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	execute_child(t_cmd *current_cmd, t_shell *sh)
 	{
 		free_all_resources(sh);
 		sh->last_status = 1;
-		exit(1);
+		exit(sh->last_status);
 	}
 	if (!current_cmd->args || !current_cmd->args[0])
 	{
