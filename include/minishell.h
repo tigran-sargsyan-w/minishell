@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:09:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 18:56:42 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:38:40 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,8 @@ void						free_cmd_list(t_cmd *cmd);
 void						free_all_resources(t_shell *sh);
 void						free_env_tab(char **env_tab);
 void						free_all_env(t_shell *sh);
+
+// exit_utils.c
+void						close_all_fds(void);
 
 #endif

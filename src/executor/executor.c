@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 11:03:45 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:50:04 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	finalize_execution(last_pid, sh);
 }
 
-static void	run_single_command(t_cmd *c, t_shell *sh)
+static void	run_single_command(t_cmd *cmd, t_shell *sh)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -96,11 +96,11 @@ static void	run_single_command(t_cmd *c, t_shell *sh)
 	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdin < 0 || saved_stdout < 0)
 		error_exit("dup");
-	redir_status = handle_redirections(c);
-	if (redir_status >= 0 && c->args && c->args[0])
+	redir_status = handle_redirections(cmd);
+	if (redir_status >= 0 && cmd->args && cmd->args[0])
 	{
-		if (run_builtin(c, sh) == -1)
-			execute_cmds(c, sh);
+		if (run_builtin(cmd, sh) == -1)
+			execute_cmds(cmd, sh);
 	}
 	else
 	{
