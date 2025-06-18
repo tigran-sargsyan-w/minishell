@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 21:51:43 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 22:08:20 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,17 +143,23 @@ char	*find_command(char *cmd, t_shell *sh)
 				ft_dprintf(2, "minishell: %s: No such file or directory\n",
 					cmd);
 				sh->last_status = 127;
+				free_all_resources(sh);
+				exit(sh->last_status);
 			}
 			else
 			{
 				perror(cmd);
 				sh->last_status = 126;
+				free_all_resources(sh);
+				exit(sh->last_status);
 			}
 		}
 		else if (is_directory(cmd))
 		{
 			ft_dprintf(2, "minishell: %s: Is a directory\n", cmd);
 			sh->last_status = CMD_IS_DIRECTORY;
+			free_all_resources(sh);
+			exit(sh->last_status);
 		}
 		else
 		{
@@ -161,15 +167,12 @@ char	*find_command(char *cmd, t_shell *sh)
 			{
 				ft_dprintf(2, "minishell: %s: Permission denied\n", cmd);
 				sh->last_status = 126;
+				free_all_resources(sh);
+				exit(sh->last_status);
 			}
-			else
-			{
-				ft_dprintf(2, "%s: command not found\n", cmd);
-				sh->last_status = 127;
-			}
+			else if (access(cmd, R_OK) == 0 && access(cmd, X_OK) == 0)
+				return (ft_strdup(cmd));
 		}
-		free_all_resources(sh);
-		exit(sh->last_status);
 	}
 	path_env = get_from_env(sh->env_tab, "PATH");
 	if (!path_env)
