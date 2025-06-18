@@ -41,6 +41,7 @@ SRCS = minishell.c \
 		executor/executor_child.c \
 		executor/executor.c \
 		executor/find_command.c \
+		executor/find_command_utils.c \
 		executor/heredoc.c \
 		executor/redirection.c \
 		env/envp_list.c \

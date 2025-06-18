@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:39:30 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 17:58:44 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 22:41:21 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void					executor(t_shell *sh);
 
 // find_command.c
 char					*find_command(char *cmd, t_shell *sh);
+
+// find_command_utils.c
+void					handle_stat_errors(char *cmd, t_shell *sh);
 
 // heredoc.c
 int						handle_heredoc(t_redir *redir, t_shell *sh);
