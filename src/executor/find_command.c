@@ -6,11 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 15:34:19 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:01:08 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
+#include "env.h"
+#include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -120,20 +123,27 @@ static void	free_array(char **array)
  * @param envp An array of strings representing the environment variables.
  * @return A newly allocated string containing the full command path.
  */
-char	*find_command(char *cmd, char **envp)
+char	*find_command(char *cmd, t_shell *sh)
 {
 	char	*path_env;
 	char	**paths;
 
-	if (!cmd || !envp)
+	if (!cmd || !sh->env_tab)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
+		else
+		{
+			ft_dprintf(2, "%s: Permission denied\n", cmd);
+			sh->last_status = 126;
+			free_all_resources(sh);
+			exit (sh->last_status);
+		}
 		return (NULL);
 	}
-	path_env = get_from_env(envp, "PATH");
+	path_env = get_from_env(sh->env_tab, "PATH");
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 15:21:19 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:58:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	cmd_name = cmd->args[0];
 	if (cmd_name[0] == '\0')
 		handle_cmd_not_found(sh, "''", CMD_NOT_FOUND);
-	full_cmd = find_command(cmd_name, sh->env_tab);
+	full_cmd = find_command(cmd_name, sh);
 	if (!full_cmd)
 		handle_cmd_not_found(sh, cmd_name, CMD_NOT_FOUND);
 	if (is_directory(full_cmd))
