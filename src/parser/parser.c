@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 17:58:36 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:40:19 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 		if (process_token(&tokens, &current_cmd, sh) == FAILURE)
 		{
 			sh->last_status = 2;
-			ft_dprintf(2, "minishell: parse_tokens failed\n");
-			free_cmd_list(sh->cmd_list);
+			free_cmd_list(cmd);
 			return (NULL);
 		}
 	}
