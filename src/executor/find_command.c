@@ -6,19 +6,19 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 21:15:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:20:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
 #include "env.h"
+#include "ft_printf.h"
+#include "libft.h"
 #include "minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
-#include <sys/stat.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 static char	*get_from_env(char **envp, char *key);
 static char	*build_command_path(char *dir, char *cmd);
@@ -26,7 +26,7 @@ static char	*search_in_paths(char **paths, char *cmd);
 static void	free_array(char **array);
 
 /**
- * @brief Retrieve the value associated with 
+ * @brief Retrieve the value associated with
  * a specified key from the environment variables.
  * @envp: An array of strings representing the environment variables.
  * @key: The name of the environment variable to search for.
@@ -128,28 +128,29 @@ static void	free_array(char **array)
  */
 char	*find_command(char *cmd, t_shell *sh)
 {
-	char	*path_env;
-	char	**paths;
-	struct stat sb;
+	char		*path_env;
+	char		**paths;
+	struct stat	sb;
 
 	if (!cmd || !sh->env_tab)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
 		if (stat(cmd, &sb) == -1)
-        {
-            if (errno == ENOENT)
-            {
-                ft_dprintf(2, "minishell: %s: No such file or directory\n", cmd);
-                sh->last_status = 127;
-            }
-            else
-            {
-				perror(cmd);
-                sh->last_status = 126;
+		{
+			if (errno == ENOENT)
+			{
+				ft_dprintf(2, "minishell: %s: No such file or directory\n",
+					cmd);
+				sh->last_status = 127;
 			}
-        }
-		else 
+			else
+			{
+				perror(cmd);
+				sh->last_status = 126;
+			}
+		}
+		else
 		{
 			if (access(cmd, X_OK) == 0)
 				return (ft_strdup(cmd));
@@ -160,7 +161,7 @@ char	*find_command(char *cmd, t_shell *sh)
 			}
 		}
 		free_all_resources(sh);
-		exit (sh->last_status);
+		exit(sh->last_status);
 	}
 	path_env = get_from_env(sh->env_tab, "PATH");
 	if (!path_env)
