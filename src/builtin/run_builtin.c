@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/18 15:09:02 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:26:15 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static int	handle_exit(t_shell *sh, t_cmd *cmd)
 {
 	if (builtin_exit(sh, cmd->args) == 1)
 	{
-		free_all_env(sh);
-		free_cmd_list(sh->cmd_list);
-		close_all_fds();
+		free_all_resources(sh);
 		exit(sh->last_status);
 	}
 	else
