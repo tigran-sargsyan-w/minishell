@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 18:01:08 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:15:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <stdio.h>
 
 static char	*get_from_env(char **envp, char *key);
 static char	*build_command_path(char *dir, char *cmd);
@@ -127,21 +130,37 @@ char	*find_command(char *cmd, t_shell *sh)
 {
 	char	*path_env;
 	char	**paths;
+	struct stat sb;
 
 	if (!cmd || !sh->env_tab)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		else
+		if (stat(cmd, &sb) == -1)
+        {
+            if (errno == ENOENT)
+            {
+                ft_dprintf(2, "minishell: %s: No such file or directory\n", cmd);
+                sh->last_status = 127;
+            }
+            else
+            {
+				perror(cmd);
+                sh->last_status = 126;
+			}
+        }
+		else 
 		{
-			ft_dprintf(2, "%s: Permission denied\n", cmd);
-			sh->last_status = 126;
-			free_all_resources(sh);
-			exit (sh->last_status);
+			if (access(cmd, X_OK) == 0)
+				return (ft_strdup(cmd));
+			else
+			{
+				ft_dprintf(2, "minishell: %s: Permission denied\n", cmd);
+				sh->last_status = 126;
+			}
 		}
-		return (NULL);
+		free_all_resources(sh);
+		exit (sh->last_status);
 	}
 	path_env = get_from_env(sh->env_tab, "PATH");
 	if (!path_env)
