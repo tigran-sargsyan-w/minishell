@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/17 06:21:11 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:00:01 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 
 static void	execute_child(t_cmd *current_cmd, t_shell *sh)
 {
-	if (handle_redirections(current_cmd, sh) < 0)
+	if (handle_redirections(current_cmd) < 0)
 	{
 		free_all_resources(sh);
 		sh->last_status = 1;

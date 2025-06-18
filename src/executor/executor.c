@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/17 21:55:17 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:02:13 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,28 @@
 #include "ft_printf.h"
 #include <signal.h>
 #include <sys/wait.h>
+
+// Read all here-docs in the parent process and convert them to REDIR_IN using a tmp file
+static int	preprocess_heredocs(t_cmd *cmd_list, t_shell *sh)
+{
+	t_cmd	*cmd;
+	t_redir	*r;
+
+	cmd = cmd_list;
+	while (cmd)
+	{
+		r = cmd->in_redirs;
+		while (r)
+		{
+			if (r->type == REDIR_HEREDOC)
+				if (handle_heredoc(r, sh) < 0)
+					return (-1);
+			r = r->next;
+		}
+		cmd = cmd->next;
+	}
+	return (0);
+}
 
 static void	finalize_execution(pid_t last_pid, t_shell *sh)
 {
@@ -74,7 +96,7 @@ static void	run_single_command(t_cmd *c, t_shell *sh)
 	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdin < 0 || saved_stdout < 0)
 		error_exit("dup");
-	redir_status = handle_redirections(c, sh);
+	redir_status = handle_redirections(c);
 	if (redir_status >= 0 && c->args && c->args[0])
 	{
 		if (run_builtin(c, sh) == -1)
@@ -98,6 +120,11 @@ void	executor(t_shell *sh)
 	{
 		ft_dprintf(2, "minishell: env_list_to_tab failed\n");
 		sh->last_status = FAILURE;
+		return ;
+	}
+	if (preprocess_heredocs(sh->cmd_list, sh) < 0)
+	{
+		free_env_tab(sh->env_tab);
 		return ;
 	}
 	if (sh->cmd_list->next == NULL)

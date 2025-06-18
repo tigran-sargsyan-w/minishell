@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/16 17:38:24 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:01:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,36 +51,31 @@ static int	redirect_fd_to_stdio(int fd, t_redir *redir)
 }
 
 // Applies a single redirection (including heredoc)
-static int	apply_one_redir(t_redir *redir, t_shell *sh)
+static int	apply_one_redir(t_redir *redir)
 {
 	int	fd;
 
-	if (redir->type == REDIR_HEREDOC)
-	{
-		if (handle_heredoc(redir, sh) < 0)
-			return (-1);
-	}
 	fd = open_redirection_file(redir);
 	if (fd < 0)
 		return (-1);
 	return (redirect_fd_to_stdio(fd, redir));
 }
 
-int	handle_redirections(t_cmd *current_cmd, t_shell *sh)
+int	handle_redirections(t_cmd *current_cmd)
 {
 	t_redir	*redir;
 
 	redir = current_cmd->in_redirs;
 	while (redir)
 	{
-		if (apply_one_redir(redir, sh) < 0)
+		if (apply_one_redir(redir) < 0)
 			return (-1);
 		redir = redir->next;
 	}
 	redir = current_cmd->out_redirs;
 	while (redir)
 	{
-		if (apply_one_redir(redir, sh) < 0)
+		if (apply_one_redir(redir) < 0)
 			return (-1);
 		redir = redir->next;
 	}
