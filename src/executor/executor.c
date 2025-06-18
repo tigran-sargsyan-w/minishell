@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 11:02:13 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:03:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 
-// Read all here-docs in the parent process and convert them to REDIR_IN using a tmp file
+// Read all here-docs in the parent process and convert them to REDIR_IN
 static int	preprocess_heredocs(t_cmd *cmd_list, t_shell *sh)
 {
 	t_cmd	*cmd;
