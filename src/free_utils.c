@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:39:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/14 20:24:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:18:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_all_resources(t_shell *sh)
 {
 	free_cmd_list(sh->cmd_list);
 	free_all_env(sh);
+	close_all_fds();
 	sh->cmd_list = NULL;
 	sh->env_list = NULL;
 	sh->env_tab = NULL;
