@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 21:20:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:31:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,11 @@ char	*find_command(char *cmd, t_shell *sh)
 				perror(cmd);
 				sh->last_status = 126;
 			}
+		}
+		else if (is_directory(cmd))
+		{
+			ft_dprintf(2, "minishell: %s: Is a directory\n", cmd);
+			sh->last_status = CMD_IS_DIRECTORY;
 		}
 		else
 		{

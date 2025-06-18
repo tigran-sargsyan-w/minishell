@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 17:58:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:27:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,6 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	full_cmd = find_command(cmd_name, sh);
 	if (!full_cmd)
 		handle_cmd_not_found(sh, cmd_name, CMD_NOT_FOUND);
-	if (is_directory(full_cmd))
-	{
-		ft_dprintf(2, "%s: Is a directory\n", cmd_name);
-		sh->last_status = CMD_IS_DIRECTORY;
-		free_all_resources(sh);
-		free(full_cmd);
-		exit(sh->last_status);
-	}
 	execve(full_cmd, cmd->args, sh->env_tab);
 	free_all_resources(sh);
 	free(full_cmd);
