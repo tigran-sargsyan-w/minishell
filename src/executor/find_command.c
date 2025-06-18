@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 21:31:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:51:43 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,15 @@ char	*find_command(char *cmd, t_shell *sh)
 		}
 		else
 		{
-			if (access(cmd, X_OK) == 0)
-				return (ft_strdup(cmd));
-			else
+			if (access(cmd, R_OK) != 0 || access(cmd, X_OK) != 0)
 			{
 				ft_dprintf(2, "minishell: %s: Permission denied\n", cmd);
 				sh->last_status = 126;
+			}
+			else
+			{
+				ft_dprintf(2, "%s: command not found\n", cmd);
+				sh->last_status = 127;
 			}
 		}
 		free_all_resources(sh);
