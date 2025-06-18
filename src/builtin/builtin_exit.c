@@ -6,13 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 22:02:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/14 20:27:30 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:56:57 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "ft_printf.h"
 #include "libft.h"
+#include "parser.h"
 #include "minishell.h"
 
 int	is_valid_numeric(char *arg)
@@ -34,7 +35,8 @@ int	is_valid_numeric(char *arg)
 
 int	builtin_exit(t_shell *sh, char **argv)
 {
-	ft_dprintf(2, "exit\n");
+	if (sh->cmd_list->next == NULL)
+		ft_dprintf(2, "exit\n");
 	if (argv[1] == NULL)
 	{
 		return (1);
