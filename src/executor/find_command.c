@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 22:08:20 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 22:35:53 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,34 @@ static void	free_array(char **array)
 	free(array);
 }
 
+static void	handle_stat_errors(char *cmd, t_shell *sh)
+{
+	struct stat	sb;
+
+	if (stat(cmd, &sb) == -1)
+	{
+		if (errno == ENOENT)
+		{
+			ft_dprintf(2, "minishell: %s: No such file or directory\n", cmd);
+			sh->last_status = 127;
+		}
+		else
+		{
+			perror(cmd);
+			sh->last_status = 126;
+		}
+		free_all_resources(sh);
+		exit(sh->last_status);
+	}
+	else if (is_directory(cmd))
+	{
+		ft_dprintf(2, "minishell: %s: Is a directory\n", cmd);
+		sh->last_status = 126;
+		free_all_resources(sh);
+		exit(sh->last_status);
+	}
+}
+
 /**
  * @brief Searches for the command in the specified directories.
  * @param cmd Command name.
@@ -130,49 +158,20 @@ char	*find_command(char *cmd, t_shell *sh)
 {
 	char		*path_env;
 	char		**paths;
-	struct stat	sb;
 
 	if (!cmd || !sh->env_tab)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
-		if (stat(cmd, &sb) == -1)
+		handle_stat_errors(cmd, sh);
+		if (access(cmd, R_OK) != 0 || access(cmd, X_OK) != 0)
 		{
-			if (errno == ENOENT)
-			{
-				ft_dprintf(2, "minishell: %s: No such file or directory\n",
-					cmd);
-				sh->last_status = 127;
-				free_all_resources(sh);
-				exit(sh->last_status);
-			}
-			else
-			{
-				perror(cmd);
-				sh->last_status = 126;
-				free_all_resources(sh);
-				exit(sh->last_status);
-			}
-		}
-		else if (is_directory(cmd))
-		{
-			ft_dprintf(2, "minishell: %s: Is a directory\n", cmd);
-			sh->last_status = CMD_IS_DIRECTORY;
+			ft_dprintf(2, "minishell: %s: Permission denied\n", cmd);
+			sh->last_status = 126;
 			free_all_resources(sh);
 			exit(sh->last_status);
 		}
-		else
-		{
-			if (access(cmd, R_OK) != 0 || access(cmd, X_OK) != 0)
-			{
-				ft_dprintf(2, "minishell: %s: Permission denied\n", cmd);
-				sh->last_status = 126;
-				free_all_resources(sh);
-				exit(sh->last_status);
-			}
-			else if (access(cmd, R_OK) == 0 && access(cmd, X_OK) == 0)
-				return (ft_strdup(cmd));
-		}
+		return (ft_strdup(cmd));
 	}
 	path_env = get_from_env(sh->env_tab, "PATH");
 	if (!path_env)
