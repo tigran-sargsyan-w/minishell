@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:42:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:59:43 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:57:00 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*get_chunk_for_token(t_token *tok, t_shell *sh)
 		chunk = ft_strdup(tok->value);
 	else if (tok->type == TOK_WORD || tok->type == TOK_DQUOTED)
 		chunk = expand_vars(tok->value, sh);
-	if (!chunk && (tok->type == TOK_SQUOTED || tok->type == TOK_DQUOTED))
+	if (!chunk && (tok->type == TOK_WORD || tok->type == TOK_DQUOTED))
 		chunk = ft_strdup("");
 	return (chunk);
 }
