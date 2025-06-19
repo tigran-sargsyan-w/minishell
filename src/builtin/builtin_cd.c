@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 21:05:25 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:20:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @brief Updates the environment variable with the given key and value.
+ * If the variable already exists, it updates its value.
+ * If it does not exist, it creates a new variable.
+ * @param env Pointer to the environment list.
+ * @param key The key of the environment variable.
+ * @param value The value to set for the environment variable.
+ * @return 0 on success, 1 on failure.
+ */
 static int	update_var(t_env_list **env, char *key, char *value)
 {
 	t_env_list	*node;
@@ -40,6 +49,13 @@ static int	update_var(t_env_list **env, char *key, char *value)
 	return (ret);
 }
 
+/**
+ * @brief Gets the target path for the cd command.
+ * @param cmd The command structure.
+ * @param env Pointer to the environment list.
+ * @param dst Pointer to the destination string.
+ * @return 0 on success, 1 on failure.
+ */
 static int	get_target_path(t_cmd *cmd, t_env_list **env, char **dst)
 {
 	t_env_list	*home;
@@ -69,6 +85,12 @@ static int	get_target_path(t_cmd *cmd, t_env_list **env, char **dst)
 	return (0);
 }
 
+/**
+ * @brief Safely gets the current working directory.
+ * If getcwd fails, it tries to retrieve the PWD from the environment.
+ * @param env Pointer to the environment list.
+ * @return The current working directory or NULL on failure.
+ */
 static char	*safe_getcwd(t_env_list **env)
 {
 	char		*cwd;
@@ -84,6 +106,16 @@ static char	*safe_getcwd(t_env_list **env)
 	return (cwd);
 }
 
+/**
+ * @brief Performs the actual change of directory.
+ * Changes the current working directory to the target path.
+ * If successful, updates the PWD and OLDPWD environment variables.
+ * @param target The target directory to change to.
+ * @param old_pwd Pointer to store the old working directory.
+ * @param new_pwd Pointer to store the new working directory.
+ * @param env Pointer to the environment list.
+ * @return 0 on success, 1 on failure.
+ */
 static int	perform_cd(char *target, char **old_pwd, char **new_pwd,
 		t_env_list **env)
 {
@@ -108,6 +140,13 @@ static int	perform_cd(char *target, char **old_pwd, char **new_pwd,
 	return (0);
 }
 
+/**
+ * @brief Built-in command to change the current working directory.
+ * This function handles the 'cd' command in the shell.
+ * @param cmd The command structure containing the arguments.
+ * @param env Pointer to the environment list.
+ * @return 0 on success, 1 on failure.
+ */
 int	builtin_cd(t_cmd *cmd, t_env_list **env)
 {
 	char	*target;
