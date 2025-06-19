@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:07:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 17:03:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:05:17 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+/**
+ * @brief Handles memory cleanups for failed entry additions.
+ * @param key The key to free, if allocated.
+ * @param value The value to free, if allocated.
+ * @return 1 to indicate failure.
+ */
+static int	entry_fail(char *key, char *value)
+{
+	if (key)
+		free(key);
+	if (value)
+		free(value);
+	perror("minishell");
+	return (1);
+}
 
 /**
  * @brief Finds a node in the environment list by its key.
@@ -56,22 +72,6 @@ t_env_list	*set_value(t_env_list *node, char *value)
 	free(node->value);
 	node->value = dup;
 	return (node);
-}
-
-/**
- * @brief Handles memory cleanups for failed entry additions.
- * @param key The key to free, if allocated.
- * @param value The value to free, if allocated.
- * @return 1 to indicate failure.
- */
-static int	entry_fail(char *key, char *value)
-{
-	if (key)
-		free(key);
-	if (value)
-		free(value);
-	perror("minishell");
-	return (1);
 }
 
 /**
