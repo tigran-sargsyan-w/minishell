@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:02:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/14 20:25:51 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:17:12 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 
 extern volatile sig_atomic_t	g_signo;
 
+/**
+ * @brief Checks if the given path is a directory.
+ * @param path The path to check.
+ * @return Returns 1 if the path is a directory, 0 otherwise.
+ */
 int	is_directory(const char *path)
 {
 	struct stat	sb;
@@ -34,6 +39,13 @@ int	is_directory(const char *path)
 	return (S_ISDIR(sb.st_mode));
 }
 
+/**
+ * @brief Handles the signal interrupt for the shell.
+ * If the signal is SIGINT (Ctrl+C), it sets the last status to 130
+ * and resets the signal number.
+ * @param sh Pointer to the shell structure.
+ * @return Returns 1 if the signal was handled, 0 otherwise.
+ */
 static int	handle_signal_interrupt(t_shell *sh)
 {
 	if (g_signo == 1)
@@ -46,6 +58,12 @@ static int	handle_signal_interrupt(t_shell *sh)
 	return (0);
 }
 
+/**
+ * @brief Checks if the input string is empty or contains only whitespace.
+ * @param input The input string to check.
+ * @return Returns 1 if the input is empty or contains only whitespace,
+ * 0 otherwise.
+ */
 static int	should_skip_input(const char *input)
 {
 	size_t	i;
@@ -60,6 +78,13 @@ static int	should_skip_input(const char *input)
 	return (1);
 }
 
+/**
+ * @brief Processes a single line of input from the user.
+ * It adds the input to the history, tokenizes it, parses the tokens,
+ * and executes the commands.
+ * @param input The input string to process.
+ * @param sh Pointer to the shell structure.
+ */
 static void	process_input_line(char *input, t_shell *sh)
 {
 	t_token	*tokens;
@@ -79,6 +104,11 @@ static void	process_input_line(char *input, t_shell *sh)
 	free_cmd_list(sh->cmd_list);
 }
 
+/**
+ * @brief Reads lines from the user in a loop,
+ * processes each line, and handles signals.
+ * @param sh Pointer to the shell structure.
+ */
 void	readline_loop(t_shell *sh)
 {
 	char	*input;
