@@ -38,6 +38,6 @@
 | 26 | Unclosed double quote                | `echo "unterminated`              | `2`                         | ✅ |
 | 27 | Redirect without filename            | `>`                               | `2`                         | ✅ |
 | 28 | Heredoc without delimiter            | `cat <<`                          | `2`                         | ✅ |
-| 29 | Double AND with missing command      | `cd && && ls`                     | `2`                         | ❓ |
+| 29 | Double AND with missing command      | `cd && && ls`                     | `2`                         | ✅ |
 | 30 | Unsupported redirect operator        | `ls >\| file`                     | `2`                         | ✅ |
 | 31 | Redirect without target              | `echo >`                          | `2`                         | ✅ |
