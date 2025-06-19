@@ -7,6 +7,8 @@
 **Minishell** is a tiny Unix shell written in C for the 42 School curriculum.  
 It reproduces an essential subset of *bash* behaviour — command parsing, environment-variable expansion, redirections, pipelines, built-ins and proper signal handling — all without forking off to an external parser. The goal is to give you hands-on experience with lexical analysis, recursive-descent parsing, process control (`fork` / `execve` / `waitpid`), file-descriptor juggling and the subtleties of POSIX signals.
 
+![Minishell](https://ibb.co/VZS49J0)
+
 ---
 
 ## 📚 Table of Contents
