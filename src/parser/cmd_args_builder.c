@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:40:39 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:52:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 22:52:37 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "parser.h"
 #include <stdlib.h>
 
+/**
+ * @brief Expands the command's argument array to accommodate more arguments.
+ * @param cmd Pointer to the command structure.
+ * @return Returns 0 on success, 1 on failure.
+ * This function doubles the capacity of the command's argument array
+ */
 static int	expand_args(t_cmd *cmd)
 {
 	int		old_cap;
@@ -40,6 +46,11 @@ static int	expand_args(t_cmd *cmd)
 	return (0);
 }
 
+/**
+ * @brief Initializes a new command structure.
+ * @return Returns a pointer to the initialized command structure, 
+ * or NULL on failure.
+ */
 t_cmd	*init_cmd(void)
 {
 	t_cmd	*cmd;
@@ -61,6 +72,12 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+/**
+ * @brief Appends a new argument to the command's argument array.
+ * @param cmd Pointer to the command structure.
+ * @param value The argument value to append.
+ * @return Returns 0 on success, 1 on failure.
+ */
 int	append_arg(t_cmd *cmd, char *value)
 {
 	int	i;
@@ -80,6 +97,12 @@ int	append_arg(t_cmd *cmd, char *value)
 	return (0);
 }
 
+/**
+ * @brief Builds a single argument from a sequence of tokens.
+ * @param tokens Pointer to the list of tokens.
+ * @param sh Pointer to the shell structure.
+ * @return Returns the combined argument string, or NULL on failure.
+ */
 char	*build_argument(t_token **tokens, t_shell *sh)
 {
 	t_token	*tok;
@@ -109,6 +132,13 @@ char	*build_argument(t_token **tokens, t_shell *sh)
 	return (combined);
 }
 
+/**
+ * @brief Builds the delimiter for a heredoc from a sequence of tokens.
+ * @param tokens Pointer to the list of tokens.
+ * @param quoted Pointer to an integer indicating if the delimiter is quoted.
+ * @param sh Pointer to the shell structure.
+ * @return Returns the delimiter string, or NULL on failure.
+ */
 char	*build_heredoc_delim(t_token **tokens, int *quoted, t_shell *sh)
 {
 	t_token	*tok;
