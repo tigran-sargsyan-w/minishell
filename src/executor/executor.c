@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 14:50:04 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:45:23 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,15 @@
 #include <signal.h>
 #include <sys/wait.h>
 
-// Read all here-docs in the parent process and convert them to REDIR_IN
+/**
+ * @brief Preprocess heredocs in the command list.
+ * This function iterates through the command list and processes each heredoc
+ * redirection. It reads the content of each heredoc and writes it to a temporary
+ * file.
+ * @param cmd_list The list of commands to process.
+ * @param sh The shell context containing environment and state.
+ * @return 0 on success, -1 on failure.
+ */
 static int	preprocess_heredocs(t_cmd *cmd_list, t_shell *sh)
 {
 	t_cmd	*cmd;
@@ -39,6 +47,13 @@ static int	preprocess_heredocs(t_cmd *cmd_list, t_shell *sh)
 	return (0);
 }
 
+/**
+ * @brief Finalizes the execution of commands.
+ * This function waits for the last child process to finish,
+ * checks its exit status, and cleans up resources.
+ * @param last_pid The PID of the last executed command.
+ * @param sh The shell context containing environment and state.
+ */
 static void	finalize_execution(pid_t last_pid, t_shell *sh)
 {
 	int	status;
@@ -59,6 +74,12 @@ static void	finalize_execution(pid_t last_pid, t_shell *sh)
 		;
 }
 
+/**
+ * @brief Executes a list of commands in a pipeline.
+ * This function sets up pipes between commands and manages their execution.
+ * @param cmd The list of commands to execute.
+ * @param sh The shell context containing environment and state.
+ */
 static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 {
 	t_pipe	pipefd;
@@ -86,6 +107,13 @@ static void	execute_cmds(t_cmd *cmd, t_shell *sh)
 	finalize_execution(last_pid, sh);
 }
 
+/**
+ * @brief Runs a single command in the shell.
+ * This function handles redirections, executes built-in commands,
+ * or forks a new process to execute external commands.
+ * @param cmd The command to run.
+ * @param sh The shell context containing environment and state.
+ */
 static void	run_single_command(t_cmd *cmd, t_shell *sh)
 {
 	int	saved_stdin;
@@ -113,6 +141,12 @@ static void	run_single_command(t_cmd *cmd, t_shell *sh)
 	close(saved_stdout);
 }
 
+/**
+ * @brief Executes commands in the shell.
+ * This function initializes the environment, processes heredocs,
+ * and executes either a single command or a list of commands.
+ * @param sh The shell context containing environment and state.
+ */
 void	executor(t_shell *sh)
 {
 	sh->env_tab = env_list_to_tab(&sh->env_list);
