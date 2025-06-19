@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 03:54:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:11:27 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+/**
+ * @brief Creates a new environment list node with the given key and value.
+ * @param key The key of the environment variable.
+ * @param value The value of the environment variable.
+ * @return A pointer to the newly created node, or NULL on failure.
+ */
 t_env_list	*lst_create_node(char *key, char *value)
 {
 	t_env_list	*node;
@@ -29,6 +35,11 @@ t_env_list	*lst_create_node(char *key, char *value)
 	return (node);
 }
 
+/**
+ * @brief Adds a new environment node to the end of the list.
+ * @param list Pointer to the pointer of the environment list.
+ * @param new_node The new node to add to the list.
+ */
 void	lst_add_end(t_env_list **list, t_env_list *new_node)
 {
 	t_env_list	*tmp;
@@ -46,6 +57,11 @@ void	lst_add_end(t_env_list **list, t_env_list *new_node)
 	tmp->next = new_node;
 }
 
+/**
+ * @brief Initializes the environment list from the given envp array.
+ * @param envp The environment variables array.
+ * @return A pointer to the initialized environment list, or NULL on failure.
+ */
 t_env_list	*lst_init(char *const *envp)
 {
 	t_env_list	*list;
@@ -63,6 +79,10 @@ t_env_list	*lst_init(char *const *envp)
 	return (list);
 }
 
+/**
+ * @brief Clears the environment list and frees all allocated memory.
+ * @param list Pointer to the pointer of the environment list.
+ */
 void	lst_clear(t_env_list **list)
 {
 	t_env_list	*tmp;
@@ -81,6 +101,11 @@ void	lst_clear(t_env_list **list)
 	}
 }
 
+/**
+ * @brief Returns the size of the environment list.
+ * @param list Pointer to the pointer of the environment list.
+ * @return The number of nodes in the list, or 0 if the list is empty.
+ */
 size_t	lst_size(t_env_list **list)
 {
 	size_t		size;
