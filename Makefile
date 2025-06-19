@@ -14,10 +14,10 @@ LIBFT_DIR = libft/
 # Files
 
 SRCS = minishell.c \
-    	readline_loop.c \
-		exit_utils.c \
-		signals.c \
-		free_utils.c \
+    	minishell_utils/readline_loop.c \
+		minishell_utils/exit_utils.c \
+		minishell_utils/signals.c \
+		minishell_utils/free_utils.c \
 		lexer/lexer.c \
 		lexer/token_operators.c \
 		lexer/token_utils.c \
