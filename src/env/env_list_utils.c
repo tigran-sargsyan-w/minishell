@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:07:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 21:12:58 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:03:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Finds a node in the environment list by its key.
+ * @param env Pointer to the environment list.
+ * @param key The key to search for.
+ * @return A pointer to the node with the matching key, or NULL if not found.
+ */
 t_env_list	*find_node_by_key(t_env_list **env, char *key)
 {
 	t_env_list	*tmp;
@@ -29,6 +35,12 @@ t_env_list	*find_node_by_key(t_env_list **env, char *key)
 	return (NULL);
 }
 
+/**
+ * @brief Sets the value of a node in the environment list.
+ * @param node The node to update.
+ * @param value The new value to set.
+ * @return A pointer to the updated node, or NULL on failure.
+ */
 t_env_list	*set_value(t_env_list *node, char *value)
 {
 	char	*dup;
@@ -46,6 +58,12 @@ t_env_list	*set_value(t_env_list *node, char *value)
 	return (node);
 }
 
+/**
+ * @brief Handles memory cleanups for failed entry additions.
+ * @param key The key to free, if allocated.
+ * @param value The value to free, if allocated.
+ * @return 1 to indicate failure.
+ */
 static int	entry_fail(char *key, char *value)
 {
 	if (key)
@@ -56,6 +74,12 @@ static int	entry_fail(char *key, char *value)
 	return (1);
 }
 
+/**
+ * @brief Adds a new entry to the environment list.
+ * @param entry The entry string in the format "key=value".
+ * @param list Pointer to the environment list.
+ * @return 0 on success, or 1 on failure.
+ */
 int	add_env_entry(char *entry, t_env_list **list)
 {
 	char		*equal_sign;
