@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:06 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 21:01:21 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:41:50 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-void	free_key_value(char *key, char *value)
-{
-	if (key)
-		free(key);
-	if (value)
-		free(value);
-}
 
 void	free_pwds(char *old_pwd, char *new_pwd)
 {
