@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:59 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/12 04:12:03 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:25:48 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @brief Prints the environment variables to standard output.
+ *
+ * @param cmd The command structure containing arguments.
+ * @param env Pointer to the environment list.
+ * @return 0 on success, 1 if there are too many arguments.
+ */
 int	builtin_env(t_cmd *cmd, t_env_list **env)
 {
 	t_env_list	*tmp;
