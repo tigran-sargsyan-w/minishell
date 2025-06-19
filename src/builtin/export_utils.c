@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 23:44:05 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/17 06:36:10 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:46:53 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Prints all environment variables in the export format.
+ * This function iterates through the linked list of environment variables
+ * and prints each variable in the format "declare -x key=value".
+ * @param env Pointer to the linked list of environment variables.
+ * @return 0 on success, 1 if the list is empty or NULL.
+ */
 int	export_without_args(t_env_list **env)
 {
 	t_env_list	*tmp;
@@ -31,6 +38,14 @@ int	export_without_args(t_env_list **env)
 	return (0);
 }
 
+/**
+ * @brief Validates the export argument and sets the export type.
+ * This function checks if the argument starts with a valid character
+ * (letter or underscore) and determines if it is an export or concatenation.
+ * @param arg The argument to validate.
+ * @param data Pointer to the export data structure to set the type.
+ * @return 1 if valid, 0 if invalid.
+ */
 t_export_type	is_valid_export(char *arg, t_export_data *data)
 {
 	if ((ft_isalpha(arg[0]) != 1) && (arg[0] != '_'))
@@ -56,6 +71,14 @@ t_export_type	is_valid_export(char *arg, t_export_data *data)
 	return (1);
 }
 
+/**
+ * @brief Parses the key and value from the export argument.
+ * This function extracts the key and value from the argument string.
+ * If the argument is a concatenation, it handles the '+' character.
+ * @param arg The argument to parse.
+ * @param data Pointer to the export data structure to store the key and value.
+ * @return 0 on success, 1 on failure (memory allocation error).
+ */
 int	parse_key_value(char *arg, t_export_data *data)
 {
 	char	*plus;
@@ -85,6 +108,16 @@ int	parse_key_value(char *arg, t_export_data *data)
 	return (0);
 }
 
+/**
+ * @brief Creates a new environment variable node and adds it to the list.
+ * This function allocates memory for a new environment variable node,
+ * initializes it with the provided key and value, and adds it to the end
+ * of the linked list of environment variables.
+ * @param key The key of the new environment variable.
+ * @param value The value of the new environment variable.
+ * @param env Pointer to the linked list of environment variables.
+ * @return 0 on success, 1 on failure (memory allocation error).
+ */
 int	create_new_var(char *key, char *value, t_env_list **env)
 {
 	char		*new_key;

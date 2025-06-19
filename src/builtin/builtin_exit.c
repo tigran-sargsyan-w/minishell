@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 22:02:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/18 15:56:57 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:28:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 #include "parser.h"
 #include "minishell.h"
 
-int	is_valid_numeric(char *arg)
+/**
+ * @brief Checks if the argument is a valid numeric string.
+ * @param arg The argument string to check.
+ * @return 1 if valid, 0 otherwise.
+ */
+static int	is_valid_numeric(char *arg)
 {
 	if (!(*arg))
 		return (0);
@@ -33,6 +38,13 @@ int	is_valid_numeric(char *arg)
 	return (1);
 }
 
+/**
+ * @brief Built-in command to exit the shell.
+ * This function handles the 'exit' command in the shell.
+ * @param sh The shell structure containing the command list.
+ * @param argv The array of arguments passed to the command.
+ * @return 1 if the shell should exit, 0 otherwise.
+ */
 int	builtin_exit(t_shell *sh, char **argv)
 {
 	if (sh->cmd_list->next == NULL)
