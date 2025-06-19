@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:45:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 14:39:39 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:12:26 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 
 #define FD_MAX 1024
 
+/**
+ * @brief Closes all file descriptors from 3 to FD_MAX.
+ * This is useful for cleaning up resources before exiting the program.
+ */
 void	close_all_fds(void)
 {
 	int			fd;
@@ -33,6 +37,10 @@ void	close_all_fds(void)
 	}
 }
 
+/**
+ * @brief Prints an error message and exits the program with failure status.
+ * @param msg The error message to print.
+ */
 void	error_exit(char *msg)
 {
 	perror(msg);
