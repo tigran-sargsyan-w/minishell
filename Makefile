@@ -1,17 +1,24 @@
-# Compiler and flags
+# **************************************************************************** #
+#                                  Makefile                                    #
+# **************************************************************************** #
 
+NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 LD_FLAGS = -lreadline
 
-# Directories
+# -------------------------------
+#  		  Directories 
+# -------------------------------
 
 SRC_DIR = src/
 OBJ_DIR = obj/
 INCLUDE_DIR = include/
 LIBFT_DIR = libft/
 
-# Files
+# -------------------------------
+#   Source for Minishell
+# -------------------------------
 
 SRCS = minishell.c \
     	minishell_utils/readline_loop.c \
@@ -48,35 +55,46 @@ SRCS = minishell.c \
 		env/env_list_to_tab.c \
 		env/env_list_utils.c
 
+# -------------------------------
+#   Object & Dependency Files
+# -------------------------------
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 LIBFT = $(LIBFT_DIR)libft.a
 
-NAME = minishell
+# **************************************************************************** #
+#                                 Build Rules                                  #
+# **************************************************************************** #
 
 all: $(NAME)
+	@echo "🔥 Minishell built successfully!"
 
 libs:
-	$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -s -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) | libs
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LD_FLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LD_FLAGS) -o $(NAME)
+	@echo "✅ Minishell object files compiled."
+	@echo "🚀 $(NAME) created!"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
 
 clean:
-	rm -rf $(OBJ_DIR)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJ_DIR)
+	@$(MAKE) -s -C $(LIBFT_DIR) clean
+	@echo "🗑️ $(NAME) object files removed."
 
 fclean: clean
-	rm -rf $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	@rm -rf $(NAME)
+	@$(MAKE) -s -C $(LIBFT_DIR) fclean
+	@echo "😒 $(NAME) and $(NAME) object files removed."
 
 re: fclean all
 
 -include $(DEPS)
 
 .PHONY: all libs fclean clean re
+.DELETE_ON_ERROR:
