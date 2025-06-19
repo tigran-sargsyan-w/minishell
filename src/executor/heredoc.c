@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/16 17:35:52 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:33:06 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
+/**
+ * @brief Process a line read from the heredoc input.
+ * This function checks if the line matches the
+ * heredoc delimiter and writes the line to the file descriptor.
+ * @param line The line read from the input.
+ * @param fd The file descriptor to write to.
+ * @param redir The heredoc redirection structure containing the delimiter.
+ * @param sh The shell structure containing environment variables.
+ * @return Returns 0 if the line matches the delimiter,
+ *         otherwise returns 1.
+ */
 static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 		t_shell *sh)
 {
@@ -45,7 +56,12 @@ static int	process_heredoc_line(char *line, int fd, t_redir *redir,
 	return (1);
 }
 
-// Main function for writing heredoc
+/**
+ * @brief Writes the heredoc content to a temporary file.
+ * @param redir The heredoc redirection structure.
+ * @param sh The shell structure containing environment variables.
+ * @return Returns 0 on success, or -1 on failure.
+ */
 static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 {
 	int		fd;
@@ -75,6 +91,12 @@ static int	write_heredoc_content(t_redir *redir, t_shell *sh)
 	exit(0);
 }
 
+/**
+ * @brief Waits for the heredoc process to finish and handles signals.
+ * @param pid The process ID of the heredoc child process.
+ * @param sh The shell structure containing the last status.
+ * @return Returns 0 on success, or -1 if interrupted by SIGINT.
+ */
 static int	wait_for_heredoc(pid_t pid, t_shell *sh)
 {
 	int	status;
@@ -84,12 +106,21 @@ static int	wait_for_heredoc(pid_t pid, t_shell *sh)
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		unlink(HEREDOC_TMPFILE);
+		free_all_resources(sh);
 		sh->last_status = 130;
 		return (-1);
 	}
 	return (0);
 }
 
+/**
+ * @brief Handles the heredoc redirection.
+ * This function forks a child process to read input for the heredoc,
+ * writes it to a temporary file, and updates the redirection structure.
+ * @param redir The heredoc redirection structure.
+ * @param sh The shell structure containing environment variables.
+ * @return Returns 0 on success, or -1 on failure.
+ */
 int	handle_heredoc(t_redir *redir, t_shell *sh)
 {
 	pid_t	pid;

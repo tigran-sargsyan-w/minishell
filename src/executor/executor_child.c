@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 16:12:10 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:05:14 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 #include <signal.h>
 #include <stdlib.h>
 
+/**
+ * @brief Handles the case when a command is not found.
+ * This function prints an error message
+ * and exits the shell with the specified exit code.
+ * @param sh The shell structure containing environment and status.
+ * @param cmd_name The name of the command that was not found.
+ * @param exit_code The exit code to use when exiting the shell.
+ */
 static void	handle_cmd_not_found(t_shell *sh, char *cmd_name, int exit_code)
 {
 	ft_dprintf(2, "%s: command not found\n", cmd_name);
@@ -27,6 +35,13 @@ static void	handle_cmd_not_found(t_shell *sh, char *cmd_name, int exit_code)
 	exit(exit_code);
 }
 
+/**
+ * @brief Executes an external command by finding its full path
+ * and calling execve with the command's arguments.
+ * If the command is not found, it handles the error appropriately.
+ * @param cmd The command structure containing the command and its arguments.
+ * @param sh The shell structure containing environment variables.
+ */
 static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 {
 	char	*cmd_name;
@@ -45,6 +60,14 @@ static void	execute_external_command(t_cmd *cmd, t_shell *sh)
 	error_exit("execve");
 }
 
+/**
+ * @brief Executes a command in a child process.
+ * This function handles redirections, checks for built-in commands,
+ * and executes external commands if necessary.
+ * It also handles the case where no arguments are provided.
+ * @param current_cmd The command to execute.
+ * @param sh The shell structure containing environment variables and status.
+ */
 static void	execute_child(t_cmd *current_cmd, t_shell *sh)
 {
 	if (handle_redirections(current_cmd) < 0)
@@ -62,6 +85,15 @@ static void	execute_child(t_cmd *current_cmd, t_shell *sh)
 		execute_external_command(current_cmd, sh);
 }
 
+/**
+ * @brief Sets up the file descriptors for a child process.
+ * This function redirects the standard input and output
+ * based on the previous command's file descriptor and the current pipe.
+ * It also closes the appropriate file descriptors to avoid leaks.
+ * @param prev_fd The file descriptor from the previous command (if any).
+ * @param pd The pipe structure containing read and write file descriptors.
+ * @param cmd The current command being executed.
+ */
 static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 {
 	int	dup2_ret;
@@ -83,6 +115,17 @@ static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd)
 	}
 }
 
+/**
+ * @brief Forks a new process to execute a command.
+ * This function sets up the child process's file descriptors,
+ * handles signals, and executes the command in the child process.
+ * It returns the process ID of the child.
+ * @param current_cmd The command to execute in the child process.
+ * @param sh The shell structure containing environment variables and status.
+ * @param prev_fd The file descriptor from the previous command (if any).
+ * @param pd The pipe structure for inter-process communication.
+ * @return The process ID of the child process.
+ */
 pid_t	fork_and_execute_cmd(t_cmd *current_cmd, t_shell *sh, int prev_fd,
 		t_pipe pd)
 {
