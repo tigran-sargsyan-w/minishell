@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/18 15:26:15 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:49:07 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@
 #include <stdlib.h>
 #include <readline/history.h>
 
+/**
+ * @brief Handles the exit built-in command.
+ * This function is called when the user wants to exit the shell.
+ * It calls the built-in exit function and frees all resources before
+ * terminating the shell.
+ * @param sh Pointer to the shell structure.
+ * @param cmd Pointer to the command structure.
+ * @return The exit status of the shell.
+ */
 static int	handle_exit(t_shell *sh, t_cmd *cmd)
 {
 	if (builtin_exit(sh, cmd->args) == 1)
@@ -29,6 +38,14 @@ static int	handle_exit(t_shell *sh, t_cmd *cmd)
 		return (sh->last_status);
 }
 
+/**
+ * @brief Runs a built-in command.
+ * This function checks the command against a list of built-in commands
+ * and executes the corresponding handler if a match is found.
+ * @param cmd Pointer to the command structure.
+ * @param sh Pointer to the shell structure.
+ * @return The exit status of the built-in command, or -1 if not found.
+ */
 int	run_builtin(t_cmd *cmd, t_shell *sh)
 {
 	int								i;
