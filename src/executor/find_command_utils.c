@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 22:39:58 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 22:42:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:47:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
+/**
+ * @brief Handles errors related to the `stat` system call.
+ * This function checks if the command exists and is not a directory.
+ * If an error occurs, it prints an appropriate error message.
+ * @param cmd The command to check.
+ * @param sh The shell context containing environment and state.
+ */
 void	handle_stat_errors(char *cmd, t_shell *sh)
 {
 	struct stat	sb;
