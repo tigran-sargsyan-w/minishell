@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 16:40:19 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:00:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include "parser.h"
 #include <stdlib.h>
 
+/**
+ * @brief Handles an argument token by building the argument string 
+ * and appending it to the command.
+ * @param tokens Pointer to the list of tokens.
+ * @param cmd Pointer to the command structure.
+ * @param sh Pointer to the shell structure.
+ * @return Returns 0 on success, 1 on failure.
+ */
 static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
 	char	*value;
@@ -27,6 +35,14 @@ static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 	return (SUCCESS);
 }
 
+/**
+ * @brief Handles a redirection token by building the redirection value 
+ * and applying it to the command.
+ * @param tokens Pointer to the list of tokens.
+ * @param cmd Pointer to the command structure.
+ * @param sh Pointer to the shell structure.
+ * @return Returns 0 on success, 1 on failure.
+ */
 static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 {
 	int		quoted;
@@ -53,6 +69,14 @@ static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
 	return (SUCCESS);
 }
 
+/**
+ * @brief Handles a pipe token by validating the command before the pipe 
+ * and initializing a new command for the next part of the pipeline.
+ * @param tokens Pointer to the list of tokens.
+ * @param current_cmd Pointer to the current command structure.
+ * @param sh Pointer to the shell structure.
+ * @return Returns 0 on success, 1 on failure.
+ */
 static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 		t_shell *sh)
 {
@@ -80,6 +104,13 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 	return (SUCCESS);
 }
 
+/**
+ * @brief Processes a token based on its type and handles it accordingly.
+ * @param tokens Pointer to the list of tokens.
+ * @param current_cmd Pointer to the current command structure.
+ * @param sh Pointer to the shell structure.
+ * @return Returns 0 on success, 1 on failure.
+ */
 static int	process_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
 {
 	if (is_arg_token((*tokens)->type))
@@ -94,6 +125,12 @@ static int	process_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
 	return (FAILURE);
 }
 
+/**
+ * @brief Parses a list of tokens and constructs a command list.
+ * @param tokens Pointer to the list of tokens to parse.
+ * @param sh Pointer to the shell structure.
+ * @return Returns a pointer to the command list on success, NULL on failure.
+ */
 t_cmd	*parse_tokens(t_token *tokens, t_shell *sh)
 {
 	t_cmd	*cmd;

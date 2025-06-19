@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 18:08:16 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:54:15 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 22:55:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #include "minishell.h"
 #include <stdlib.h>
 
+/**
+ * @brief Retrieves the value of an environment variable by its name.
+ * @param var_name The name of the environment variable.
+ * @param env_list Pointer to the list of environment variables.
+ * @return Returns the value of the environment variable, or an empty string
+ * if not found.
+ */
 static char	*get_env_value(const char *var_name, t_env_list *env_list)
 {
 	t_env_list	*tmp;
@@ -31,7 +38,14 @@ static char	*get_env_value(const char *var_name, t_env_list *env_list)
 	return ("");
 }
 
-// $?
+/**
+ * @brief Handles the exit status variable ($?) in the input string.
+ * @param input The input string containing the variable.
+ * @param pos Pointer to the current position in the input string.
+ * @param result Pointer to the result string where the value will be appended.
+ * @param sh Pointer to the shell structure containing the last status.
+ * @return Returns SUCCESS (0) on success, FAILURE (1) on failure.
+ */
 static int	handle_exit_status(const char *input, size_t *pos, char **result,
 		t_shell *sh)
 {
@@ -51,7 +65,14 @@ static int	handle_exit_status(const char *input, size_t *pos, char **result,
 	return (SUCCESS);
 }
 
-// $NAME
+/**
+ * @brief Handles environment variable expansion in the input string.
+ * @param input The input string containing the variable.
+ * @param pos Pointer to the current position in the input string.
+ * @param result Pointer to the result string where the value will be appended.
+ * @param sh Pointer to the shell structure containing the environment list.
+ * @return Returns SUCCESS (0) on success, FAILURE (1) on failure.
+ */
 static int	handle_env_var(const char *input, size_t *pos, char **result,
 		t_shell *sh)
 {
@@ -77,6 +98,13 @@ static int	handle_env_var(const char *input, size_t *pos, char **result,
 	return (SUCCESS);
 }
 
+/**
+ * @brief Appends a single character to the result string.
+ * @param input The input string containing the character.
+ * @param pos Pointer to the current position in the input string.
+ * @param result Pointer to the result string, 
+ * where the character will be appended.
+ */
 void	append_char_to_result(const char *input, size_t *pos, char **result)
 {
 	char	buf[2];
@@ -90,6 +118,16 @@ void	append_char_to_result(const char *input, size_t *pos, char **result)
 	(*pos)++;
 }
 
+/**
+ * @brief Processes a dollar sequence in the input string.
+ * @param input The input string containing the dollar sequence.
+ * @param pos Pointer to the current position in the input string.
+ * @param result Pointer to the result string, 
+ * where the expanded value will be appended.
+ * @param sh Pointer to the shell structure containing environment variables
+ * and last status.
+ * @return Returns 1 if a dollar sequence was processed, 0 otherwise.
+ */
 int	process_dollar_sequence(const char *input, size_t *pos,
 		char **result, t_shell *sh)
 {

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:19:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:58:44 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:02:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Creates a new redirection node.
+ * @param type The type of redirection (input, output, append, heredoc).
+ * @param filename The name of the file for the redirection.
+ * @param quoted Indicates if the filename is quoted.
+ * @return Returns a pointer to the newly created redirection node, 
+ * or NULL on failure.
+ */
 static t_redir	*new_redir(t_redir_type type, const char *filename, int quoted)
 {
 	t_redir	*redir;
@@ -38,6 +46,11 @@ static t_redir	*new_redir(t_redir_type type, const char *filename, int quoted)
 	return (redir);
 }
 
+/**
+ * @brief Adds a redirection node to the end of the list of redirections.
+ * @param head Pointer to the head of the linked list.
+ * @param node The redirection node to add.
+ */
 static void	add_redir_node(t_redir **head, t_redir *node)
 {
 	t_redir	*cur;
@@ -53,6 +66,13 @@ static void	add_redir_node(t_redir **head, t_redir *node)
 	}
 }
 
+/**
+ * @brief Adds a redirection to the command's redirection list.
+ * @param cmd The command to which the redirection will be added.
+ * @param type The type of redirection (input, output, append, heredoc).
+ * @param filename The name of the file for the redirection.
+ * @param quoted Indicates if the filename is quoted.
+ */
 static void	add_redirection(t_cmd *cmd, t_redir_type type, const char *filename,
 		int quoted)
 {
@@ -67,6 +87,15 @@ static void	add_redirection(t_cmd *cmd, t_redir_type type, const char *filename,
 		add_redir_node(&cmd->out_redirs, redir);
 }
 
+/**
+ * @brief Applies a redirection to the command based on the token type.
+ * @param cmd The command to which the redirection will be applied.
+ * @param redirect_type The type of redirection token 
+ * (less, greater, dless, dgreater).
+ * @param value The value associated with the redirection 
+ * (filename or delimiter).
+ * @param quoted Indicates if the value is quoted.
+ */
 void	apply_redirection(t_cmd *cmd, int redirect_type, const char *value,
 		int quoted)
 {

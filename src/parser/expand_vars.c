@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/10 23:55:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 22:58:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include "parser.h"
 #include <stdlib.h>
 
+/**
+ * @brief Expands variables in the input string.
+ * @param input The input string containing variables to expand.
+ * @param sh Pointer to the shell structure containing environment variables.
+ * @param had_content Pointer to an integer that will be set to 1 
+ * if any content is added to the result.
+ * @return Returns the expanded string, or NULL on failure.
+ */
 static char	*do_expand_vars(const char *input, t_shell *sh, int *had_content)
 {
 	char	*result;
@@ -43,6 +51,13 @@ static char	*do_expand_vars(const char *input, t_shell *sh, int *had_content)
 	return (result);
 }
 
+/**
+ * @brief Expands variables in the input string and handles special cases.
+ * @param input The input string containing variables to expand.
+ * @param sh Pointer to the shell structure containing environment variables.
+ * @return Returns the expanded string, or NULL if no content was added 
+ * or if the input was just a dollar sign ($).
+ */
 char	*expand_vars(const char *input, t_shell *sh)
 {
 	int		had_content;
