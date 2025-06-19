@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 11:01:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:35:08 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include <readline/readline.h>
 #include <unistd.h>
 
+/**
+ * @brief Opens the redirection file based on the type of redirection.
+ * @param redir The redirection structure containing the type and filename.
+ * @return Returns the file descriptor on success, or -1 on failure.
+ */
 static int	open_redirection_file(t_redir *redir)
 {
 	int	fd;
@@ -31,7 +36,12 @@ static int	open_redirection_file(t_redir *redir)
 	return (fd);
 }
 
-// Duplicates fd to stdin or stdout, closes it, and returns 0 or -1
+/**
+ * @brief Redirects the file descriptor to standard input or output.
+ * @param fd The file descriptor to redirect.
+ * @param redir The redirection structure containing the type of redirection.
+ * @return Returns 0 on success, or -1 on failure.
+ */
 static int	redirect_fd_to_stdio(int fd, t_redir *redir)
 {
 	int	ret;
@@ -50,7 +60,12 @@ static int	redirect_fd_to_stdio(int fd, t_redir *redir)
 	return (0);
 }
 
-// Applies a single redirection (including heredoc)
+/**
+ * @brief Applies a single redirection by opening the file and redirecting
+ * the file descriptor to standard input or output.
+ * @param redir The redirection structure containing the type and filename.
+ * @return Returns 0 on success, or -1 on failure.
+ */
 static int	apply_one_redir(t_redir *redir)
 {
 	int	fd;
@@ -61,6 +76,13 @@ static int	apply_one_redir(t_redir *redir)
 	return (redirect_fd_to_stdio(fd, redir));
 }
 
+/**
+ * @brief Handles all redirections for a command.
+ * This function applies all input and output redirections
+ * specified in the command structure.
+ * @param current_cmd The command structure containing redirections.
+ * @return Returns 0 on success, or -1 on failure.
+ */
 int	handle_redirections(t_cmd *current_cmd)
 {
 	t_redir	*redir;
