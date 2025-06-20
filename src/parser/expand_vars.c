@@ -6,13 +6,15 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:42:50 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 22:58:29 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:35:13 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parser.h"
 #include <stdlib.h>
+
+static char	*do_expand_vars(const char *input, t_shell *sh, int *had_content);
 
 /**
  * @brief Expands variables in the input string.
