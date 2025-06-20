@@ -6,15 +6,16 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:39:52 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:41:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
 #include "env.h"
 #include "libft.h"
 #include "parser.h"
 #include <stdlib.h>
+
+static int	remove_var(char *name, t_env_list **env);
 
 /**
  * @brief Removes a variable from the environment list.
