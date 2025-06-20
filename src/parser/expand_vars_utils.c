@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 18:08:16 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 22:55:45 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:34:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "libft.h"
 #include "minishell.h"
 #include <stdlib.h>
+
+static char	*get_env_value(const char *var_name, t_env_list *env_list);
+static int	handle_exit_status(const char *input, size_t *pos, char **result,
+				t_shell *sh);
+static int	handle_env_var(const char *input, size_t *pos, char **result,
+				t_shell *sh);
 
 /**
  * @brief Retrieves the value of an environment variable by its name.
