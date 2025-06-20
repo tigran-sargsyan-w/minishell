@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:00:25 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:59:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:51:36 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 #include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+static char	*ft_strjoin3(char const *s1, char const *s2);
+static char	**return_empty_tab(void);
+static char	**fill_tab(t_env_list **list, char **tab, size_t len);
 
 /**
  * @brief Joins two strings with an '=' in between.
