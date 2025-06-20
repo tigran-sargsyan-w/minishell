@@ -6,11 +6,10 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 21:58:12 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 23:18:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:29:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
 #include <unistd.h>
