@@ -6,12 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:33:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 22:40:41 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:16:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include <stddef.h>
+
+static int	handle_token(t_token **tokens, char *input, int *i, int sep_flag);
 
 /**
  * @brief Handles the tokenization of the input string 
