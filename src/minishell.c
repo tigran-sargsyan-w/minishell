@@ -6,17 +6,17 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:08:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 23:21:41 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:45:38 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
 #include "env.h"
 #include "libft.h"
 #include "minishell.h"
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+static int	init_sh(t_shell *sh, char **envp);
 
 /**
  * @brief Initializes the shell structure with environment variables.
