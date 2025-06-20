@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:07:38 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 17:05:17 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:52:56 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+static int	entry_fail(char *key, char *value);
 
 /**
  * @brief Handles memory cleanups for failed entry additions.
