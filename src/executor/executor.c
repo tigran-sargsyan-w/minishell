@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:38:33 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 18:45:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:03:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 #include "ft_printf.h"
 #include <signal.h>
 #include <sys/wait.h>
+
+static int	preprocess_heredocs(t_cmd *cmd_list, t_shell *sh);
+static void	finalize_execution(pid_t last_pid, t_shell *sh);
+static void	execute_cmds(t_cmd *cmd, t_shell *sh);
+static void	run_single_command(t_cmd *cmd, t_shell *sh);
 
 /**
  * @brief Preprocess heredocs in the command list.
