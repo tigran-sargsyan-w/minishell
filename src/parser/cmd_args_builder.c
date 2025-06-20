@@ -6,13 +6,15 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:40:39 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 22:52:37 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:32:08 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parser.h"
 #include <stdlib.h>
+
+static int	expand_args(t_cmd *cmd);
 
 /**
  * @brief Expands the command's argument array to accommodate more arguments.
