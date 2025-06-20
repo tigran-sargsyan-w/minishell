@@ -6,14 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:16:40 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 17:11:27 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:55:24 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
 #include "env.h"
-#include "libft.h"
-#include <stddef.h>
 #include <stdlib.h>
 
 /**
