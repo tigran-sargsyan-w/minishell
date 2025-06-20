@@ -6,11 +6,10 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:45:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 23:12:26 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:22:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
