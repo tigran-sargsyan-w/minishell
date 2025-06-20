@@ -6,14 +6,19 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:19:57 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 23:02:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:42:42 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "libft.h"
+#include "parser.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+static t_redir	*new_redir(t_redir_type type, const char *filename, int quoted);
+static void		add_redir_node(t_redir **head, t_redir *node);
+static void		add_redirection(t_cmd *cmd, t_redir_type type,
+					const char *filename, int quoted);
 
 /**
  * @brief Creates a new redirection node.
