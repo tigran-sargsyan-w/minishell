@@ -6,13 +6,18 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:58:43 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 23:00:32 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:38:51 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "parser.h"
 #include <stdlib.h>
+
+static int	handle_argument_token(t_token **tokens, t_cmd *cmd, t_shell *sh);
+static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh);
+static int	handle_pipe_token(t_token **tokens, t_cmd **cmd, t_shell *sh);
+static int	process_token(t_token **tokens, t_cmd **cmd, t_shell *sh);
 
 /**
  * @brief Handles an argument token by building the argument string 
@@ -77,12 +82,11 @@ static int	handle_redirection_token(t_token **tokens, t_cmd *cmd, t_shell *sh)
  * @param sh Pointer to the shell structure.
  * @return Returns 0 on success, 1 on failure.
  */
-static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
-		t_shell *sh)
+static int	handle_pipe_token(t_token **tokens, t_cmd **cmd, t_shell *sh)
 {
 	t_cmd	*new_cmd;
 
-	if (!cmd_is_valid_before_pipe(*current_cmd))
+	if (!cmd_is_valid_before_pipe(*cmd))
 	{
 		sh->last_status = 2;
 		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
@@ -98,8 +102,8 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
 	new_cmd = init_cmd();
 	if (!new_cmd)
 		return (FAILURE);
-	(*current_cmd)->next = new_cmd;
-	*current_cmd = new_cmd;
+	(*cmd)->next = new_cmd;
+	*cmd = new_cmd;
 	*tokens = (*tokens)->next;
 	return (SUCCESS);
 }
@@ -111,14 +115,14 @@ static int	handle_pipe_token(t_token **tokens, t_cmd **current_cmd,
  * @param sh Pointer to the shell structure.
  * @return Returns 0 on success, 1 on failure.
  */
-static int	process_token(t_token **tokens, t_cmd **current_cmd, t_shell *sh)
+static int	process_token(t_token **tokens, t_cmd **cmd, t_shell *sh)
 {
 	if (is_arg_token((*tokens)->type))
-		return (handle_argument_token(tokens, *current_cmd, sh));
+		return (handle_argument_token(tokens, *cmd, sh));
 	if (is_redir_token((*tokens)->type))
-		return (handle_redirection_token(tokens, *current_cmd, sh));
+		return (handle_redirection_token(tokens, *cmd, sh));
 	if ((*tokens)->type == TOK_PIPE)
-		return (handle_pipe_token(tokens, current_cmd, sh));
+		return (handle_pipe_token(tokens, cmd, sh));
 	sh->last_status = 2;
 	ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
 		(*tokens)->value);
