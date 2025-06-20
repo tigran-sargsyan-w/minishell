@@ -6,15 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 22:02:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:28:05 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:35:59 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "ft_printf.h"
-#include "libft.h"
 #include "parser.h"
-#include "minishell.h"
+
+static int	is_valid_numeric(char *arg);
 
 /**
  * @brief Checks if the argument is a valid numeric string.

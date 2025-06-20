@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:20:28 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:31:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 #include "parser.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+
+static int	update_var(t_env_list **env, char *key, char *value);
+static int	get_target_path(t_cmd *cmd, t_env_list **env, char **dst);
+static char	*safe_getcwd(t_env_list **env);
+static int	perform_cd(char *target, char **old_pwd, char **new_pwd,
+				t_env_list **env);
 
 /**
  * @brief Updates the environment variable with the given key and value.

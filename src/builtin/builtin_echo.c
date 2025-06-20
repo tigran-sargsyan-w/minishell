@@ -6,12 +6,15 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:02:24 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:24:48 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:33:04 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdio.h>
+
+static int	is_arg_n(const char *arg);
+static void	print_args(char **argv);
 
 /**
  * @brief Checks if the argument is a valid '-n' option.

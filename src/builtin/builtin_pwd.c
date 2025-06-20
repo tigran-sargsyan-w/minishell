@@ -6,11 +6,10 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:23 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:38:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:40:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
 #include "env.h"
 #include "ft_printf.h"
 #include "parser.h"
@@ -18,7 +17,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 /**
  * @brief Built-in command to print the current working directory.

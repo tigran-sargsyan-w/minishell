@@ -6,17 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:59 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:25:48 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:34:36 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
 #include "env.h"
 #include "libft.h"
 #include "parser.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 /**
  * @brief Prints the environment variables to standard output.

@@ -6,18 +6,20 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:36:48 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:38:56 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "env.h"
 #include "ft_printf.h"
-#include "libft.h"
 #include "parser.h"
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+static int	concat_argument(char *key, char *value, t_env_list **env);
+static int	export_or_concat(t_export_data *data, t_env_list **env);
+static int	handle_export_arg(char *arg, t_env_list **env);
 
 /**
  * @brief Concatenates a value to an existing environment variable.

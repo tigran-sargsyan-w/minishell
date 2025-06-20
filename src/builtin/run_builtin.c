@@ -6,17 +6,16 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:33 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/06/19 16:49:07 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:45:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "libft.h"
-#include "env.h"
-#include "minishell.h"
 #include "parser.h"
 #include <stdlib.h>
-#include <readline/history.h>
+
+static int	handle_exit(t_shell *sh, t_cmd *cmd);
 
 /**
  * @brief Handles the exit built-in command.
