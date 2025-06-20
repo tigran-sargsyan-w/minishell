@@ -6,13 +6,15 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:39:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 23:14:24 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:23:42 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "parser.h"
 #include <stdlib.h>
+
+static void	free_redirs(t_redir *redir);
 
 /**
  * @brief Frees a linked list of redirection nodes.
