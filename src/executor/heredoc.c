@@ -6,11 +6,10 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:27 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 19:33:06 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:10:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "executor.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -18,6 +17,11 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+
+static int	process_heredoc_line(char *line, int fd, t_redir *redir,
+				t_shell *sh);
+static int	write_heredoc_content(t_redir *redir, t_shell *sh);
+static int	wait_for_heredoc(pid_t pid, t_shell *sh);
 
 /**
  * @brief Process a line read from the heredoc input.

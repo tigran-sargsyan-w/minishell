@@ -6,14 +6,18 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:40 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 19:35:08 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:13:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include <fcntl.h>
-#include <readline/readline.h>
+#include <stdio.h>
 #include <unistd.h>
+
+static int	open_redirection_file(t_redir *redir);
+static int	redirect_fd_to_stdio(int fd, t_redir *redir);
+static int	apply_one_redir(t_redir *redir);
 
 /**
  * @brief Opens the redirection file based on the type of redirection.

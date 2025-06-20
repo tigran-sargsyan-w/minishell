@@ -6,20 +6,14 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:19:56 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/18 22:41:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:06:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "ft_printf.h"
-#include "libft.h"
 #include "minishell.h"
 #include "executor.h"
-#include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 static char	*get_from_env(char **envp, char *key);
 static char	*build_command_path(char *dir, char *cmd);

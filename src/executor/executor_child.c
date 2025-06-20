@@ -6,18 +6,20 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:27:52 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/06/19 18:05:14 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:59:55 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "env.h"
 #include "executor.h"
 #include "ft_printf.h"
-#include "libft.h"
-#include "minishell.h"
 #include <signal.h>
 #include <stdlib.h>
+
+static void	handle_cmd_not_found(t_shell *sh, char *cmd_name, int exit_code);
+static void	execute_external_command(t_cmd *cmd, t_shell *sh);
+static void	execute_child(t_cmd *current_cmd, t_shell *sh);
+static void	setup_child_fds(int prev_fd, t_pipe pd, t_cmd *cmd);
 
 /**
  * @brief Handles the case when a command is not found.
